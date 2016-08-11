@@ -27,11 +27,11 @@
 #include "itemname.h"
 #include "itemprop.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-behv.h"
 #include "mon-clone.h"
 #include "mon-death.h"
 #include "mon-poly.h"
+#include "nearby-danger.h"
 #include "religion.h"
 #include "spl-miscast.h"
 #include "state.h"
@@ -559,20 +559,19 @@ static actor* _pain_weapon_user(actor* attacker)
 
 void attack::pain_affects_defender()
 {
-    if (defender->res_negative_energy())
-        return;
-
     actor* user = _pain_weapon_user(attacker);
     if (!one_chance_in(user->skill_rdiv(SK_NECROMANCY) + 1))
     {
-        if (defender_visible)
+        special_damage += resist_adjust_damage(defender, BEAM_NEG,
+                              random2(1 + user->skill_rdiv(SK_NECROMANCY)));
+
+        if (special_damage && defender_visible)
         {
             special_damage_message =
                 make_stringf("%s %s in agony.",
                              defender->name(DESC_THE).c_str(),
                              defender->conj_verb("writhe").c_str());
         }
-        special_damage += random2(1 + user->skill_rdiv(SK_NECROMANCY));
     }
 }
 
@@ -1687,46 +1686,44 @@ bool attack::apply_damage_brand(const char *what)
     {
         if (!weapon
             || !(defender->holiness() & MH_NATURAL)
-            || defender->res_negative_energy()
             || damage_done < 1
             || attacker->stat_hp() == attacker->stat_maxhp()
             || !defender->is_player()
                && defender->as_monster()->is_summoned()
             || attacker->is_player() && you.duration[DUR_DEATHS_DOOR]
-            || !attacker->is_player()
-               && attacker->as_monster()->has_ench(ENCH_DEATHS_DOOR)
             || x_chance_in_y(2, 5) && !is_unrandom_artefact(*weapon, UNRAND_LEECH))
         {
             break;
         }
 
-        obvious_effect = true;
-
-        // Handle weapon effects.
-        // We only get here if we've done base damage, so no
-        // worries on that score.
-        if (attacker->is_player())
-            canned_msg(MSG_GAIN_HEALTH);
-        else if (attacker_visible)
-        {
-            if (defender->is_player())
-            {
-                mprf("%s draws strength from your injuries!",
-                     attacker->name(DESC_THE).c_str());
-            }
-            else
-            {
-                mprf("%s is healed.",
-                     attacker->name(DESC_THE).c_str());
-            }
-        }
-
         int hp_boost = is_unrandom_artefact(*weapon, UNRAND_VAMPIRES_TOOTH)
                        ? damage_done : 1 + random2(damage_done);
+        hp_boost = resist_adjust_damage(defender, BEAM_NEG, hp_boost);
 
-        dprf(DIAG_COMBAT, "Vampiric Healing: damage %d, healed %d",
-             damage_done, hp_boost);
-        attacker->heal(hp_boost);
+        if (hp_boost)
+        {
+            obvious_effect = true;
+
+            if (attacker->is_player())
+                canned_msg(MSG_GAIN_HEALTH);
+            else if (attacker_visible)
+            {
+                if (defender->is_player())
+                {
+                    mprf("%s draws strength from your injuries!",
+                         attacker->name(DESC_THE).c_str());
+                }
+                else
+                {
+                    mprf("%s is healed.",
+                         attacker->name(DESC_THE).c_str());
+                }
+            }
+
+            dprf(DIAG_COMBAT, "Vampiric Healing: damage %d, healed %d",
+                 damage_done, hp_boost);
+            attacker->heal(hp_boost);
+        }
         break;
     }
     case SPWPN_PAIN:
@@ -1939,6 +1936,7 @@ int attack::player_stab(int damage)
  */
 void attack::player_stab_check()
 {
+    // XXX: move into find_stab_type?
     if (you.duration[DUR_CLUMSY] || you.confused())
     {
         stab_attempt = false;
@@ -1946,47 +1944,17 @@ void attack::player_stab_check()
         return;
     }
 
-    const stab_type st = find_stab_type(&you, defender);
-    stab_attempt = (st != STAB_NO_STAB);
-    const bool roll_needed = (st != STAB_SLEEPING && st != STAB_PARALYSED);
-
-    int roll = 100;
-    if (st == STAB_INVISIBLE)
-        roll -= 10;
-
-    switch (st)
-    {
-    case STAB_NO_STAB:
-    case NUM_STAB:
-        stab_bonus = 0;
-        break;
-    case STAB_SLEEPING:
-    case STAB_PARALYSED:
-        stab_bonus = 1;
-        break;
-    case STAB_HELD_IN_NET:
-    case STAB_PETRIFYING:
-    case STAB_PETRIFIED:
-        stab_bonus = 2;
-        break;
-    case STAB_INVISIBLE:
-    case STAB_CONFUSED:
-    case STAB_FLEEING:
-    case STAB_ALLY:
-        stab_bonus = 4;
-        break;
-    case STAB_DISTRACTED:
-        stab_bonus = 6;
-        break;
-    }
+    const stab_type st = find_stab_type(&you, *defender);
+    stab_attempt = st != STAB_NO_STAB;
+    stab_bonus = stab_bonus_denom(st);
 
     // See if we need to roll against dexterity / stabbing.
-    if (stab_attempt && roll_needed)
+    if (stab_attempt && stab_bonus > 1)
     {
         stab_attempt = x_chance_in_y(you.skill_rdiv(wpn_skill, 1, 2)
                                      + you.skill_rdiv(SK_STEALTH, 1, 2)
                                      + you.dex() + 1,
-                                     roll);
+                                     100);
     }
 
     if (stab_attempt)

@@ -49,6 +49,7 @@
 #include "mon-poly.h"
 #include "mon-util.h"
 #include "mutation.h"
+#include "nearby-danger.h"
 #include "potion.h"
 #include "prompt.h"
 #include "ranged_attack.h"
@@ -199,6 +200,7 @@ static void _ench_animation(int flavour, const monster* mon, bool force)
         break;
     case BEAM_INFESTATION:
     case BEAM_PAIN:
+    case BEAM_AGONY:
         elem = ETC_UNHOLY;
         break;
     case BEAM_DISPEL_UNDEAD:
@@ -1780,29 +1782,6 @@ int mons_adjust_flavoured(monster* mons, bolt &pbolt, int hurted,
             ensnare(mons);
         break;
 
-    case BEAM_GHOSTLY_FLAME:
-        if (mons->holiness() & MH_UNDEAD)
-            hurted = 0;
-        else
-        {
-            hurted = resist_adjust_damage(mons, pbolt.flavour, hurted);
-
-            if (!doFlavouredEffects)
-                break;
-
-            if (!hurted)
-            {
-                simple_monster_message(mons,
-                                       (original > 0) ? " completely resists."
-                                                      : " appears unharmed.");
-            }
-            else if (hurted < original)
-                simple_monster_message(mons, " partially resists.");
-            else if (hurted > original)
-                simple_monster_message(mons, " is drained terribly!");
-        }
-        break;
-
     default:
         break;
     }
@@ -2450,7 +2429,7 @@ static void _malign_offering_effect(actor* victim, const actor* agent, int damag
     coord_def c = victim->pos();
 
     mprf("%s life force is offered up.", victim->name(DESC_ITS).c_str());
-    damage = victim->hurt(agent, damage, BEAM_NEG, KILLED_BY_BEAM,
+    damage = victim->hurt(agent, damage, BEAM_MALIGN_OFFERING, KILLED_BY_BEAM,
                           "", "by a malign offering");
 
     // Actors that had LOS to the victim (blocked by glass, clouds, etc),
@@ -3154,9 +3133,6 @@ bool bolt::is_harmless(const monster* mon) const
     case BEAM_MEPHITIC:
         return mon->res_poison() > 0 || mon->is_unbreathing();
 
-    case BEAM_GHOSTLY_FLAME:
-        return bool(mon->holiness() & MH_UNDEAD);
-
     default:
         return false;
     }
@@ -3335,12 +3311,6 @@ void bolt::tracer_affect_player()
         _explosive_bolt_explode(this, you.pos());
 }
 
-// Magical penetrating projectiles should pass through shields.
-bool bolt::pierces_shields() const
-{
-    return range_used_on_hit() == 0;
-}
-
 bool bolt::misses_player()
 {
     if (flavour == BEAM_VISUAL)
@@ -3420,14 +3390,6 @@ bool bolt::misses_player()
                             refl_name.c_str());
                 }
                 reflect();
-            }
-            else if (pierces_shields())
-            {
-                penet = true;
-                mprf("The %s pierces through your %s!",
-                      refl_name.c_str(),
-                      shield ? shield->name(DESC_PLAIN).c_str()
-                             : "shielding");
             }
             else
             {
@@ -3660,34 +3622,24 @@ void bolt::affect_player_enchantment(bool resistible)
         break;
 
     case BEAM_PAIN:
-        if (player_res_torment())
-        {
-            canned_msg(MSG_YOU_UNAFFECTED);
-            break;
-        }
-
+    {
         if (aux_source.empty())
             aux_source = "by nerve-wracking pain";
 
-        if (origin_spell == SPELL_AGONY)
-        {
-            if (you.res_negative_energy()) // Agony has no effect with rN.
-            {
-                canned_msg(MSG_YOU_UNAFFECTED);
-                break;
-            }
-
-            mpr("Your body is wracked with pain!");
-
-            // On the player, Agony acts like single-target torment.
-            internal_ouch(max(0, you.hp / 2 - 1));
-        }
-        else
+        const int dam = resist_adjust_damage(&you, flavour, damage.roll());
+        if (dam)
         {
             mpr("Pain shoots through your body!");
-
-            internal_ouch(damage.roll());
+            internal_ouch(dam);
+            obvious_effect = true;
         }
+        else
+            canned_msg(MSG_YOU_UNAFFECTED);
+        break;
+    }
+
+    case BEAM_AGONY:
+        torment_player(agent(), TORMENT_AGONY);
         obvious_effect = true;
         break;
 
@@ -3779,7 +3731,6 @@ void bolt::affect_player_enchantment(bool resistible)
     }
 
     case BEAM_VIRULENCE:
-
         // Those completely immune cannot be made more susceptible this way
         if (you.res_poison(false) >= 3)
         {
@@ -4676,12 +4627,6 @@ void bolt::monster_post_hit(monster* mon, int dmg)
         }
     }
 
-    if (flavour == BEAM_GHOSTLY_FLAME && mon->holiness() & MH_UNDEAD)
-    {
-        if (mon->heal(roll_dice(3, 10)))
-            simple_monster_message(mon, " is bolstered by the flame.");
-    }
-
     if (origin_spell == SPELL_THROW_BARBS && dmg > 0
         && !(mon->is_insubstantial() || mons_genus(mon->type) == MONS_JELLY))
     {
@@ -4782,65 +4727,52 @@ bool bolt::god_cares() const
 bool bolt::attempt_block(monster* mon)
 {
     const int shield_block = mon->shield_bonus();
-    bool rc = false;
-    if (shield_block > 0)
+    if (shield_block <= 0)
+        return false;
+
+    const int sh_hit = random2(hit * 130 / 100 + mon->shield_block_penalty());
+    if (sh_hit >= shield_block)
+        return false;
+
+    item_def *shield = mon->mslot_item(MSLOT_SHIELD);
+    if (is_reflectable(*mon))
     {
-        const int ht = random2(hit * 130 / 100 + mon->shield_block_penalty());
-        if (ht < shield_block)
+        if (mon->observable())
         {
-            rc = true;
-            item_def *shield = mon->mslot_item(MSLOT_SHIELD);
-            if (is_reflectable(*mon))
+            if (shield && is_shield(*shield) && shield_reflects(*shield))
             {
-                if (mon->observable())
-                {
-                    if (shield && is_shield(*shield)
-                        && shield_reflects(*shield))
-                    {
-                        mprf("%s reflects the %s off %s %s!",
-                             mon->name(DESC_THE).c_str(),
-                             name.c_str(),
-                             mon->pronoun(PRONOUN_POSSESSIVE).c_str(),
-                             shield->name(DESC_PLAIN).c_str());
-                        ident_reflector(shield);
-                    }
-                    else
-                    {
-                        mprf("The %s bounces off an invisible shield around %s!",
-                            name.c_str(),
-                            mon->name(DESC_THE).c_str());
-
-                        item_def *amulet = mon->mslot_item(MSLOT_JEWELLERY);
-                        if (amulet)
-                            ident_reflector(amulet);
-                    }
-                }
-                else if (you.see_cell(pos()))
-                    mprf("The %s bounces off of thin air!", name.c_str());
-
-                reflect();
+                mprf("%s reflects the %s off %s %s!",
+                     mon->name(DESC_THE).c_str(),
+                     name.c_str(),
+                     mon->pronoun(PRONOUN_POSSESSIVE).c_str(),
+                     shield->name(DESC_PLAIN).c_str());
+                ident_reflector(shield);
             }
-            else if (pierces_shields())
+            else
             {
-                rc = false;
-                mprf("The %s pierces through %s %s!",
-                      name.c_str(),
-                      apostrophise(mon->name(DESC_THE)).c_str(),
-                      shield ? shield->name(DESC_PLAIN).c_str()
-                             : "shielding");
-            }
-            else if (you.see_cell(pos()))
-            {
-                mprf("%s blocks the %s.",
-                     mon->name(DESC_THE).c_str(), name.c_str());
-                finish_beam();
-            }
+                mprf("The %s bounces off an invisible shield around %s!",
+                     name.c_str(),
+                     mon->name(DESC_THE).c_str());
 
-            mon->shield_block_succeeded(agent());
+                item_def *amulet = mon->mslot_item(MSLOT_JEWELLERY);
+                if (amulet)
+                    ident_reflector(amulet);
+            }
         }
+        else if (you.see_cell(pos()))
+            mprf("The %s bounces off of thin air!", name.c_str());
+
+        reflect();
+    }
+    else if (you.see_cell(pos()))
+    {
+        mprf("%s blocks the %s.",
+             mon->name(DESC_THE).c_str(), name.c_str());
+        finish_beam();
     }
 
-    return rc;
+    mon->shield_block_succeeded(agent());
+    return true;
 }
 
 /// Is the given monster a bush or bush-like 'monster', and can the given beam
@@ -5266,6 +5198,12 @@ bool ench_flavour_affects_monster(beam_type flavour, const monster* mon,
         rc = mon->can_mutate();
         break;
 
+    case BEAM_SLOW:
+    case BEAM_HASTE:
+    case BEAM_PARALYSIS:
+        rc = !mon->stasis();
+        break;
+
     case BEAM_POLYMORPH:
         rc = mon->can_polymorph();
         break;
@@ -5286,7 +5224,11 @@ bool ench_flavour_affects_monster(beam_type flavour, const monster* mon,
         break;
 
     case BEAM_PAIN:
-        rc = !mon->res_negative_energy(intrinsic_only);
+        rc = mon->res_negative_energy(intrinsic_only) < 3;
+        break;
+
+    case BEAM_AGONY:
+        rc = !mon->res_torment();
         break;
 
     case BEAM_HIBERNATION:
@@ -5488,14 +5430,22 @@ mon_resist_type bolt::apply_enchantment_to_monster(monster* mon)
         return MON_AFFECTED;
     }
 
-    case BEAM_PAIN:             // pain/agony
-        if (simple_monster_message(mon, " convulses in agony!"))
-            obvious_effect = true;
+    case BEAM_PAIN:
+    {
+        const int dam = resist_adjust_damage(mon, flavour, damage.roll());
+        if (dam)
+        {
+            if (simple_monster_message(mon, " writhes in agony!"))
+                obvious_effect = true;
+            mon->hurt(agent(), dam, flavour);
+            return MON_AFFECTED;
+        }
+        return MON_UNAFFECTED;
+    }
 
-        if (origin_spell == SPELL_AGONY)
-            mon->hurt(agent(), min((mon->hit_points+1)/2, mon->hit_points-1), BEAM_TORMENT_DAMAGE);
-        else                    // pain
-            mon->hurt(agent(), damage.roll(), flavour);
+    case BEAM_AGONY:
+        torment_cell(mon->pos(), agent(), TORMENT_AGONY);
+        obvious_effect = you.can_see(*mon);
         return MON_AFFECTED;
 
     case BEAM_DISINTEGRATION:   // disrupt/disintegrate
@@ -6370,16 +6320,18 @@ bool bolt::nasty_to(const monster* mon) const
     if (flavour == BEAM_HIBERNATION)
         return mon->can_hibernate();
 
+    if (flavour == BEAM_SLOW || flavour == BEAM_PARALYSIS)
+        return !mon->stasis();
+
     // dispel undead
     if (flavour == BEAM_DISPEL_UNDEAD)
         return bool(mon->holiness() & MH_UNDEAD);
 
-    // pain / agony
     if (flavour == BEAM_PAIN)
-        return !mon->res_negative_energy();
+        return mon->res_negative_energy() < 3;
 
-    if (flavour == BEAM_GHOSTLY_FLAME)
-        return !(mon->holiness() & MH_UNDEAD);
+    if (flavour == BEAM_AGONY)
+        return !mon->res_torment();
 
     if (flavour == BEAM_TUKIMAS_DANCE)
         return tukima_affects(*mon);
@@ -6413,9 +6365,6 @@ bool bolt::nice_to(const monster_info& mi) const
     {
         return true;
     }
-
-    if (flavour == BEAM_GHOSTLY_FLAME && mi.holi & MH_UNDEAD)
-        return true;
 
     return false;
 }
@@ -6601,7 +6550,6 @@ static string _beam_type_name(beam_type type)
     case BEAM_DEVASTATION:           return "devastation";
     case BEAM_RANDOM:                return "random";
     case BEAM_CHAOS:                 return "chaos";
-    case BEAM_GHOSTLY_FLAME:         return "ghostly flame";
     case BEAM_SLOW:                  return "slow";
     case BEAM_HASTE:                 return "haste";
     case BEAM_MIGHT:                 return "might";
@@ -6617,6 +6565,7 @@ static string _beam_type_name(beam_type type)
     case BEAM_BANISH:                return "banishment";
     case BEAM_ENSLAVE_SOUL:          return "enslave soul";
     case BEAM_PAIN:                  return "pain";
+    case BEAM_AGONY:                 return "agony";
     case BEAM_DISPEL_UNDEAD:         return "dispel undead";
     case BEAM_DISINTEGRATION:        return "disintegration";
     case BEAM_BLINK:                 return "blink";

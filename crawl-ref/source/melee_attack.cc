@@ -897,7 +897,7 @@ void melee_attack::check_autoberserk()
 {
     if (attacker->is_player())
     {
-        for (int i = EQ_WEAPON; i < NUM_EQUIP; ++i)
+        for (int i = EQ_FIRST_EQUIP; i < NUM_EQUIP; ++i)
         {
             const item_def *item = you.slot_item(static_cast<equipment_type>(i));
             if (!item)
@@ -2209,18 +2209,18 @@ void melee_attack::apply_staff_damage()
     }
 
     case STAFF_DEATH:
-        if (defender->res_negative_energy())
-            break;
-
-        special_damage = staff_damage(SK_NECROMANCY);
+        special_damage =
+            resist_adjust_damage(defender,
+                                 BEAM_NEG,
+                                 staff_damage(SK_NECROMANCY));
 
         if (special_damage)
         {
             special_damage_message =
                 make_stringf(
-                    "%s convulse%s in agony!",
+                    "%s %s in agony!",
                     defender->name(DESC_THE).c_str(),
-                    defender->is_player() ? "" : "s");
+                    defender->conj_verb("writhe").c_str());
 
             attacker->god_conduct(DID_EVIL, 4);
         }
@@ -2737,26 +2737,27 @@ void melee_attack::mons_apply_attack_flavour()
 
         // deliberate fall-through
     case AF_VAMPIRIC:
-        // Only may bite non-vampiric monsters (or player) capable of bleeding.
-        if (!defender->can_bleed())
+        if (!(defender->holiness() & MH_NATURAL))
             break;
 
-        // Disallow draining of summoned monsters since they can't bleed.
-        // XXX: Is this too harsh?
+        // Disallow draining of summoned monsters.
         if (defender->is_summoned())
-            break;
-
-        if (defender->res_negative_energy())
             break;
 
         if (defender->stat_hp() < defender->stat_maxhp())
         {
-            if (attacker->heal(1 + random2(damage_done)) && needs_message)
+            int healed = resist_adjust_damage(defender, BEAM_NEG,
+                                              1 + random2(damage_done));
+            if (healed)
             {
-                mprf("%s %s strength from %s injuries!",
-                     atk_name(DESC_THE).c_str(),
-                     attacker->conj_verb("draw").c_str(),
-                     def_name(DESC_ITS).c_str());
+                attacker->heal(healed);
+                if (needs_message)
+                {
+                    mprf("%s %s strength from %s injuries!",
+                         atk_name(DESC_THE).c_str(),
+                         attacker->conj_verb("draw").c_str(),
+                         def_name(DESC_ITS).c_str());
+                }
             }
         }
         break;
@@ -3418,6 +3419,8 @@ bool melee_attack::do_knockback(bool trample)
     if (!x_chance_in_y(size_diff + 3, 6)
         // need a valid tile
         || !defender->is_habitable_feat(grd(new_pos))
+        // don't trample anywhere the attacker can't follow
+        || !attacker->is_habitable_feat(grd(old_pos))
         // don't trample into a monster - or do we want to cause a chain
         // reaction here?
         || actor_at(new_pos)

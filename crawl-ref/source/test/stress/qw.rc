@@ -1094,7 +1094,6 @@ local scary_monsters = {
   {13, "blink frog"},
 
   {15, "death yak"},
-  {15, "Maud"},
   {15, "Erica"},
   {15, "catoblepas"},
   {15, "orc knight"},
@@ -1121,7 +1120,6 @@ local scary_monsters = {
   {20, "greater naga"},
   {20, "naga sharpshooter"},
   {20, "emperor scorpion"},
-  {20, "Wiglaf"},
   {20, "Rupert"},
   {20, "Aizul"},
   {20, "desc", "hydra"},

@@ -47,11 +47,11 @@
 #include "macro.h"
 #include "message.h"
 #include "mgen_data.h"
-#include "misc.h"
 #include "mon-death.h"
 #include "mon-place.h"
 #include "mon-util.h"
 #include "mutation.h"
+#include "nearby-danger.h"
 #include "notes.h"
 #include "options.h"
 #include "output.h"
@@ -293,30 +293,6 @@ int check_your_resists(int hurted, beam_type flavour, string source,
         else if (you.airborne())
             hurted += hurted / 2;
         break;
-    }
-
-    case BEAM_GHOSTLY_FLAME:
-    {
-        if (you.holiness() & MH_UNDEAD)
-        {
-            if (doEffects && hurted > 0)
-            {
-                you.heal(roll_dice(2, 9));
-                mpr("You are bolstered by the flame.");
-            }
-            hurted = 0;
-        }
-        else
-        {
-            hurted = resist_adjust_damage(&you, flavour, hurted);
-            if (hurted < original && doEffects)
-                canned_msg(MSG_YOU_PARTIALLY_RESIST);
-            else if (hurted > original && doEffects)
-            {
-                mpr("The flames sap you greatly!");
-                xom_is_stimulated(200);
-            }
-        }
     }
 
     default:

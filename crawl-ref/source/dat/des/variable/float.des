@@ -1826,8 +1826,9 @@ MARKER: * = lua:fog_machine { \
                 size_buildup_time = 25, cloud_type = "black smoke" \
             }
 KMONS:  1 = fire elemental
-NSUBST: ; = 3:2 / *=.ll
+NSUBST: ; = 3:2 / *=l
 KMONS:  2 = molten gargoyle
+KFEAT:  2 = l
 KMONS:  e = earth elemental
 SUBST:  E = exxx....
 NSUBST: ' = 2:3 / 3:W / *:.
@@ -1839,6 +1840,7 @@ NSUBST: " = 3:5 / *:.
 KMONS:  5 = wind drake
 KMONS:  6 = air elemental
 KMONS:  7 = fire vortex
+KFEAT:  Z = <
 #
 : if you.in_branch("elf") then
 KMONS:  Z = deep elf elementalist ; \
@@ -1868,7 +1870,7 @@ MAP
       ccE+'''cwcc
      ccEEc'''cwwcc
     ccEEEc'''cwwwcc
-   ccEEEEc'''cwwwwcc
+   ccEEEEc'<'cwwwwcc
   ccEEEEEc'''cwwwwwcc
  ccEEEEEEc''Wcwwwwwwcc
 ccEEEEEEEc'WW+wwwwwwwcc
@@ -2075,9 +2077,9 @@ ENDMAP
 # The Elephants' Graveyard (by Mu.)
 #
 NAME:   mu_elephants_graveyard
-ORIENT: float
 TAGS:   no_monster_gen no_rotate no_vmirror no_pool_fixup
-DEPTH:  Depths, Lair, !Lair:$
+DEPTH:  Depths, Lair:2-, !Lair:$
+ORIENT: float
   # we generate more dire elephants and deeper water at greater depths
 : if you.in_branch("Lair") then
 MONS:   elephant, dire elephant, spriggan
@@ -2130,26 +2132,27 @@ ENDMAP
 ##############################################################################
 
 NAME:    hangedman_screamer
-ORIENT:  float
 TAGS:    no_monster_gen
 DEPTH:   D:9-, Depths, Crypt
+ORIENT:  float
 MONS:    patrolling flying skull
 MONS:    zombie / skeleton
 : if you.absdepth() > 19 then
 MONS:    vampire knight / jiangshi / flayed ghost
-KMONS:   4 = Boris / lich / revenant
-KMONS:   5 = lich / revenant
+MONS:    lich / revenant
+KMONS:   5 = Boris / lich / revenant, lich / revenant
 : elseif you.absdepth() > 13 then
 MONS:    phantasmal warrior / skeletal warrior / eidolon
-KMONS:   4 = Frances / vampire mage / death knight
-KMONS:   5 = vampire mage / death knight
+MONS:    vampire mage / death knight
+KMONS:   5 = Frances / vampire mage / death knight, vampire mage / death knight
 : else
 MONS:    wight / wraith / shadow
-KMONS:   4 = Josephine / skeletal warrior / necromancer
-KMONS:   5 = skeletal warrior / necromancer
+MONS:    skeletal warrior / necromancer
+KMONS:   5 = Josephine / skeletal warrior / necromancer, \
+             skeletal warrior / necromancer
 : end
-SHUFFLE: Aa / Bb / Cc / Dd / Ee
-SUBST:   5 = 5 3:2, 2 = 2 3:2, ABCD = ., abcd = @, Ee = x
+SHUFFLE: Aa / Bb / Cc / Dd / Ee / Ff
+SUBST:   5 = 5 3:2, 2 = 2 3:2, ABCD = ., abcd = @, EeFf = x
 : if you.in_branch("Crypt") then
 SUBST:   x = c
 : end
@@ -2158,12 +2161,12 @@ MAP
    xx2233322xx
 xaaxx22x5x22xxccx
 xAAx.x2x+x2x.xCCx
-xAAxx.xx1xx.xxCCx
+xAAxx.xx*xx.xxCCx
 xAAxxx.x*x.xxxCCx
-x...............x
-x...............x
+x...1...1.......x
+x.......1...1...x
 xBBxxx.x*x.xxxDDx
-xBBxx.xx1xx.xxDDx
+xBBxx.xx*xx.xxDDx
 xBBx.x2x+x2x.xDDx
 xbbxx22x4x22xxddx
    xx2233322xx
@@ -2789,67 +2792,71 @@ NAME:     gammafunk_depths_water_palace
 DEPTH:    Depths, !Depths:$
 ORIENT:   float
 TAGS:     no_monster_gen patrolling no_pool_fixup
-## Plants or water monsters
-KMONS:    P = plant / fungus
-KMONS:    R = water elemental
-KMONS:    S = water elemental / w:2 merfolk impaler / w:2 merfolk javelineer
-## Main monster sets
-KMONS:    1 = spriggan berserker / ettin / deep troll shaman
-KMONS:    2 = spriggan defender / yaktaur captain / stone giant
-KMONS:    3 = spriggan air mage / deep elf annihilator / entropy weaver \
-              / rakshasa
-KMONS:    4 = orange crystal statue
-KMONS:    5Z = fire dragon / ice dragon / iron dragon / w:5 spark wasp band \
-               / sphinx / emperor scorpion
-KMONS:    6 = storm dragon / golden dragon / quicksilver dragon
-KMONS:    7 = w:15 tengu reaver / stone giant / fire giant / frost giant
-KMONS:    D = titan / juggernaut / w:15 caustic shrike
-KMONS:    O = w:5 the Enchantress band / spriggan defender band, \
-              spriggan defender band
-## The loot items need this to be placed in water
+KMONS:    1 = centaur warrior / yaktaur captain / centaur warrior \
+              / ettin / stone giant / spriggan berserker
+KMONS:    2 = wizard / deep troll earth mage / spriggan air mage \
+              / deep elf annihilator / deep troll earth mage / boggart band
+KMONS:    3 = fire dragon / ice dragon / iron dragon / storm dragon
+KMONS:    4 = tengu reaver / spriggan air mage / sphinx
+KMONS:    5 = golden dragon / quicksilver dragon / storm dragon
+KMONS:    6 = juggernaut / spark wasp band / caustic shrike
+KMONS:    D = water elemental
+KMONS:    F = orange crystal statue
+KMONS:    K = water elemental / merfolk impaler / merfolk javelineer
+KMONS:    M = ettin / stone giant / frost giant / fire giant
+KMONS:    N = juggernaut
+KMONS:    O = titan
+KMONS:    P = the Enchantress band
+# Place either a giant band headed by a titan or the Enchantress band, if the
+# latter is available.
+: if not you.uniques("the Enchantress") then
+SHUFFLE:  MNO / kkP
+: end
+KMONS:    h = plant / fungus
+# The loot items need KITEM and KFEAT to place in water
 KITEM:    % = %
 KITEM:    $ = $
 KITEM:    * = *
-KITEM:    D| = |
-KFEAT:    P5Z67DR%$*| = W
-KFEAT:    S = w
-KFEAT:    u = t
-KPROP:    ~"ZR = no_tele_into
-SHUFFLE:  HI / JK
-NSUBST:   H = 1:4 / *:G
-SUBST:    I = -, J = G, K = 7, L = 6 7 D:2, B : cP, C : cP, ~' = PPPPW, -" = W
+KITEM:    6| = |
+KFEAT:    h3456DHJK%$*| = W
+KFEAT:    K = w
+KPROP:    ~"DE = no_tele_into
+SHUFFLE:  FH / IJ
+SUBST:    i : ch, j : ch, ~' = hhhhW, -" = W, k = .
+SUBST:    E = 5, I = G, J = 4, L = 54
+NSUBST:   F = 1:F / G
 COLOUR:   c = white
-COLOUR:   x = cyan
-TILE:     u = dngn_mangrove
+COLOUR:   .12MNOP = lightblue
+COLOUR:   x = blue
 TILE:     x = wall_pebble_cyan
-FTILE:    .+ctuGTUP1234O = floor_pebble_cyan
+FTILE:    .TUwWh123456DFHMNO|$*%$+xctG = floor_pebble_cyan
 MAP
       ccccccccccccccccccccccccc
-    cccttct1t.t.-Gx-Hx-Hx-ucuTccc
-   cc-...+....3.------I----+-wwwcc
-  ccG-.2.+.t2t.t--Gx-Hx-Hx-+---wwcc
-  ccc-.GcccBBccccccccccccccc----wwc
-  ccGR.cc~""cccccUGUccccc''-5x---Sc
- cccc-.n~Z"cccc--*D*--cccc'-u-u--wcc
- cT---.n""~ccc---$%$---ccc'--x6u-wwc
- ct1...c"~cccL---ccc---Lccc'-u-x--wc
- cccc++cR~ccc--cccGccc--ccc'--u5u-Sc
+    cccttct1t.t.-Gx-Fx-Fx-tctTccc
+   cc-...+....2.------H----+-wwwcc
+  ccG-.1.+.t1t.t--Gx-Fx-Fx-+---wwcc
+  ccc-.Gccciiccccccccccccccc----wwc
+  ccGD.cc~""cccccUGUccccc''-3x---Kc
+ cccc-.n~E"cccc--*6*--cccc'-t-t--wcc
+ cT---.n""~ccc---$%$---ccc'--x4t-wwc
+ ct1...c"~cccL---ccc---Lccc'-t-x--wc
+ cccc++cD~ccc--cccGccc--ccc'--t3t-Kc
 cctGt..c~~cc--cc*%$%*cc--cc''--x--wcc
-c..1...c~ccc--cu--7--uc--cccG-u-u-wTc
-+.---..nucU|$----...------++-7----llc
-+.-U-.2nUcGD|----.O.--7---++---U--lGc
-+.---..nucU|$----...------++-7----llc
-c..1...c~ccc--cu--7--uc--cccG-u-u-wTc
+c..1...c~ccc--ct-----tc--cccG-t-t-wTc
++.---..ntcU|$----MNM------++-5----llc
++.-U-.2nUcG6|----.O.--5---++---U--lGc
++.---..ntcU|$----MNM------++-5----llc
+c..1...c~ccc--ct-----tc--cccG-t-t-wTc
 cctGt..c~~cc--cc*%$%*cc--cc''--x--wcc
- cccc++cR~ccc--cccGccc--ccc'--u5u-Sc
- ct1...c"~cccL---ccc---Lccc'-u-x--wc
- cT---.n""~ccc---$%$---ccc'--x6u-wwc
- cccc-.n~Z"cccc--*D*--cccc'-u-u--wcc
-  ccGR.cc~""cccccUGUccccc''-5x---Sc
-  ccc-.GcccCCccccccccccccccc----wwc
-  ccG-.2.+.t2t.t----Jx-----+---wwcc
-   cc-...+....3.------K----+-wwwcc
-    cccttct1t.t.-Gx----Jx-ucuTccc
+ cccc++cD~ccc--cccGccc--ccc'--t3t-Kc
+ ct1...c"~cccL---ccc---Lccc'-t-x--wc
+ cT---.n""~ccc---$%$---ccc'--x4t-wwc
+ cccc-.n~E"cccc--*6*--cccc'-t-t--wcc
+  ccGD.cc~""cccccUGUccccc''-3x---Kc
+  ccc-.Gcccjjccccccccccccccc----wwc
+  ccG-.1.+.t1t.t----Ix-----+---wwcc
+   cc-...+....2.------J----+-wwwcc
+    cccttct1t.t.-Gx----Ix-tctTccc
      ccccccccccccccccccccccccccc
 ENDMAP
 

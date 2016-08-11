@@ -700,24 +700,15 @@ bool mons_gives_xp(const monster* victim, const actor* agent)
 {
     ASSERT(victim && agent);
 
-    // Either the player killed a monster that's no reward (created friendly or
-    // the Royal Jelly spawns), or a monster killed an aligned monster, or a
-    // friendly monster killed a no-reward monster.
-    bool killed_friend;
-    if (agent->is_player())
-        killed_friend = testbits(victim->flags, MF_NO_REWARD);
-    else
-    {
-        killed_friend = mons_aligned(victim, agent)
-            || testbits(victim->flags, MF_NO_REWARD)
-            && mons_aligned(&you, agent);
-    }
+    const bool mon_killed_friend
+        = agent->is_monster() && mons_aligned(victim, agent);
     return !victim->is_summoned()                   // no summons
         && !victim->has_ench(ENCH_ABJ)              // not-really-summons
         && !victim->has_ench(ENCH_FAKE_ABJURATION)  // no animated remains
         && mons_class_gives_xp(victim->type)        // class must reward xp
         && !testbits(victim->flags, MF_WAS_NEUTRAL) // no neutral monsters
-        && !killed_friend;
+        && !testbits(victim->flags, MF_NO_REWARD)   // no reward for no_reward
+        && !mon_killed_friend;
 }
 
 bool mons_class_is_threatening(monster_type mo)
@@ -2399,7 +2390,7 @@ monster_type random_demonspawn_monster_species()
 // spellbooks a given monster can get here should produce the same
 // return values in the following:
 //
-//     (is_unholy_spell() || is_evil_spell())
+//     is_evil_spell()
 //
 //     (is_unclean_spell() || is_chaotic_spell())
 //
@@ -2426,12 +2417,10 @@ static vector<mon_spellbook_type> _mons_spellbook_list(monster_type mon_type)
 
     case MONS_WIZARD:
     case MONS_EROLCHA:
-        return { MST_WIZARD_I, MST_WIZARD_II, MST_WIZARD_III, MST_WIZARD_IV,
-                 MST_WIZARD_V };
+        return { MST_WIZARD_I, MST_WIZARD_II, MST_WIZARD_III };
 
     case MONS_OGRE_MAGE:
-        return { MST_OGRE_MAGE_I, MST_OGRE_MAGE_II, MST_OGRE_MAGE_III,
-                 MST_OGRE_MAGE_IV, MST_OGRE_MAGE_V };
+        return { MST_OGRE_MAGE_I, MST_OGRE_MAGE_II, MST_OGRE_MAGE_III };
 
     case MONS_ANCIENT_CHAMPION:
         return { MST_ANCIENT_CHAMPION_I, MST_ANCIENT_CHAMPION_II };
@@ -3352,18 +3341,18 @@ bool mons_is_batty(const monster* m)
 
 bool mons_looks_stabbable(const monster* m)
 {
-    const stab_type st = find_stab_type(&you, m);
-    return !m->friendly()
-           && (st == STAB_PARALYSED || st == STAB_SLEEPING);
+    ASSERT(m); // TODO: should be const monster &m
+    const stab_type st = find_stab_type(&you, *m);
+    return !m->friendly() && stab_bonus_denom(st) == 1; // top-tier stab
 }
 
 bool mons_looks_distracted(const monster* m)
 {
-    const stab_type st = find_stab_type(&you, m);
+    ASSERT(m); // TODO: should be const monster &m
+    const stab_type st = find_stab_type(&you, *m);
     return !m->friendly()
            && st != STAB_NO_STAB
-           && st != STAB_PARALYSED
-           && st != STAB_SLEEPING;
+           && !mons_looks_stabbable(m);
 }
 
 void mons_start_fleeing_from_sanctuary(monster* mons)
@@ -5222,11 +5211,9 @@ void normalize_spell_freq(monster_spells &spells, int hd)
     }
 }
 
+/// Rounded to player-visible approximations, how hurt is this monster?
 mon_dam_level_type mons_get_damage_level(const monster* mons)
 {
-    if (!mons_can_display_wounds(mons))
-        return MDAM_OKAY;
-
     if (mons->hit_points <= mons->max_hit_points / 5)
         return MDAM_ALMOST_DEAD;
     else if (mons->hit_points <= mons->max_hit_points * 2 / 5)
@@ -5276,9 +5263,6 @@ void print_wounds(const monster* mons)
     if (!mons->alive() || mons->hit_points == mons->max_hit_points)
         return;
 
-    if (!mons_can_display_wounds(mons))
-        return;
-
     mon_dam_level_type dam_level = mons_get_damage_level(mons);
     string desc = get_damage_level_string(mons->holiness(), dam_level);
 
@@ -5294,23 +5278,6 @@ bool wounded_damaged(mon_holy_type holi)
 {
     // this schema needs to be abstracted into real categories {dlb}:
     return bool(holi & (MH_UNDEAD | MH_NONLIVING | MH_PLANT));
-}
-
-bool mons_class_can_display_wounds(monster_type mc)
-{
-    // Zombified monsters other than spectral things don't show
-    // wounds.
-    if (mons_class_is_zombified(mc) && mc != MONS_SPECTRAL_THING)
-        return false;
-
-    return true;
-}
-
-bool mons_can_display_wounds(const monster* mon)
-{
-    get_tentacle_head(mon);
-
-    return mons_class_can_display_wounds(mon->type);
 }
 
 // Is this monster interesting enough to make notes about?
@@ -5452,9 +5419,6 @@ void radiate_pain_bond(const monster* mon, int damage)
         monster* target = ai->as_monster();
 
         if (mon == target) // no self-sharing
-            continue;
-
-        if (mons_intel(target) < I_ANIMAL)
             continue;
 
         // Only other pain-bonded monsters are affected.

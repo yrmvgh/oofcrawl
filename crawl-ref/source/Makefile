@@ -82,7 +82,7 @@ MAKEFLAGS += -rR # This only works for recursive makes, i.e. contribs ...
 
 .PHONY: all test install clean clean-contrib clean-rltiles clean-android \
         distclean debug debug-lite profile package-source source \
-        build-windows package-windows rest docs greet api android FORCE monster
+        build-windows package-windows docs greet api android FORCE monster
 
 include Makefile.obj
 
@@ -631,34 +631,38 @@ ifndef BUILD_LUA
     BUILD_LUA = yes
   endif
 endif
-ifndef BUILD_LUA
-  ifneq ($(USE_LUAJIT),)
-    ifeq ($(shell $(PKGCONFIG) luajit --exists || echo no),)
-      LUA_PACKAGE = luajit
-    else
-      BUILD_LUA = yes
-    endif
-  else
-    ifneq ($(shell $(PKGCONFIG) lua5.1 --exists || echo no),)
-      ifneq ($(shell $(PKGCONFIG) lua-5.1 --exists || echo no),)
-        ifneq ($(shell $(PKGCONFIG) lua51 --exists || echo no),)
-          ifneq ($(shell $(PKGCONFIG) lua --exists || echo no),)
-            BUILD_LUA = yes
-          else
-            ifeq ($(shell $(PKGCONFIG) lua --modversion | head -c 3),5.1)
-              LUA_PACKAGE = lua
-            else
-              BUILD_LUA = yes
-            endif
-          endif
-        else
-          LUA_PACKAGE = lua51
-        endif
+# You can override the Lua package search with "make LUA_PACKAGE=lua-5-1".
+# pkg-config is still required.
+ifndef LUA_PACKAGE
+  ifndef BUILD_LUA
+    ifneq ($(USE_LUAJIT),)
+      ifeq ($(shell $(PKGCONFIG) luajit --exists || echo no),)
+        LUA_PACKAGE = luajit
       else
-        LUA_PACKAGE = lua-5.1
+        BUILD_LUA = yes
       endif
     else
-      LUA_PACKAGE = lua5.1
+      ifneq ($(shell $(PKGCONFIG) lua5.1 --exists || echo no),)
+        ifneq ($(shell $(PKGCONFIG) lua-5.1 --exists || echo no),)
+          ifneq ($(shell $(PKGCONFIG) lua51 --exists || echo no),)
+            ifneq ($(shell $(PKGCONFIG) lua --exists || echo no),)
+              BUILD_LUA = yes
+            else
+              ifeq ($(shell $(PKGCONFIG) lua --modversion | head -c 3),5.1)
+                LUA_PACKAGE = lua
+              else
+                BUILD_LUA = yes
+              endif
+            endif
+          else
+            LUA_PACKAGE = lua51
+          endif
+        else
+          LUA_PACKAGE = lua-5.1
+        endif
+      else
+        LUA_PACKAGE = lua5.1
+      endif
     endif
   endif
 endif
@@ -1354,11 +1358,7 @@ $(DOC_BASE)/aptitudes.txt: $(DOC_TEMPLATES)/apt-tmpl.txt species-data.h aptitude
 $(DOC_BASE)/FAQ.html: dat/database/FAQ.txt util/FAQ2html.pl
 	$(QUIET_GEN)./util/FAQ2html.pl $< $@
 
-rest:
-	wget -O - https://crawl.develz.org/wiki/doku.php?id=dcss:manual:rest \
-	| sed -f util/undoku.sed | tr -d '\r' > $(DOC_BASE)/crawl_manual.reST
-
-$(DOC_BASE)/crawl_manual.txt: $(DOC_BASE)/crawl_manual.reST util/unrest.pl
+$(DOC_BASE)/crawl_manual.txt: $(DOC_BASE)/crawl_manual.rst util/unrest.pl
 	$(QUIET_GEN)util/unrest.pl <$< >$@
 
 CLUA_MODULE_SOURCES = $(filter l_%,$(OBJECTS:%.o=%.cc))

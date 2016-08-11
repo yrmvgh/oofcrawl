@@ -27,11 +27,11 @@
 #include "losparam.h"
 #include "message.h"
 #include "mgen_data.h"
-#include "misc.h"
 #include "mon-behv.h"
 #include "mon-death.h"
 #include "mon-place.h"
 #include "mon-util.h"
+#include "nearby-danger.h"
 #include "orb.h"
 #include "output.h"
 #include "prompt.h"
@@ -202,6 +202,13 @@ static bool _find_cblink_target(coord_def &target, bool safe_cancel)
         return _find_cblink_target(target, safe_cancel);
     }
 
+    monster* target_mons = monster_at(beam.target);
+    if (target_mons && you.can_see(*target_mons))
+    {
+        mprf("You can't blink onto %s!", target_mons->name(DESC_THE).c_str());
+        return _find_cblink_target(target, safe_cancel);
+    }
+
     if (!check_moveto(beam.target, "blink"))
     {
         return _find_cblink_target(target, safe_cancel);
@@ -294,7 +301,8 @@ spret_type controlled_blink(bool fail, bool safe_cancel)
     if (!you.attempt_escape(2))
         return SPRET_SUCCESS; // of a sort
 
-    if (cell_is_solid(target) || monster_at(target))
+    // invisible monster that the targeter didn't know to avoid
+    if (monster_at(target))
     {
         mpr("Oops! There was something there already!");
         uncontrolled_blink();

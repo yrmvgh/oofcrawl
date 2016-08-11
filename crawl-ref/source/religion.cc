@@ -49,10 +49,10 @@
 #include "libutil.h"
 #include "makeitem.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-gear.h" // give_shield
 #include "mon-place.h"
 #include "mutation.h"
+#include "nearby-danger.h"
 #include "notes.h"
 #include "output.h"
 #include "player-stats.h"
@@ -564,11 +564,19 @@ void dec_penance(god_type god, int val)
                      mi->del_ench(ENCH_AWAKEN_FOREST);
             }
         }
-        else if (god == GOD_PAKELLAS)
+        else
         {
-            // Penance just ended w/o worshipping Pakellas;
-            // notify the player that MP regeneration will start again.
-            mprf(MSGCH_GOD, god, "You begin regenerating magic.");
+            if (god == GOD_PAKELLAS)
+            {
+                // Penance just ended w/o worshipping Pakellas;
+                // notify the player that MP regeneration will start again.
+                mprf(MSGCH_GOD, god, "You begin regenerating magic.");
+            }
+            else if (god == GOD_HEPLIAKLQANA)
+            {
+                calc_hp(); // frailty ends
+                mprf(MSGCH_GOD, god, "Your full life essence returns.");
+            }
         }
     }
     else if (god == GOD_NEMELEX_XOBEH && you.penance[god] > 100)
@@ -1882,7 +1890,7 @@ bool do_god_gift(bool forced)
                     gift = BOOK_DEATH;
                 }
             }
-            else if (forced || you.piety >= piety_breakpoint(5)
+            else if (forced || you.piety >= piety_breakpoint(4)
                                && random2(you.piety) > 100)
             {
                 // Sif Muna special: Keep quiet if acquirement fails
@@ -3081,7 +3089,7 @@ static void _god_welcome_handle_gear()
         ash_detect_portals(true);
 
     // Give a reminder to remove any disallowed equipment.
-    for (int i = EQ_WEAPON; i < NUM_EQUIP; i++)
+    for (int i = EQ_FIRST_EQUIP; i < NUM_EQUIP; i++)
     {
         const item_def* item = you.slot_item(static_cast<equipment_type>(i));
         if (item && god_hates_item(*item))
@@ -3398,11 +3406,13 @@ static void _join_hepliaklqana()
                                                          : GENDER_MALE;
     }
 
+    calc_hp(); // adjust for frailty
+
     // Complimentary ancestor upon joining.
     const mgen_data mg = hepliaklqana_ancestor_gen_data();
     delayed_monster(mg);
-    simple_god_message(make_stringf(" brings forth the memory of your ancestor,"
-                                    " %s!",
+    simple_god_message(make_stringf(" forms a fragment of your life essence"
+                                    " into the memory of your ancestor, %s!",
                                     mg.mname.c_str()).c_str());
 }
 

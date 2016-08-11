@@ -30,6 +30,7 @@
 #include "dungeon.h"
 #include "evoke.h"
 #include "exercise.h"
+#include "fight.h"
 #include "food.h"
 #include "godabil.h"
 #include "godcompanions.h"
@@ -46,7 +47,6 @@
 #include "maps.h"
 #include "menu.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-place.h"
 #include "mutation.h"
 #include "notes.h"
@@ -306,7 +306,7 @@ static const ability_def Ability_List[] =
 
     { ABIL_FLY, "Fly", 3, 0, 100, 0, {FAIL_XL, 42, 3}, abflag::NONE },
     { ABIL_STOP_FLYING, "Stop Flying", 0, 0, 0, 0, {}, abflag::NONE },
-    { ABIL_DAMNATION, "Damnation",
+    { ABIL_DAMNATION, "Hurl Damnation",
         0, 150, 200, 0, {FAIL_XL, 50, 1}, abflag::NONE },
 
     { ABIL_DELAYED_FIREBALL, "Release Delayed Fireball",
@@ -419,7 +419,7 @@ static const ability_def Ability_List[] =
     { ABIL_SIF_MUNA_STOP_DIVINE_ENERGY, "Stop Divine Energy",
       0, 0, 0, 0, {FAIL_INVO}, abflag::INSTANT },
     { ABIL_SIF_MUNA_FORGET_SPELL, "Forget Spell",
-      5, 0, 0, 8, {FAIL_INVO}, abflag::NONE },
+      0, 0, 0, 8, {FAIL_INVO}, abflag::NONE },
     { ABIL_SIF_MUNA_CHANNEL_ENERGY, "Channel Magic",
       0, 0, 200, 2, {FAIL_INVO, 60, 4, 25}, abflag::NONE },
 
@@ -1137,8 +1137,13 @@ void no_ability_msg()
     // * Tengu can't start to fly if already flying.
     if (you.species == SP_VAMPIRE && you.experience_level >= 3)
     {
-        ASSERT(you.hunger_state > HS_SATIATED);
-        mpr("Sorry, you're too full to transform right now.");
+        if (you.transform_uncancellable)
+            mpr("You can't untransform!");
+        else
+        {
+            ASSERT(you.hunger_state > HS_SATIATED);
+            mpr("Sorry, you're too full to transform right now.");
+        }
     }
     else if (player_mutation_level(MUT_TENGU_FLIGHT)
              || player_mutation_level(MUT_BIG_WINGS))
@@ -1326,10 +1331,16 @@ static bool _check_ability_possible(const ability_def& abil,
         if (!zin_check_able_to_recite(quiet))
             return false;
 
-        if (zin_check_recite_to_monsters(quiet) != 1)
+        int result = zin_check_recite_to_monsters(quiet);
+        if (result != 1)
         {
             if (!quiet)
-                mpr("There's no appreciative audience!");
+            {
+                if (result == 0)
+                    mpr("There's no appreciative audience!");
+                else if (result == -1)
+                    mpr("You are not zealous enough to affect this audience!");
+            }
             return false;
         }
         return true;

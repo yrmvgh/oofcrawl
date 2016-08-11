@@ -626,7 +626,6 @@ enum beam_type                  // bolt::flavour
     BEAM_DEVASTATION,
     BEAM_RANDOM,                  // currently translates into FIRE..ACID
     BEAM_CHAOS,
-    BEAM_GHOSTLY_FLAME,
     BEAM_UNRAVELLED_MAGIC,
 
     // Enchantments
@@ -672,7 +671,8 @@ enum beam_type                  // bolt::flavour
     BEAM_SHARED_PAIN,
     BEAM_IRRESISTIBLE_CONFUSION,
     BEAM_INFESTATION,
-    BEAM_LAST_ENCHANTMENT = BEAM_INFESTATION,
+    BEAM_AGONY,
+    BEAM_LAST_ENCHANTMENT = BEAM_AGONY,
 
     BEAM_MEPHITIC,
     BEAM_INK,
@@ -1323,7 +1323,6 @@ enum conduct_type
     DID_SOULED_FRIEND_DIED,               // Zin
     DID_ATTACK_IN_SANCTUARY,              // Zin
     DID_KILL_ARTIFICIAL,                  // Yredelemnul
-    DID_DESTROY_SPELLBOOK,                // Sif Muna
     DID_EXPLORATION,                      // Ashenzari, wrath timers
     DID_DESECRATE_HOLY_REMAINS,           // Zin/Ely/TSO/Yredelemnul
     DID_SEE_MONSTER,                      // TSO
@@ -2025,7 +2024,9 @@ enum enchant_type
     ENCH_OLD_ROUSED,
 #endif
     ENCH_BREATH_WEAPON,  // timer for breathweapon/similar spam
+#if TAG_MAJOR_VERSION == 34
     ENCH_DEATHS_DOOR,
+#endif
     ENCH_ROLLING,        // Boulder Beetle in ball form
     ENCH_OZOCUBUS_ARMOUR,
     ENCH_WRETCHED,       // An abstract placeholder for monster mutations
@@ -2118,14 +2119,15 @@ enum equipment_type
     EQ_NONE = -1,
 
     EQ_WEAPON,
+    EQ_FIRST_EQUIP = EQ_WEAPON,
     EQ_CLOAK,
     EQ_HELMET,
     EQ_GLOVES,
     EQ_BOOTS,
     EQ_SHIELD,
     EQ_BODY_ARMOUR,
-    //Everything beyond here is jewellery
-    EQ_LEFT_RING,
+    EQ_FIRST_JEWELLERY,
+    EQ_LEFT_RING = EQ_FIRST_JEWELLERY,
     EQ_RIGHT_RING,
     EQ_AMULET,
     //Octopodes don't have left and right rings. They have eight rings, instead.
@@ -2139,6 +2141,7 @@ enum equipment_type
     EQ_RING_EIGHT,
     // Finger amulet provides an extra ring slot
     EQ_RING_AMULET,
+    EQ_LAST_JEWELLERY = EQ_RING_AMULET,
     NUM_EQUIP,
 
     EQ_MIN_ARMOUR = EQ_CLOAK,
@@ -3253,11 +3256,15 @@ enum monster_type                      // menv[].type
     MONS_JOSEPHINE,
     MONS_HAROLD,
     MONS_AGNES,
+#if TAG_MAJOR_VERSION == 34
     MONS_MAUD,
+#endif
     MONS_LOUISE,
     MONS_FRANCES,
     MONS_RUPERT,
+#if TAG_MAJOR_VERSION == 34
     MONS_WIGLAF,
+#endif
     MONS_XTAHUA,
 #if TAG_MAJOR_VERSION == 34
     MONS_NORRIS,
@@ -3903,6 +3910,15 @@ enum recite_type
     NUM_RECITE_TYPES
 };
 
+// How eligible is a given single monster to recite?
+enum recite_eligibility
+{
+    RE_INELIGIBLE,      // Can never be recited to.
+    RE_TOO_STRONG,      // Could be recited to at higher power.
+    RE_RECITE_TIMER,    // Already affected by ongoing recitation.
+    RE_ELIGIBLE,        // Can be recited to.
+};
+
 enum size_part_type
 {
     PSIZE_BODY,         // entire body size -- used for EV/size of target
@@ -4226,7 +4242,7 @@ enum species_type
     SP_VIABLE   = 102,
 };
 
-enum spell_type
+enum spell_type : int
 {
     SPELL_NO_SPELL,
     SPELL_TELEPORT_SELF,
@@ -4699,6 +4715,7 @@ enum torment_source_type
     TORMENT_XOM           = -6,   // Xom effect
     TORMENT_KIKUBAAQUDGHA = -7,   // Kikubaaqudgha effect
     TORMENT_MISCAST       = -8,
+    TORMENT_AGONY         = -9,   // SPELL_AGONY
 };
 
 enum trap_type

@@ -518,7 +518,6 @@ josephine MONS_JOSEPHINE
 kirke MONS_KIRKE
 louise MONS_LOUISE
 margery MONS_MARGERY
-maud MONS_MAUD
 maurice MONS_MAURICE
 %rim 0
 nikola MONS_NIKOLA
@@ -528,7 +527,6 @@ rupert MONS_RUPERT
 sigmund MONS_SIGMUND
 %rim 1
 terence MONS_TERENCE
-wiglaf MONS_WIGLAF
 
 %sdir mon
 %rim 0
@@ -607,10 +605,6 @@ rime_drake MONS_RIME_DRAKE
 lindwurm MONS_LINDWURM
 death_drake MONS_DEATH_DRAKE
 wind_drake MONS_WIND_DRAKE
-## For tile_player_tile
-%sdir mon/unique
-jormungandr MONS_JORMUNGANDR
-giaggostuono MONS_GIAGGOSTUONO
 
 
 ## Dragons ('D')
@@ -790,8 +784,6 @@ mummy_priest MONS_MUMMY_PRIEST
 %sdir mon/unique
 aizul MONS_AIZUL
 vashnia MONS_VASHNIA
-# No longer exists, but a nice tile for players to use.
-lamia MONS_LAMIA
 %sdir mon
 naga MONS_NAGA
 naga_mage MONS_NAGA_MAGE
@@ -884,7 +876,6 @@ eidolon MONS_EIDOLON
 %sdir mon
 %rim 0
 orb_guardian MONS_ORB_GUARDIAN
-orb_guardian_fetus MONS_ORB_GUARDIAN_FETUS
 
 ## Centaurs ('c')
 %rim 1
@@ -1164,3 +1155,16 @@ unseen_monster MONS_UNKNOWN
 unseen_monster MCACHE_START
 todo TODO
 error ERROR
+
+# Old monster tiles for use with the tile_player_tile option.
+%sdir mon/player
+giaggostuono MONS_GIAGGOSTUONO
+jormungandr MONS_JORMUNGANDR
+lamia MONS_LAMIA
+maud MONS_MAUD
+old-serpent-coc MONS_OLD_SERPENT_COC
+old-serpent-dis MONS_OLD_SERPENT_DIS
+old-serpent-geh MONS_OLD_SERPENT_GEH
+old-serpent-tar MONS_OLD_SERPENT_TAR
+wiglaf MONS_WIGLAF
+orb_guardian_fetus MONS_ORB_GUARDIAN_FETUS

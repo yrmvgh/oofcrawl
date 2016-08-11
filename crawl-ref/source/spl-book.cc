@@ -13,7 +13,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iomanip>
-#include <set>
+#include <unordered_set>
 
 #include "artefact.h"
 #include "colour.h"
@@ -339,11 +339,18 @@ bool player_can_memorise(const item_def &book)
     return false;
 }
 
-typedef vector<spell_type>   spell_list;
-typedef map<spell_type, int> spells_to_books;
+typedef vector<spell_type>                     spell_list;
+typedef unordered_set<spell_type, hash<int>>   spell_set;
 
-static void _index_book(item_def& book, spells_to_books &book_hash,
-                        bool &book_errors)
+/**
+ * Read the given book, identifying it and marking it as owned if necessary,
+ * and then list all spells in the book.
+ *
+ * @param book      The book to be read.
+ * @param spells    The list of spells to populate. Doesn't have to be empty.
+ * @return          Whether the given book is invalid (empty).
+ */
+static bool _get_book_spells(item_def& book, spell_set &spells)
 {
     mark_had_book(book);
     set_ident_flags(book, ISFLAG_KNOW_TYPE);
@@ -353,30 +360,27 @@ static void _index_book(item_def& book, spells_to_books &book_hash,
     for (spell_type spell : spells_in_book(book))
     {
         num_spells++;
-
-        auto it = book_hash.find(spell);
-        if (it == book_hash.end())
-            book_hash[spell] = book.sub_type;
+        spells.insert(spell);
     }
 
     if (num_spells == 0)
     {
         mprf(MSGCH_ERROR, "Spellbook \"%s\" contains no spells! Please "
              "file a bug report.", book.name(DESC_PLAIN).c_str());
-        book_errors = true;
+        return true;
     }
+
+    return false;
 }
 
 static bool _get_mem_list(spell_list &mem_spells,
-                          spells_to_books &book_hash,
                           unsigned int &num_misc,
                           bool just_check = false,
                           spell_type current_spell = SPELL_NO_SPELL)
 {
-    bool          book_errors    = false;
-    unsigned int  num_on_ground  = 0;
-    unsigned int  num_books      = 0;
-    unsigned int  num_unknown    = 0;
+    bool          book_errors      = false;
+    unsigned int  num_unknown      = 0;
+    spell_set     available_spells;
 
     // Collect the list of all spells in all available spellbooks.
     for (auto &book : you.inv)
@@ -384,8 +388,7 @@ static bool _get_mem_list(spell_list &mem_spells,
         if (!book.defined() || !item_is_spellbook(book))
             continue;
 
-        num_books++;
-        _index_book(book, book_hash, book_errors);
+        book_errors = _get_book_spells(book, available_spells) || book_errors;
     }
 
     // We also check the ground
@@ -403,24 +406,17 @@ static bool _get_mem_list(spell_list &mem_spells,
             continue;
         }
 
-        num_books++;
-        num_on_ground++;
-        _index_book(book, book_hash, book_errors);
+        book_errors = _get_book_spells(book, available_spells) || book_errors;
     }
 
     // Handle Vehumet gifts
-    auto gift_iterator = you.vehumet_gifts.begin();
-    if (gift_iterator != you.vehumet_gifts.end())
-    {
-        num_books++;
-        while (gift_iterator != you.vehumet_gifts.end())
-            book_hash[*gift_iterator++] = NUM_BOOKS;
-    }
+    for (auto gift : you.vehumet_gifts)
+      available_spells.insert(gift);
 
     if (book_errors)
         more();
 
-    if (num_books == 0)
+    if (available_spells.empty())
     {
         if (!just_check)
         {
@@ -428,15 +424,11 @@ static bool _get_mem_list(spell_list &mem_spells,
                 mprf(MSGCH_PROMPT, "You must pick up those books before reading them.");
             else if (num_unknown == 1)
                 mprf(MSGCH_PROMPT, "You must pick up this book before reading it.");
+            else if (book_errors)
+                mprf(MSGCH_PROMPT, "None of the spellbooks you are carrying contain any spells.");
             else
                 mprf(MSGCH_PROMPT, "You aren't carrying or standing over any spellbooks.");
         }
-        return false;
-    }
-    else if (book_hash.empty())
-    {
-        if (!just_check)
-            mprf(MSGCH_PROMPT, "None of the spellbooks you are carrying contain any spells.");
         return false;
     }
 
@@ -448,10 +440,8 @@ static bool _get_mem_list(spell_list &mem_spells,
     unsigned int num_memable    = 0;
     bool         form           = false;
 
-    for (const auto &entry : book_hash)
+    for (const spell_type spell : available_spells)
     {
-        const spell_type spell = entry.first;
-
         if (spell == current_spell || you.has_spell(spell))
             num_known++;
         else if (!you_can_memorise(spell))
@@ -530,10 +520,9 @@ static bool _get_mem_list(spell_list &mem_spells,
 bool has_spells_to_memorise(bool silent, spell_type current_spell)
 {
     spell_list      mem_spells;
-    spells_to_books book_hash;
     unsigned int    num_misc;
 
-    return _get_mem_list(mem_spells, book_hash, num_misc, silent,
+    return _get_mem_list(mem_spells, num_misc, silent,
                          (spell_type) current_spell);
 }
 
@@ -545,7 +534,7 @@ static bool _sort_mem_spells(spell_type a, spell_type b)
     if (offering_a != offering_b)
         return offering_a;
 
-    // List spells we can memorize right away first.
+    // List spells we can memorise right away first.
     if (player_spell_levels() >= spell_levels_required(a)
         && player_spell_levels() < spell_levels_required(b))
     {
@@ -570,30 +559,20 @@ static bool _sort_mem_spells(spell_type a, spell_type b)
     return strcasecmp(spell_title(a), spell_title(b)) < 0;
 }
 
-vector<spell_type> get_mem_spell_list(vector<int> &books)
+vector<spell_type> get_mem_spell_list()
 {
-    vector<spell_type> spells;
-
     spell_list      mem_spells;
-    spells_to_books book_hash;
     unsigned int    num_misc;
 
-    if (!_get_mem_list(mem_spells, book_hash, num_misc))
-        return spells;
+    if (!_get_mem_list(mem_spells, num_misc))
+        return spell_list();
 
     sort(mem_spells.begin(), mem_spells.end(), _sort_mem_spells);
 
-    for (spell_type spell : mem_spells)
-    {
-        spells.push_back(spell);
-        books.push_back(*map_find(book_hash, spell));
-    }
-
-    return spells;
+    return mem_spells;
 }
 
 static spell_type _choose_mem_spell(spell_list &spells,
-                                    spells_to_books &book_hash,
                                     unsigned int num_misc)
 {
     sort(spells.begin(), spells.end(), _sort_mem_spells);
@@ -770,14 +749,13 @@ bool learn_spell()
         return false;
 
     spell_list      mem_spells;
-    spells_to_books book_hash;
 
     unsigned int num_misc;
 
-    if (!_get_mem_list(mem_spells, book_hash, num_misc))
+    if (!_get_mem_list(mem_spells, num_misc))
         return false;
 
-    spell_type specspell = _choose_mem_spell(mem_spells, book_hash, num_misc);
+    spell_type specspell = _choose_mem_spell(mem_spells, num_misc);
 
     if (specspell == SPELL_NO_SPELL)
     {
@@ -789,11 +767,11 @@ bool learn_spell()
 }
 
 /**
- * Why can't the player memorize the given spell?
+ * Why can't the player memorise the given spell?
  *
  * @param spell     The spell in question.
  * @return          A string describing (one of) the reason(s) the player
- *                  can't memorize this spell.
+ *                  can't memorise this spell.
  */
 string desc_cannot_memorise_reason(spell_type spell)
 {
@@ -905,43 +883,6 @@ bool learn_spell(spell_type specspell, bool wizard)
     return true;
 }
 
-bool forget_spell_from_book(spell_type spell, const item_def* book)
-{
-    string prompt;
-
-    prompt += make_stringf("Forgetting %s from %s will destroy the book%s! "
-                           "Are you sure?",
-                           spell_title(spell),
-                           book->name(DESC_THE).c_str(),
-                           you_worship(GOD_SIF_MUNA)
-                               ? " and put you under penance" : "");
-
-    // Deactivate choice from tile inventory.
-    mouse_control mc(MOUSE_MODE_MORE);
-    if (!yesno(prompt.c_str(), false, 'n'))
-    {
-        canned_msg(MSG_OK);
-        return false;
-    }
-    mprf("As you tear out the page describing %s, the book crumbles to dust.",
-        spell_title(spell));
-
-    if (del_spell_from_memory(spell))
-    {
-        item_was_destroyed(*book);
-        destroy_spellbook(*book);
-        dec_inv_item_quantity(book->link, 1);
-        you.turn_is_over = true;
-        return true;
-    }
-    else
-    {
-        // This shouldn't happen.
-        mprf("A bug prevents you from forgetting %s.", spell_title(spell));
-        return false;
-    }
-}
-
 bool book_has_title(const item_def &book)
 {
     ASSERT(book.base_type == OBJ_BOOKS);
@@ -958,6 +899,4 @@ void destroy_spellbook(const item_def &book)
     int maxlevel = 0;
     for (spell_type stype : spells_in_book(book))
         maxlevel = max(maxlevel, spell_difficulty(stype));
-
-    did_god_conduct(DID_DESTROY_SPELLBOOK, maxlevel + 5);
 }

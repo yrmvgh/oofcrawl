@@ -89,7 +89,9 @@ enum monster_info_flags
     MB_OLD_ROUSED,
 #endif
     MB_BREATH_WEAPON,
+#if TAG_MAJOR_VERSION == 34
     MB_DEATHS_DOOR,
+#endif
     MB_FIREWOOD,
     MB_TWO_WEAPONS,
     MB_NO_REGEN,
@@ -162,6 +164,7 @@ enum monster_info_flags
     MB_IDEALISED,
     MB_BOUND_SOUL,
     MB_INFESTATION,
+    MB_NO_REWARD,
     NUM_MB_FLAGS
 };
 
@@ -287,7 +290,7 @@ struct monster_info : public monster_info_base
     string pluralised_name(bool fullname = true) const;
     string common_name(description_level_type desc = DESC_PLAIN) const;
     string proper_name(description_level_type desc = DESC_PLAIN) const;
-    string full_name(description_level_type desc = DESC_PLAIN, bool use_comma = false) const;
+    string full_name(description_level_type desc = DESC_PLAIN) const;
 
     vector<string> attributes() const;
 

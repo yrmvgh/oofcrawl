@@ -1376,9 +1376,6 @@ static bool _is_signature_weapon(const monster* mons, const item_def &weapon)
         if (mons->type == MONS_PIKEL)
             return get_vorpal_type(weapon) == DVORP_SLASHING;
 
-        if (mons->type == MONS_WIGLAF)
-            return item_attack_skill(weapon) == SK_AXES;
-
         if (mons->type == MONS_NIKOLA)
             return get_weapon_brand(weapon) == SPWPN_ELECTROCUTION;
 
@@ -2396,7 +2393,7 @@ string monster::base_name(description_level_type desc, bool force_vis) const
     return mi.common_name(desc);
 }
 
-string monster::full_name(description_level_type desc, bool use_comma) const
+string monster::full_name(description_level_type desc) const
 {
     string s = _mon_special_name(*this, desc, true);
     if (!s.empty() || desc == DESC_NONE)
@@ -3563,12 +3560,6 @@ bool monster::heal(int amount)
     if (mons_is_statue(type))
         return false;
 
-    if (!mons_can_display_wounds(this))
-        return false;
-
-    if (has_ench(ENCH_DEATHS_DOOR))
-        return false;
-
     if (amount < 1)
         return false;
     else if (hit_points == max_hit_points)
@@ -4049,7 +4040,7 @@ int monster::res_holy_energy(const actor *attacker) const
     if (is_holy()
         || is_good_god(god)
         || neutral()
-        || find_stab_type(attacker, this) != STAB_NO_STAB
+        || find_stab_type(attacker, *this) != STAB_NO_STAB
         || is_good_god(you.religion) && is_follower(this))
     {
         return 1;
@@ -4495,9 +4486,7 @@ int monster::hurt(const actor *agent, int amount, beam_type flavour,
 
         if (amount != INSTANT_DEATH)
         {
-            if (has_ench(ENCH_DEATHS_DOOR))
-                return 0;
-            else if (petrified())
+            if (petrified())
                 amount /= 2;
             else if (petrifying())
                 amount = amount * 2 / 3;
@@ -5548,7 +5537,10 @@ void monster::apply_location_effects(const coord_def &oldpos,
     {
         // Elemental wellsprings always have water beneath them
         if (type == MONS_ELEMENTAL_WELLSPRING)
-            temp_change_terrain(pos(), DNGN_SHALLOW_WATER, 100, TERRAIN_CHANGE_FLOOD);
+        {
+            temp_change_terrain(pos(), DNGN_SHALLOW_WATER, 100,
+                                TERRAIN_CHANGE_FLOOD, this);
+        }
         else
             add_ench(ENCH_AQUATIC_LAND);
     }
@@ -5913,14 +5905,12 @@ bool monster::should_drink_potion(potion_type ptype) const
     switch (ptype)
     {
     case POT_CURING:
-        return !has_ench(ENCH_DEATHS_DOOR)
-               && hit_points <= max_hit_points / 2
+        return hit_points <= max_hit_points / 2
                || has_ench(ENCH_POISON)
                || has_ench(ENCH_SICK)
                || has_ench(ENCH_CONFUSION);
     case POT_HEAL_WOUNDS:
-        return !has_ench(ENCH_DEATHS_DOOR)
-               && hit_points <= max_hit_points / 2;
+        return hit_points <= max_hit_points / 2;
     case POT_BLOOD:
 #if TAG_MAJOR_VERSION == 34
     case POT_BLOOD_COAGULATED:
@@ -6725,6 +6715,27 @@ int monster::spell_hd(spell_type spell) const
     if (has_ench(ENCH_EMPOWERED_SPELLS))
         hd += 5;
     return hd;
+}
+
+/**
+ * For pandemonium lords & monsters with random spellbooks, track which spells
+ * the player has seen this monster cast.
+ *
+ * @param spell     The spell the player just saw the monster cast.
+ */
+void monster::note_spell_cast(spell_type spell)
+{
+    const monster_info mi(this);
+    if (type != MONS_PANDEMONIUM_LORD && get_spellbooks(mi).size() <= 1)
+        return;
+
+    for (int old_spell : props[SEEN_SPELLS_KEY].get_vector())
+        if (old_spell == spell)
+            return;
+
+    dprf("tracking seen spell %s for %s",
+         spell_title(spell), name(DESC_A, true).c_str());
+    props[SEEN_SPELLS_KEY].get_vector().push_back(spell);
 }
 
 void monster::align_avatars(bool force_friendly)

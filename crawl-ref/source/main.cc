@@ -108,6 +108,7 @@
 #include "mon-transit.h"
 #include "mon-util.h"
 #include "mutation.h"
+#include "nearby-danger.h"
 #include "notes.h"
 #include "options.h"
 #include "output.h"
@@ -2141,7 +2142,7 @@ void process_command(command_type cmd)
     case CMD_READ:                 read();                   break;
     case CMD_REMOVE_ARMOUR:        _do_remove_armour();      break;
     case CMD_REMOVE_JEWELLERY:     remove_ring();            break;
-    case CMD_SHOUT:                yell();                   break;
+    case CMD_SHOUT:                issue_orders();           break;
     case CMD_THROW_ITEM_NO_QUIVER: throw_item_no_quiver();   break;
     case CMD_WEAPON_SWAP:          wield_weapon(true);       break;
     case CMD_WEAR_ARMOUR:          wear_armour();            break;

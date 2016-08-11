@@ -369,9 +369,9 @@ static const char* _jewellery_base_ability_description(int subtype)
     case RING_WIZARDRY:
         return "It improves your spell success rate.";
     case RING_FIRE:
-        return "It enhances your fire magic, and weakens your ice magic.";
+        return "It enhances your fire magic.";
     case RING_ICE:
-        return "It enhances your ice magic, and weakens your fire magic.";
+        return "It enhances your ice magic.";
     case RING_TELEPORTATION:
         return "It may teleport you next to monsters.";
 #if TAG_MAJOR_VERSION == 34
@@ -2316,6 +2316,8 @@ static command_type _get_action(int key, vector<command_type> actions)
         { CMD_ADJUST_INVENTORY, '=' },
     };
 
+    key = tolower(key);
+
     for (auto cmd : actions)
         if (key == act_key.at(cmd))
             return cmd;
@@ -2551,15 +2553,21 @@ string get_skill_description(skill_type skill, bool need_title)
     return result;
 }
 
+/// How much power do we think the given monster casts this spell with?
+static int _hex_pow(const spell_type spell, const int hd)
+{
+    const int cap = 200;
+    const int pow = mons_power_for_hd(spell, hd, false) / ENCH_POW_FACTOR;
+    return min(cap, pow);
+}
+
 /**
  * What are the odds of the given spell, cast by a monster with the given
  * spell_hd, affecting the player?
  */
 int hex_chance(const spell_type spell, const int hd)
 {
-    const int cap = 200;
-    const int pow = mons_power_for_hd(spell, hd, false) / ENCH_POW_FACTOR;
-    const int capped_pow = min(cap, pow);
+    const int capped_pow = _hex_pow(spell, hd);
     const int chance = hex_success_chance(you.res_magic(), capped_pow,
                                           100, true);
     if (spell == SPELL_STRIP_RESISTANCE)
@@ -2571,7 +2579,7 @@ int hex_chance(const spell_type spell, const int hd)
  * Describe mostly non-numeric player-specific information about a spell.
  *
  * (E.g., your god's opinion of it, whether it's in a high-level book that
- * you can't memorize from, whether it's currently useless for whatever
+ * you can't memorise from, whether it's currently useless for whatever
  * reason...)
  *
  * @param spell     The spell in question.
@@ -2642,18 +2650,16 @@ string player_spell_desc(spell_type spell, const item_def* item)
 /**
  * Examine a given spell. Set the given string to its description, stats, &c.
  * If it's a book in a spell that the player is holding, mention the option to
- * memorize or forget it.
+ * memorise it.
  *
  * @param spell         The spell in question.
  * @param mon_owner     If this spell is being examined from a monster's
  *                      description, 'spell' is that monster. Else, null.
  * @param description   Set to the description & details of the spell.
  * @param item          The item (book or rod) holding the spell, if any.
- * @return              BOOK_MEM if you can memorise the spell
- *                      BOOK_FORGET if you can forget it
- *                      BOOK_NEITHER if you can do neither.
+ * @return              Whether you can memorise the spell.
  */
-static int _get_spell_description(const spell_type spell,
+static bool _get_spell_description(const spell_type spell,
                                   const monster_info *mon_owner,
                                   string &description,
                                   const item_def* item = nullptr)
@@ -2687,42 +2693,40 @@ static int _get_spell_description(const spell_type spell,
                        + "\n";
 
         // only display this if the player exists (not in the main menu)
-        if (crawl_state.need_save && (get_spell_flags(spell) & SPFLAG_MR_CHECK))
+        if (crawl_state.need_save && (get_spell_flags(spell) & SPFLAG_MR_CHECK)
+            && mon_owner->attitude != ATT_FRIENDLY)
         {
-            description += make_stringf("Chance to beat your MR: %d%%\n",
-                                        hex_chance(spell, hd));
+            string wiz_info;
+#ifdef WIZARD
+            if (you.wizard)
+                wiz_info += make_stringf(" (pow %d)", _hex_pow(spell, hd));
+#endif
+            description += make_stringf("Chance to beat your MR: %d%%%s\n",
+                                        hex_chance(spell, hd),
+                                        wiz_info.c_str());
         }
 
     }
     else
         description += player_spell_desc(spell, item);
 
-    // Don't allow memorization or amnesia after death.
+    // Don't allow memorization after death.
     // (In the post-game inventory screen.)
     if (crawl_state.player_is_dead())
-        return BOOK_NEITHER;
+        return false;
 
     const string quote = getQuoteString(string(spell_title(spell)) + " spell");
     if (!quote.empty())
         description += "\n" + quote;
 
-    if (item && item->base_type == OBJ_BOOKS && in_inventory(*item))
+    if (item && item->base_type == OBJ_BOOKS && in_inventory(*item)
+        && !you.has_spell(spell) && you_can_memorise(spell))
     {
-        if (you.has_spell(spell))
-        {
-            description += "\n(F)orget this spell by destroying the book.\n";
-            if (you_worship(GOD_SIF_MUNA))
-                description +="Sif Muna frowns upon the destroying of books.\n";
-            return BOOK_FORGET;
-        }
-        else if (you_can_memorise(spell))
-        {
-            description += "\n(M)emorise this spell.\n";
-            return BOOK_MEM;
-        }
+        description += "\n(M)emorise this spell.\n";
+        return true;
     }
 
-    return BOOK_NEITHER;
+    return false;
 }
 
 /**
@@ -2742,8 +2746,7 @@ void get_spell_desc(const spell_type spell, describe_info &inf)
 
 /**
  * Examine a given spell. List its description and details, and handle
- * memorizing or forgetting the spell in question, if the player is able to
- * do so & chooses to.
+ * memorizing the spell in question, if the player is able & chooses to do so.
  *
  * @param spelled   The spell in question.
  * @param mon_owner If this spell is being examined from a monster's
@@ -2758,8 +2761,7 @@ void describe_spell(spell_type spelled, const monster_info *mon_owner,
 #endif
 
     string desc;
-    const int mem_or_forget = _get_spell_description(spelled, mon_owner, desc,
-                                                     item);
+    const bool can_mem = _get_spell_description(spelled, mon_owner, desc, item);
     print_description(desc);
 
     mouse_control mc(MOUSE_MODE_MORE);
@@ -2767,17 +2769,10 @@ void describe_spell(spell_type spelled, const monster_info *mon_owner,
     if ((ch = getchm()) == 0)
         ch = getchm();
 
-    if (mem_or_forget == BOOK_MEM && toupper(ch) == 'M')
+    if (can_mem && toupper(ch) == 'M')
     {
         redraw_screen();
         if (!learn_spell(spelled) || !you.turn_is_over)
-            more();
-        redraw_screen();
-    }
-    else if (mem_or_forget == BOOK_FORGET && toupper(ch) == 'F')
-    {
-        redraw_screen();
-        if (!forget_spell_from_book(spelled, item) || !you.turn_is_over)
             more();
         redraw_screen();
     }
@@ -2964,7 +2959,7 @@ static const char* _describe_attack_flavour(attack_flavour flavour)
     case AF_POISON:          return "cause poisoning";
     case AF_POISON_STRONG:   return "cause strong poisoning";
     case AF_ROT:             return "cause rotting";
-    case AF_VAMPIRIC:        return "drain health";
+    case AF_VAMPIRIC:        return "drain health from the living";
     case AF_KLOWN:           return "cause random powerful effects";
     case AF_DISTORT:         return "cause wild translocation effects";
     case AF_RAGE:            return "cause berserking";
@@ -3023,15 +3018,20 @@ static string _monster_attacks_description(const monster_info& mi)
 
 static string _monster_spells_description(const monster_info& mi)
 {
+    static const string panlord_desc =
+        "It may possess any of a vast number of diabolical powers.\n";
+
     // Show a generic message for pan lords, since they're secret.
-    if (mi.type == MONS_PANDEMONIUM_LORD)
-        return "It may possess any of a vast number of diabolical powers.\n";
+    if (mi.type == MONS_PANDEMONIUM_LORD && !mi.props.exists(SEEN_SPELLS_KEY))
+        return panlord_desc;
 
     // Show monster spells and spell-like abilities.
     if (!mi.has_spells())
         return "";
 
     formatted_string description;
+    if (mi.type == MONS_PANDEMONIUM_LORD)
+        description.cprintf("%s", panlord_desc.c_str());
     describe_spellset(monster_spellset(mi), nullptr, description, &mi);
     description.cprintf("To read a description, press the key listed above.\n");
     return description.tostring();
@@ -3409,7 +3409,7 @@ static string _monster_stat_description(const monster_info& mi)
     return result.str();
 }
 
-static string _serpent_of_hell_flavour(monster_type m)
+string serpent_of_hell_flavour(monster_type m)
 {
     switch (m)
     {
@@ -3431,7 +3431,7 @@ void get_monster_db_desc(const monster_info& mi, describe_info &inf,
     if (inf.title.empty())
         inf.title = getMiscString(mi.common_name(DESC_DBNAME) + " title");
     if (inf.title.empty())
-        inf.title = uppercase_first(mi.full_name(DESC_A, true)) + ".";
+        inf.title = uppercase_first(mi.full_name(DESC_A)) + ".";
 
     string db_name;
 
@@ -3440,10 +3440,10 @@ void get_monster_db_desc(const monster_info& mi, describe_info &inf,
     else if (mi.mname.empty())
         db_name = mi.db_name();
     else
-        db_name = mi.full_name(DESC_PLAIN, true);
+        db_name = mi.full_name(DESC_PLAIN);
 
     if (mons_species(mi.type) == MONS_SERPENT_OF_HELL)
-        db_name += " " + _serpent_of_hell_flavour(mi.type);
+        db_name += " " + serpent_of_hell_flavour(mi.type);
 
     // This is somewhat hackish, but it's a good way of over-riding monsters'
     // descriptions in Lua vaults by using MonPropsMarker. This is also the
@@ -3649,6 +3649,11 @@ void get_monster_db_desc(const monster_info& mi, describe_info &inf,
         inf.body << "\nThis monster has been summoned in a durable way. "
                     "Killing " << it_o << " yields no experience, nutrition "
                     "or items, but " << it_o << " cannot be abjured.\n";
+    }
+    else if (mi.is(MB_NO_REWARD))
+    {
+        inf.body << "\nKilling this monster yields no experience, nutrition or"
+                    " items.";
     }
     else if (mons_class_leaves_hide(mi.type))
     {

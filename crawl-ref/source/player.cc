@@ -42,15 +42,16 @@
 #include "hiscores.h"
 #include "invent.h"
 #include "itemprop.h"
+#include "items.h"
 #include "item_use.h"
 #include "kills.h"
 #include "libutil.h"
 #include "macro.h"
 #include "melee_attack.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-place.h"
 #include "mutation.h"
+#include "nearby-danger.h"
 #include "notes.h"
 #include "output.h"
 #include "player-stats.h"
@@ -487,11 +488,13 @@ void moveto_location_effects(dungeon_feature_type old_feat,
             you.props.erase(TEMP_WATERWALK_KEY);
     }
 
+    id_floor_books();
+
     // Traps go off.
     // (But not when losing flight - i.e., moving into the same tile)
     trap_def* ptrap = trap_at(you.pos());
     if (ptrap && old_pos != you.pos())
-        ptrap->trigger(you, !stepped); // blinking makes it hard to evade
+        ptrap->trigger(you);
 
     if (stepped)
         _moveto_maybe_repel_stairs();
@@ -891,7 +894,7 @@ int player::wearing(equipment_type slot, int sub_type, bool calc_unid) const
 
     case EQ_RINGS:
     case EQ_RINGS_PLUS:
-        for (int slots = EQ_LEFT_RING; slots < NUM_EQUIP; slots++)
+        for (int slots = EQ_FIRST_JEWELLERY; slots <= EQ_LAST_JEWELLERY; slots++)
         {
             if (slots == EQ_AMULET)
                 continue;
@@ -912,7 +915,7 @@ int player::wearing(equipment_type slot, int sub_type, bool calc_unid) const
         break;
 
     default:
-        if (! (slot > EQ_NONE && slot < NUM_EQUIP))
+        if (! (slot >= EQ_FIRST_EQUIP && slot < NUM_EQUIP))
             die("invalid slot");
         if ((item = slot_item(slot))
             && item->sub_type == sub_type
@@ -1010,7 +1013,7 @@ bool player_equip_unrand(int unrand_index)
         break;
 
     case EQ_RINGS:
-        for (int slots = EQ_LEFT_RING; slots < NUM_EQUIP; ++slots)
+        for (int slots = EQ_FIRST_JEWELLERY; slots <= EQ_LAST_JEWELLERY; ++slots)
         {
             if (slots == EQ_AMULET)
                 continue;
@@ -2256,11 +2259,7 @@ static int _player_evasion_bonuses(ev_ignore_type evit)
     evbonus += you.scan_artefacts(ARTP_EVASION);
 
     // mutations
-    if (_mut_level(MUT_ICY_BLUE_SCALES, MUTACT_FULL) > 1)
-        evbonus--;
-    if (_mut_level(MUT_MOLTEN_SCALES, MUTACT_FULL) > 1)
-        evbonus--;
-    evbonus += max(0, player_mutation_level(MUT_GELATINOUS_BODY) - 1);
+    evbonus += player_mutation_level(MUT_GELATINOUS_BODY);
 
     // transformation penalties/bonuses not covered by size alone:
     if (player_mutation_level(MUT_SLOW_REFLEXES))
@@ -3627,16 +3626,6 @@ void display_char_status()
              innate_stat(STAT_INT),
              innate_stat(STAT_DEX));
     }
-
-    // magic resistance
-    _display_char_status(you.res_magic(),
-                         "You are %s to hostile enchantments",
-                         magic_res_adjective(player_res_magic(false)).c_str());
-
-    // character evaluates their ability to sneak around:
-    _display_char_status(check_stealth(),
-                         "You are %s",
-                         stealth_desc(check_stealth()).c_str());
 }
 
 bool player::clarity(bool calc_unid, bool items) const
@@ -3771,7 +3760,7 @@ int player::scan_artefacts(artefact_prop_type which_property,
 {
     int retval = 0;
 
-    for (int i = EQ_WEAPON; i < NUM_EQUIP; ++i)
+    for (int i = EQ_FIRST_EQUIP; i < NUM_EQUIP; ++i)
     {
         if (melded[i] || equip[i] == -1)
             continue;
@@ -4149,12 +4138,16 @@ int get_real_hp(bool trans, bool rotted)
     hitp *= 10 + species_hp_modifier(you.species);
     hitp /= 10;
 
+    const bool hep_frail = have_passive(passive_t::frail)
+                          || player_under_penance(GOD_HEPLIAKLQANA);
+
     // Mutations that increase HP by a percentage
     hitp *= 100 + (player_mutation_level(MUT_ROBUST) * 10)
                 + (you.attribute[ATTR_DIVINE_VIGOUR] * 5)
                 + (player_mutation_level(MUT_RUGGED_BROWN_SCALES) ?
                    player_mutation_level(MUT_RUGGED_BROWN_SCALES) * 2 + 1 : 0)
-                - (player_mutation_level(MUT_FRAIL) * 10);
+                - (player_mutation_level(MUT_FRAIL) * 10)
+                - (hep_frail ? 10 : 0);
 
     hitp /= 100;
 
@@ -5965,6 +5958,8 @@ int player::skill(skill_type sk, int scale, bool real, bool drained) const
         return level;
     if (drained && you.attribute[ATTR_XP_DRAIN])
     {
+        // skill = base * (3000 - drain) / 3000  - drain / 100
+        //         base - ((drain * base / 3000) + drain / 100)
         int drain_scale = max(0, (30 * 100 - you.attribute[ATTR_XP_DRAIN]) * scale);
         level = skill(sk, drain_scale, real, false);
         return max(0, (level - 30 * scale * you.attribute[ATTR_XP_DRAIN]) / (30 * 100));
@@ -6141,30 +6136,42 @@ int player::armour_class(bool /*calc_unid*/) const
     // Scale mutations, etc. Statues don't get an AC benefit from scales,
     // since the scales are made of the same stone as everything else.
     AC += player_mutation_level(MUT_TOUGH_SKIN)
-          ? player_mutation_level(MUT_TOUGH_SKIN) * 100 : 0;                   // +1, +2, +3
+          ? player_mutation_level(MUT_TOUGH_SKIN) * 100 : 0;
+              // +1, +2, +3
     AC += player_mutation_level(MUT_SHAGGY_FUR)
-          ? player_mutation_level(MUT_SHAGGY_FUR) * 100 : 0;                   // +1, +2, +3
+          ? player_mutation_level(MUT_SHAGGY_FUR) * 100 : 0;
+              // +1, +2, +3
     AC += player_mutation_level(MUT_GELATINOUS_BODY)
-          ? (player_mutation_level(MUT_GELATINOUS_BODY) == 3 ? 200 : 100) : 0; // +1, +1, +2
-    AC += _mut_level(MUT_IRIDESCENT_SCALES, MUTACT_FULL)
-          ? 200 + _mut_level(MUT_IRIDESCENT_SCALES, MUTACT_FULL) * 200 : 0;    // +4, +6, +8
+          ? player_mutation_level(MUT_GELATINOUS_BODY) * 100 : 0;
+              // +1, +2, +3
+    AC += _mut_level(MUT_IRIDESCENT_SCALES, MUTACT_FULL) * 200;
+              // +2, +4, +6
     AC += _mut_level(MUT_LARGE_BONE_PLATES, MUTACT_FULL)
-          ? 100 + _mut_level(MUT_LARGE_BONE_PLATES, MUTACT_FULL) * 100 : 0;    // +2, +3, +4
+          ? 100 + _mut_level(MUT_LARGE_BONE_PLATES, MUTACT_FULL) * 100 : 0;
+              // +2, +3, +4
     AC += _mut_level(MUT_ROUGH_BLACK_SCALES, MUTACT_FULL)
-          ? 100 + _mut_level(MUT_ROUGH_BLACK_SCALES, MUTACT_FULL) * 300 : 0;   // +4, +7, +10
-    AC += _mut_level(MUT_RUGGED_BROWN_SCALES, MUTACT_FULL) * 100;              // +1, +2, +3
-    AC += _mut_level(MUT_ICY_BLUE_SCALES, MUTACT_FULL) * 100 +
-          (_mut_level(MUT_ICY_BLUE_SCALES, MUTACT_FULL) > 1 ? 100 : 0);        // +1, +3, +4
-    AC += _mut_level(MUT_MOLTEN_SCALES, MUTACT_FULL) * 100 +
-          (_mut_level(MUT_MOLTEN_SCALES, MUTACT_FULL) > 1 ? 100 : 0);          // +1, +3, +4
+          ? -100 + _mut_level(MUT_ROUGH_BLACK_SCALES, MUTACT_FULL) * 300 : 0;
+              // +2, +5, +8
+    AC += _mut_level(MUT_RUGGED_BROWN_SCALES, MUTACT_FULL) * 100;
+              // +1, +2, +3
+    AC += _mut_level(MUT_ICY_BLUE_SCALES, MUTACT_FULL)
+          ? 100 + _mut_level(MUT_ICY_BLUE_SCALES, MUTACT_FULL) * 100 : 0;
+              // +2, +3, +4
+    AC += _mut_level(MUT_MOLTEN_SCALES, MUTACT_FULL)
+          ? 100 + _mut_level(MUT_MOLTEN_SCALES, MUTACT_FULL) * 100 : 0;
+              // +2, +3, +4
     AC += _mut_level(MUT_SLIMY_GREEN_SCALES, MUTACT_FULL)
-          ? 100 + _mut_level(MUT_SLIMY_GREEN_SCALES, MUTACT_FULL) * 100 : 0;   // +2, +3, +4
+          ? 100 + _mut_level(MUT_SLIMY_GREEN_SCALES, MUTACT_FULL) * 100 : 0;
+              // +2, +3, +4
     AC += _mut_level(MUT_THIN_METALLIC_SCALES, MUTACT_FULL)
-          ? 100 + _mut_level(MUT_THIN_METALLIC_SCALES, MUTACT_FULL) * 100 : 0; // +2, +3, +4
+          ? 100 + _mut_level(MUT_THIN_METALLIC_SCALES, MUTACT_FULL) * 100 : 0;
+              // +2, +3, +4
     AC += _mut_level(MUT_YELLOW_SCALES, MUTACT_FULL)
-          ? 100 + _mut_level(MUT_YELLOW_SCALES, MUTACT_FULL) * 100 : 0;        // +2, +3, +4
+          ? 100 + _mut_level(MUT_YELLOW_SCALES, MUTACT_FULL) * 100 : 0;
+              // +2, +3, +4
     AC -= player_mutation_level(MUT_PHYSICAL_VULNERABILITY)
-          ? player_mutation_level(MUT_PHYSICAL_VULNERABILITY) * 300 : 0;       // +3, +6, +9
+          ? player_mutation_level(MUT_PHYSICAL_VULNERABILITY) * 300 : 0;
+              // +3, +6, +9
     return AC / 100;
 }
  /**
@@ -7910,6 +7917,8 @@ void print_device_heal_message()
             mpr("The healing is enhanced."); // bad message, but this should
                                              // never be possible anyway
     }
+    else if (_get_device_heal_factor() == 0)
+        mpr("Your system rejects the healing.");
     else if (_get_device_heal_factor() < 3)
         mpr("Your system partially rejects the healing.");
 }

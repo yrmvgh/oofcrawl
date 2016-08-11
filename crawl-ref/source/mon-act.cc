@@ -37,7 +37,6 @@
 #include "los.h"
 #include "mapmark.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-abil.h"
 #include "mon-behv.h"
 #include "mon-book.h"
@@ -48,6 +47,7 @@
 #include "mon-project.h"
 #include "mon-speak.h"
 #include "mon-tentacle.h"
+#include "nearby-danger.h"
 #include "religion.h"
 #include "rot.h"
 #include "shout.h"
@@ -134,8 +134,8 @@ static void _monster_regenerate(monster* mons)
     if (crawl_state.disables[DIS_MON_REGEN])
         return;
 
-    if (mons->has_ench(ENCH_SICK) || mons->has_ench(ENCH_DEATHS_DOOR) ||
-        (!mons_can_regenerate(mons) && !(mons->has_ench(ENCH_REGENERATION))))
+    if (mons->has_ench(ENCH_SICK)
+        || !mons_can_regenerate(mons) && !(mons->has_ench(ENCH_REGENERATION)))
     {
         return;
     }
@@ -2517,7 +2517,7 @@ static void _post_monster_move(monster* mons)
                          feature_description_at(*ai, false, DESC_THE).c_str());
                 }
                 temp_change_terrain(*ai, DNGN_SHALLOW_WATER, random_range(50, 80),
-                                    TERRAIN_CHANGE_FLOOD);
+                                    TERRAIN_CHANGE_FLOOD, mons);
             }
     }
 

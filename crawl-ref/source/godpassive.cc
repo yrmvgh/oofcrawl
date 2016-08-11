@@ -100,8 +100,6 @@ static const vector<god_passive> god_passives[NUM_GODS] =
 
     // Kikubaaqudgha
     {
-        {  0, passive_t::deaths_door_hp_boost,
-              "can retain more of your health when standing in Death's Door" },
         {  2, passive_t::miscast_protection_necromancy,
               "GOD protects you from necromancy miscasts and mummy death curses"
         },
@@ -285,7 +283,10 @@ static const vector<god_passive> god_passives[NUM_GODS] =
     { },
 
     // Hepliaklqana
-    { {  5, passive_t::transfer_drain, "drain nearby creatures when transferring your ancestor" }, },
+    {
+        { -1, passive_t::frail, "GOD siphons a part of your essence into your ancestor" },
+        {  5, passive_t::transfer_drain, "drain nearby creatures when transferring your ancestor" },
+    },
 };
 
 bool have_passive(passive_t passive)
@@ -421,7 +422,7 @@ void ash_check_bondage(bool msg)
 
     int cursed[NUM_ET] = {0}, slots[NUM_ET] = {0};
 
-    for (int j = EQ_WEAPON; j < NUM_EQUIP; j++)
+    for (int j = EQ_FIRST_EQUIP; j < NUM_EQUIP; j++)
     {
         const equipment_type i = static_cast<equipment_type>(j);
         eq_type s;
@@ -665,8 +666,11 @@ bool god_id_item(item_def& item, bool silent)
             item.props["needs_autopickup"] = true;
         }
 
-        if (is_weapon(item) || item.base_type == OBJ_ARMOUR)
+        if (is_weapon(item) || item.base_type == OBJ_RODS
+            || item.base_type == OBJ_ARMOUR)
+        {
             ided |= ISFLAG_KNOW_PROPERTIES | ISFLAG_KNOW_TYPE;
+        }
 
         if (item.base_type == OBJ_JEWELLERY)
             ided |= ISFLAG_IDENT_MASK;
@@ -718,15 +722,12 @@ void ash_id_monster_equipment(monster* mon)
 
     for (unsigned int i = 0; i <= MSLOT_LAST_VISIBLE_SLOT; ++i)
     {
-        // Wielded weapon brands are IDed for everyone already.
-        if (i == MSLOT_WEAPON)
-            continue;
         if (mon->inv[i] == NON_ITEM)
             continue;
 
         item_def &item = mitm[mon->inv[i]];
         if ((i != MSLOT_WAND || !is_offensive_wand(item))
-            && !item_is_branded(item))
+            && !item_is_branded(item) && item.base_type != OBJ_RODS)
         {
             continue;
         }

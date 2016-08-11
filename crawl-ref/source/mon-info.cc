@@ -26,10 +26,10 @@
 #include "libutil.h"
 #include "los.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-book.h"
 #include "mon-death.h" // ELVEN_IS_ENERGIZED_KEY
 #include "mon-tentacle.h"
+#include "nearby-danger.h"
 #include "options.h"
 #include "religion.h"
 #include "skills.h"
@@ -76,7 +76,6 @@ static map<enchant_type, monster_info_flags> trivial_ench_mb_mappings = {
     { ENCH_MAD,             MB_MAD },
     { ENCH_INNER_FLAME,     MB_INNER_FLAME },
     { ENCH_BREATH_WEAPON,   MB_BREATH_WEAPON },
-    { ENCH_DEATHS_DOOR,     MB_DEATHS_DOOR },
     { ENCH_ROLLING,         MB_ROLLING },
     { ENCH_OZOCUBUS_ARMOUR, MB_OZOCUBUS_ARMOUR },
     { ENCH_WRETCHED,        MB_WRETCHED },
@@ -193,7 +192,8 @@ static bool _is_public_key(string key)
      || key == MUTANT_BEAST_FACETS
      || key == MUTANT_BEAST_TIER
      || key == DOOM_HOUND_HOWLED_KEY
-     || key == MON_GENDER_KEY)
+     || key == MON_GENDER_KEY
+     || key == SEEN_SPELLS_KEY)
     {
         return true;
     }
@@ -415,13 +415,12 @@ static description_level_type _article_for(const actor* a)
 
 monster_info::monster_info(const monster* m, int milev)
 {
+    ASSERT(m); // TODO: change to const monster &mon
     mb.reset();
     attitude = ATT_HOSTILE;
     pos = m->pos();
 
     attitude = mons_attitude(m);
-
-    bool nomsg_wounds = false;
 
     type = m->type;
     threat = mons_threat_level(m);
@@ -440,12 +439,6 @@ monster_info::monster_info(const monster* m, int milev)
     {
         _translate_tentacle_ref(*this, m, "inwards");
         _translate_tentacle_ref(*this, m, "outwards");
-    }
-
-    if (!mons_can_display_wounds(m)
-        || !mons_class_can_display_wounds(type))
-    {
-        nomsg_wounds = true;
     }
 
     base_type = m->base_monster;
@@ -471,6 +464,11 @@ monster_info::monster_info(const monster* m, int milev)
     }
     else if (m->is_perm_summoned())
         mb.set(MB_PERM_SUMMON);
+    else if (testbits(m->flags, MF_NO_REWARD)
+             && mons_class_gives_xp(m->type, true))
+    {
+        mb.set(MB_NO_REWARD);
+    }
 
     if (m->has_ench(ENCH_SUMMON_CAPPED))
         mb.set(MB_SUMMONED_CAPPED);
@@ -570,10 +568,6 @@ monster_info::monster_info(const monster* m, int milev)
 
     dam = mons_get_damage_level(m);
 
-    // If no messages about wounds, don't display damage level either.
-    if (nomsg_wounds)
-        dam = MDAM_OKAY;
-
     if (mons_is_threatening(m)) // Firewood, butterflies, etc.
     {
         if (m->asleep())
@@ -621,7 +615,7 @@ monster_info::monster_info(const monster* m, int milev)
     case ATT_HOSTILE:
         if (you_worship(GOD_SHINING_ONE)
             && !tso_unchivalric_attack_safe_monster(m)
-            && find_stab_type(&you, m) != STAB_NO_STAB)
+            && find_stab_type(&you, *m) != STAB_NO_STAB)
         {
             mb.set(MB_EVIL_ATTACK);
         }
@@ -820,7 +814,7 @@ string monster_info::_core_name() const
     monster_type nametype = type;
 
     if (mons_class_is_zombified(type))
-        nametype = mons_species(base_type);
+        nametype = base_type;
     else if (type == MONS_PILLAR_OF_SALT
              || type == MONS_BLOCK_OF_ICE
              || type == MONS_SENSED)
@@ -1049,14 +1043,14 @@ string monster_info::proper_name(description_level_type desc) const
         return common_name(desc);
 }
 
-string monster_info::full_name(description_level_type desc, bool use_comma) const
+string monster_info::full_name(description_level_type desc) const
 {
     if (desc == DESC_NONE)
         return "";
 
     if (has_proper_name())
     {
-        string s = mname + (use_comma ? ", the " : " the ") + common_name();
+        string s = mname + " the " + common_name();
         if (desc == DESC_ITS)
             s = apostrophise(s);
         return s;
@@ -1441,8 +1435,6 @@ vector<string> monster_info::attributes() const
         v.emplace_back("stupefied");
     if (is(MB_MAD))
         v.emplace_back("lost in madness");
-    if (is(MB_DEATHS_DOOR))
-        v.emplace_back("standing in death's doorway");
     if (is(MB_REGENERATION))
         v.emplace_back("regenerating");
     if (is(MB_ROLLING))
@@ -1710,6 +1702,9 @@ bool monster_info::has_spells() const
     // Some monsters have a special book but may not have any spells anyways.
     if (props.exists(CUSTOM_SPELLS_KEY))
         return spells.size() > 0 && spells[0].spell != SPELL_NO_SPELL;
+
+    if (props.exists(SEEN_SPELLS_KEY))
+        return true;
 
     // Almost all draconians have breath spells.
     if (mons_genus(draco_or_demonspawn_subspecies()) == MONS_DRACONIAN

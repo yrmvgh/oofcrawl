@@ -53,8 +53,8 @@
 #include "macro.h"
 #include "makeitem.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-ench.h"
+#include "nearby-danger.h"
 #include "notes.h"
 #include "options.h"
 #include "orb.h"
@@ -118,6 +118,7 @@ item_def& item_from_int(bool inv, int number)
     return inv ? you.inv[number] : mitm[number];
 }
 
+static int _autopickup_subtype(const item_def &item);
 static void _autoinscribe_item(item_def& item);
 static void _autoinscribe_floor_items();
 static void _autoinscribe_inventory();
@@ -414,7 +415,7 @@ bool dec_inv_item_quantity(int obj, int amount)
 
     if (you.inv[obj].quantity <= amount)
     {
-        for (int i = 0; i < NUM_EQUIP; i++)
+        for (int i = EQ_FIRST_EQUIP; i < NUM_EQUIP; i++)
         {
             if (you.equip[i] == obj)
             {
@@ -929,6 +930,22 @@ void item_check()
                 learned_something_new(HINT_MULTI_PICKUP);
                 break;
             }
+        }
+    }
+}
+
+/// Auto-ID whatever spellbooks the player stands on.
+void id_floor_books()
+{
+    for (stack_iterator si(you.pos()); si; ++si)
+    {
+        if (si->base_type == OBJ_BOOKS && si->sub_type != BOOK_MANUAL)
+        {
+            // fix autopickup for previously-unknown books (hack)
+            if (item_needs_autopickup(*si))
+                si->props["needs_autopickup"] = true;
+            set_ident_flags(*si, ISFLAG_IDENT_MASK);
+            mark_had_book(*si);
         }
     }
 }
@@ -2516,7 +2533,7 @@ int get_equip_slot(const item_def *item)
     int worn = -1;
     if (item && in_inventory(*item))
     {
-        for (int i = 0; i < NUM_EQUIP; ++i)
+        for (int i = EQ_FIRST_EQUIP; i < NUM_EQUIP; ++i)
         {
             if (you.equip[i] == item->link)
             {
@@ -3212,7 +3229,7 @@ equipment_type item_equip_slot(const item_def& item)
     if (!in_inventory(item))
         return EQ_NONE;
 
-    for (int i = 0; i < NUM_EQUIP; i++)
+    for (int i = EQ_FIRST_EQUIP; i < NUM_EQUIP; i++)
         if (item.link == you.equip[i])
             return static_cast<equipment_type>(i);
 

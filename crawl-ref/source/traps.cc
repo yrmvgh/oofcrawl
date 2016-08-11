@@ -33,9 +33,9 @@
 #include "mon-tentacle.h"
 #include "mgen_enum.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-place.h"
 #include "mon-transit.h"
+#include "nearby-danger.h"
 #include "output.h"
 #include "prompt.h"
 #include "random.h"
@@ -492,10 +492,10 @@ static string _direction_string(coord_def pos, bool fuzz)
     return string(ns) + ew;
 }
 
-void trap_def::trigger(actor& triggerer, bool flat_footed)
+void trap_def::trigger(actor& triggerer)
 {
     const bool you_know = is_known();
-    const bool trig_knows = !flat_footed && is_known(&triggerer);
+    const bool trig_knows = is_known(&triggerer);
 
     const bool you_trigger = triggerer.is_player();
     const bool in_sight = you.see_cell(pos);
@@ -938,6 +938,10 @@ void trap_def::trigger(actor& triggerer, bool flat_footed)
         if (one_chance_in(4))
             break;
 
+        {
+        // keep this for messaging purposes
+        const bool triggerer_seen = you.can_see(triggerer);
+
         // Fire away!
         triggerer.do_shaft();
 
@@ -947,10 +951,12 @@ void trap_def::trigger(actor& triggerer, bool flat_footed)
         {
             if (in_sight)
             {
-                mpr("The shaft crumbles and collapses.");
+                mprf("%s shaft crumbles and collapses.",
+                     triggerer_seen ? "The" : "A");
                 know_trap_destroyed = true;
             }
             trap_destroyed = true;
+        }
         }
         break;
 

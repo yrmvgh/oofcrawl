@@ -35,9 +35,9 @@
 #include "macro.h"
 #include "mapmark.h"
 #include "message.h"
-#include "misc.h"
 #include "mon-death.h"
 #include "mon-tentacle.h"
+#include "nearby-danger.h"
 #include "output.h"
 #include "prompt.h"
 #include "showsymb.h"
@@ -2149,7 +2149,7 @@ string get_terse_square_desc(const coord_def &gc)
             desc = unseen_desc;
     }
     else if (monster_at(gc) && you.can_see(*monster_at(gc)))
-            desc = monster_at(gc)->full_name(DESC_PLAIN, true);
+            desc = monster_at(gc)->full_name(DESC_PLAIN);
     else if (you.visible_igrd(gc) != NON_ITEM)
     {
         if (mitm[you.visible_igrd(gc)].defined())
@@ -2397,7 +2397,7 @@ static bool _want_target_monster(const monster *mon, targ_mode_type mode,
         if (mon->friendly() && mons_get_damage_level(mon) > MDAM_OKAY)
             return true;
         return !mon->wont_attack() && !mon->neutral()
-            && is_pacifiable(mon) >= 0;
+            && unpacifiable_reason(*mon).empty();
     case TARG_EVOLVABLE_PLANTS:
         return mons_is_evolvable(mon);
     case TARG_BEOGH_GIFTABLE:
