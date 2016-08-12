@@ -1,4 +1,9 @@
-[![Build Status](https://travis-ci.org/crawl/crawl.svg?branch=master)](https://travis-ci.org/crawl/crawl)
+This is my attempt to make GnollCrawl. No exp gain, though exp pots may still work. Only gnolls. Not sure if they spawn weapons, but if not that will be a future update.
+
+
+-------------------
+
+Original DCSS Readme below.
 
 # Dungeon Crawl Stone Soup
 
