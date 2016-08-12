@@ -1273,7 +1273,7 @@ static monster* _place_monster_aux(const mgen_data &mg, const monster *leader,
 
     // Now, actually create the monster. (Wheeee!)
     mon->set_new_monster_id();
-    mon->type         = mg.cls;
+    mon->type         = MONS_GNOLL;
     mon->base_monster = mg.base_type;
 
     // Set pos and link monster into monster grid.
