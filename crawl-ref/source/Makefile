@@ -1623,7 +1623,7 @@ icon.o: util/crawl.rc util/crawl.ico .cflags
 	$(QUIET_WINDRES)$(WINDRES) util/crawl.rc icon.o
 
 config.h: util/configure .cflags
-	${QUIET_GEN}util/configure "$(CXX)" $(STDFLAG) $(ALL_CFLAGS)
+	$(QUIET_GEN)util/configure "$(CXX)" $(STDFLAG) $(ALL_CFLAGS)
 
 #
 # Contribs
