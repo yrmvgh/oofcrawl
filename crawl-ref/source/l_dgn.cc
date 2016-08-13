@@ -513,7 +513,6 @@ static int dgn_kmons(lua_State *ls)
     MAP(ls, 1, map);
     mpr(luaL_checkstring(ls, 2));
     string err = map->map.add_key_mons(luaL_checkstring(ls, 2));
-    string err = map->map.add_key_mons();
     if (!err.empty())
         luaL_error(ls, err.c_str());
     return 0;
