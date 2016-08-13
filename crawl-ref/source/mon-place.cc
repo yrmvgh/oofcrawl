@@ -2917,7 +2917,7 @@ static monster_type _pick_zot_exit_defender()
 
         return MONS_PANDEMONIUM_LORD;
     }
-    return MONS_GNOLL
+    return MONS_GNOLL;
 
     return random_choose_weighted(
         30, RANDOM_DEMON_COMMON,
