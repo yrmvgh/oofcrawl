@@ -49,8 +49,7 @@ function callback.grunt_crypt_arrival_guards_awaken(data,triggerable,trigger,mar
             dgn.terrain_changed(slave.x, slave.y, "floor", false, false)
             dgn.colour_at(slave.x, slave.y, "lightgray")
             dgn.create_monster(slave.x, slave.y,
-                               "human skeleton / human zombie / \
-                                mummy w:20 / guardian mummy")
+                               "gnoll")
         end
     end
 end

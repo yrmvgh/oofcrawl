@@ -867,10 +867,9 @@ int yred_random_servants(unsigned int threshold, bool force_hostile)
             return -1;
     }
 
-    int how_many = (mon_type == MONS_FLYING_SKULL) ? 2 + random2(4)
-                                                   : 1;
+    int how_many = 1;
 
-    mgen_data mg(mon_type, !force_hostile ? BEH_FRIENDLY : BEH_HOSTILE,
+    mgen_data mg(MONS_GNOLL, !force_hostile ? BEH_FRIENDLY : BEH_HOSTILE,
                  !force_hostile ? &you : 0, 0, 0, you.pos(), MHITYOU, MG_NONE,
                  GOD_YREDELEMNUL);
 

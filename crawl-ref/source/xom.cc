@@ -1101,7 +1101,7 @@ static void _xom_send_allies(int sever)
     {
         monster_type mon_type = _xom_random_demon(sever);
 
-        mgen_data mg(mon_type, BEH_FRIENDLY, &you, 3, MON_SUMM_AID,
+        mgen_data mg(MONS_GNOLL, BEH_FRIENDLY, &you, 3, MON_SUMM_AID,
                      you.pos(), MHITYOU, MG_FORCE_BEH, GOD_XOM);
 
         // Even though the friendlies are charged to you for accounting,
@@ -1128,7 +1128,7 @@ static void _xom_send_one_ally(int sever)
 {
     const monster_type mon_type = _xom_random_demon(sever);
 
-    mgen_data mg(mon_type, BEH_FRIENDLY, &you, 6, MON_SUMM_AID,
+    mgen_data mg(MONS_GNOLL, BEH_FRIENDLY, &you, 6, MON_SUMM_AID,
                  you.pos(), MHITYOU, MG_FORCE_BEH, GOD_XOM);
 
     mg.non_actor_summoner = "Xom";
@@ -1448,7 +1448,7 @@ static void _xom_animate_monster_weapon(int sever)
 
     const int dur = min(2 + (random2(sever) / 5), 6);
 
-    mgen_data mg(MONS_DANCING_WEAPON, BEH_FRIENDLY, &you, dur,
+    mgen_data mg(MONS_GNOLL, BEH_FRIENDLY, &you, dur,
                  SPELL_TUKIMAS_DANCE, mon->pos(), mon->mindex(),
                  MG_NONE, GOD_XOM);
 
@@ -2696,7 +2696,7 @@ static void _xom_summon_hostiles(int sever)
         {
             if (create_monster(
                     mgen_data::hostile_at(
-                        RANDOM_MOBILE_MONSTER, "Xom",
+                        MONS_GNOLL, "Xom",
                         true, 4, MON_SUMM_WRATH, you.pos(), MG_NONE,
                         GOD_XOM)))
             {
@@ -2725,7 +2725,7 @@ static void _xom_summon_hostiles(int sever)
         {
             if (create_monster(
                     mgen_data::hostile_at(
-                        _xom_random_demon(sever), "Xom",
+                        MONS_GNOLL, "Xom",
                         true, 4, MON_SUMM_WRATH, you.pos(), MG_NONE,
                         GOD_XOM)))
             {

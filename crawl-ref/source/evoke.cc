@@ -252,13 +252,12 @@ static bool _evoke_horn_of_geryon(item_def &item)
     {
         monster* mon;
         beh_type beh = BEH_HOSTILE;
-        bool will_anger = player_will_anger_monster(MONS_HELL_BEAST);
+        bool will_anger = false;
 
-        if (!will_anger && random2(adjusted_power) > 7)
-            beh = BEH_FRIENDLY;
-        mgen_data mg(MONS_HELL_BEAST, beh, &you, 3, SPELL_NO_SPELL, you.pos(),
-                     MHITYOU, MG_FORCE_BEH, GOD_NO_GOD, MONS_HELL_BEAST,
-                     COLOUR_INHERIT, PROX_CLOSE_TO_PLAYER);
+        // if (!will_anger && random2(adjusted_power) > 7)
+        beh = BEH_FRIENDLY;
+        mgen_data mg(MONS_GNOLL, beh, &you, 3, SPELL_NO_SPELL, you.pos(),
+                     MHITYOU, MG_FORCE_BEH, GOD_NO_GOD, MONS_NO_MONSTER);
         mon = create_monster(mg);
         if (mon)
             created = true;
@@ -1001,18 +1000,18 @@ static bool _box_of_beasts(item_def &box)
     const int tier = mutant_beast_tier(hd_min);
     ASSERT(tier < NUM_BEAST_TIERS);
 
-    mgen_data mg = mgen_data(MONS_MUTANT_BEAST,
+    mgen_data mg = mgen_data(MONS_GNOLL,
                              BEH_FRIENDLY, &you,
                              3 + random2(3), 0,
                              you.pos(),
                              MHITYOU, MG_AUTOFOE);
 
-    auto &avoids = mg.props[MUTANT_BEAST_AVOID_FACETS].get_vector();
-    for (int facet = BF_FIRST; facet <= BF_LAST; ++facet)
-        if (god_hates_beast_facet(you.religion, static_cast<beast_facet>(facet)))
-            avoids.push_back(facet);
-    mg.hd = beast_tiers[tier];
-    dprf("hd %d (min %d, tier %d)", mg.hd, hd_min, tier);
+    //auto &avoids = mg.props[MUTANT_BEAST_AVOID_FACETS].get_vector();
+    //for (int facet = BF_FIRST; facet <= BF_LAST; ++facet)
+    //    if (god_hates_beast_facet(you.religion, static_cast<beast_facet>(facet)))
+    //        avoids.push_back(facet);
+    //mg.hd = beast_tiers[tier];
+    //dprf("hd %d (min %d, tier %d)", mg.hd, hd_min, tier);
     const monster* mons = create_monster(mg);
 
     if (!mons)
@@ -1073,7 +1072,7 @@ static bool _sack_of_spiders(item_def &sack)
                                                  you.skill(SK_EVOCATIONS),
                                                  surge))),
                                              _sack_of_spiders_veto_mon);
-        mgen_data mg = mgen_data(mon,
+        mgen_data mg = mgen_data(MONS_GNOLL,
                                  BEH_FRIENDLY, &you,
                                  3 + random2(4), 0,
                                  you.pos(),
@@ -1737,13 +1736,13 @@ static bool _phial_of_floods()
             attitude = BEH_HOSTILE;
         for (int n = 0; n < num; ++n)
         {
-            mgen_data mg (MONS_WATER_ELEMENTAL, attitude, &you, 3,
+            mgen_data mg (MONS_GNOLL, attitude, &you, 3,
                           SPELL_NO_SPELL, elementals[n], 0,
                           MG_FORCE_BEH | MG_FORCE_PLACE, GOD_NO_GOD,
-                          MONS_WATER_ELEMENTAL, COLOUR_INHERIT,
+                          MONS_NO_MONSTER, COLOUR_INHERIT,
                           PROX_CLOSE_TO_PLAYER);
-            mg.hd = player_adjust_evoc_power(
-                        6 + you.skill_rdiv(SK_EVOCATIONS, 2, 15), surge);
+            //mg.hd = player_adjust_evoc_power(
+            //            6 + you.skill_rdiv(SK_EVOCATIONS, 2, 15), surge);
             if (create_monster(mg))
                 created = true;
         }

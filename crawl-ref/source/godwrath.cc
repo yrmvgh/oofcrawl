@@ -126,7 +126,7 @@ static bool _yred_random_zombified_hostile()
     mgen_data temp = mgen_data::hostile_at(skel ? MONS_SKELETON : MONS_ZOMBIE,
                                            _god_wrath_name(GOD_YREDELEMNUL),
                                            true, 0, 0, you.pos(), MG_NONE,
-                                           GOD_YREDELEMNUL, z_base);
+                                           GOD_YREDELEMNUL, MONS_GNOLL);
 
     temp.extra_flags |= (MF_NO_REWARD | MF_HARD_RESET);
 
@@ -135,31 +135,31 @@ static bool _yred_random_zombified_hostile()
 
 static const pop_entry _okawaru_servants[] =
 { // warriors
-  {  1,  3,   3, FALL, MONS_ORC },
   {  1,  3,   3, FALL, MONS_GNOLL },
-  {  2,  6,   3, PEAK, MONS_OGRE },
+  {  1,  3,   3, FALL, MONS_GNOLL },
+  {  2,  6,   3, PEAK, MONS_GNOLL },
   {  2,  6,   2, PEAK, MONS_GNOLL_SERGEANT },
-  {  3,  7,   1, FLAT, MONS_TWO_HEADED_OGRE },
-  {  3, 13,   3, PEAK, MONS_ORC_WARRIOR },
-  {  5, 15,   3, PEAK, MONS_ORC_KNIGHT },
-  {  5, 15,   1, PEAK, MONS_HILL_GIANT },
-  {  5, 15,   2, PEAK, MONS_CYCLOPS },
-  {  7, 21,   2, PEAK, MONS_CENTAUR_WARRIOR },
-  {  7, 21,   2, PEAK, MONS_NAGA_WARRIOR },
-  {  7, 21,   2, PEAK, MONS_TENGU_WARRIOR },
-  {  7, 21,   1, FLAT, MONS_MERFOLK_IMPALER },
-  {  7, 21,   1, FLAT, MONS_MERFOLK_JAVELINEER },
-  {  7, 21,   1, FLAT, MONS_MINOTAUR },
-  {  9, 27,   2, FLAT, MONS_STONE_GIANT },
-  {  9, 27,   1, FLAT, MONS_DEEP_ELF_KNIGHT },
-  {  9, 27,   1, FLAT, MONS_DEEP_ELF_ARCHER },
-  { 11, 21,   1, FLAT, MONS_ORC_WARLORD },
-  { 11, 27,   2, FLAT, MONS_FIRE_GIANT },
-  { 11, 27,   2, FLAT, MONS_FROST_GIANT },
-  { 13, 27,   1, FLAT, MONS_DEEP_ELF_BLADEMASTER },
-  { 13, 27,   1, FLAT, MONS_DEEP_ELF_MASTER_ARCHER },
-  { 13, 27,   1, FLAT, RANDOM_BASE_DRACONIAN },
-  { 15, 27,   2, FLAT, MONS_TITAN },
+  {  3,  7,   1, FLAT, MONS_GNOLL },
+  {  3, 13,   3, PEAK, MONS_GNOLL },
+  {  5, 15,   3, PEAK, MONS_GNOLL },
+  {  5, 15,   1, PEAK, MONS_GNOLL },
+  {  5, 15,   2, PEAK, MONS_GNOLL },
+  {  7, 21,   2, PEAK, MONS_GNOLL },
+  {  7, 21,   2, PEAK, MONS_GNOLL },
+  {  7, 21,   2, PEAK, MONS_GNOLL },
+  {  7, 21,   1, FLAT, MONS_GNOLL },
+  {  7, 21,   1, FLAT, MONS_GNOLL },
+  {  7, 21,   1, FLAT, MONS_GNOLL },
+  {  9, 27,   2, FLAT, MONS_GNOLL },
+  {  9, 27,   1, FLAT, MONS_GNOLL },
+  {  9, 27,   1, FLAT, MONS_GNOLL },
+  { 11, 21,   1, FLAT, MONS_GNOLL },
+  { 11, 27,   2, FLAT, MONS_GNOLL },
+  { 11, 27,   2, FLAT, MONS_GNOLL },
+  { 13, 27,   1, FLAT, MONS_GNOLL },
+  { 13, 27,   1, FLAT, MONS_GNOLL },
+  { 13, 27,   1, FLAT, MONS_GNOLL },
+  { 15, 27,   2, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
@@ -185,11 +185,11 @@ static bool _okawaru_random_servant()
 
 static bool _dithmenos_random_shadow(const int count, const int tier)
 {
-    monster_type mon_type = MONS_SHADOW;
+    monster_type mon_type = MONS_GNOLL;
     if (tier >= 2 && count == 0 && coinflip())
-        mon_type = MONS_TZITZIMITL;
+        mon_type = MONS_GNOLL;
     else if (tier >= 1 && count < 3 && coinflip())
-        mon_type = MONS_SHADOW_DEMON;
+        mon_type = MONS_GNOLL;
 
     mgen_data temp = mgen_data::hostile_at(mon_type,
                                            _god_wrath_name(GOD_DITHMENOS),
@@ -670,22 +670,22 @@ static bool _makhleb_summon_servants()
 
     for (int i = 0; i < greater_servants; i++)
     {
-        const monster_type servant = random_choose(MONS_EXECUTIONER,
-                                                   MONS_GREEN_DEATH,
-                                                   MONS_BLIZZARD_DEMON,
-                                                   MONS_BALRUG,
-                                                   MONS_CACODEMON);
+        const monster_type servant = random_choose(MONS_GNOLL,
+                                                   MONS_GNOLL,
+                                                   MONS_GNOLL,
+                                                   MONS_GNOLL,
+                                                   MONS_GNOLL_SERGEANT);
         if (_makhleb_summon_servant(servant))
             summoned++;
     }
 
     for (int i = 0; i < lesser_servants; i++)
     {
-        const monster_type servant = random_choose(MONS_HELLWING,
-                                                   MONS_NEQOXEC,
-                                                   MONS_ORANGE_DEMON,
-                                                   MONS_SMOKE_DEMON,
-                                                   MONS_YNOXINUL);
+        const monster_type servant = random_choose(MONS_GNOLL,
+                                                   MONS_GNOLL,
+                                                   MONS_GNOLL,
+                                                   MONS_GNOLL,
+                                                   MONS_GNOLL);
         if (_makhleb_summon_servant(servant))
             summoned++;
     }
@@ -939,7 +939,7 @@ static bool _beogh_retribution()
             // Now create monster.
             if (monster *mon =
                 create_monster(
-                    mgen_data::hostile_at(MONS_DANCING_WEAPON,
+                    mgen_data::hostile_at(MONS_GNOLL,
                         _god_wrath_name(god),
                         true, 0, 0, you.pos(), MG_NONE, god)))
             {
@@ -991,15 +991,15 @@ static bool _beogh_retribution()
         monster_type punisher;
         // "natural" bands
         if (points >= 30) // min: lvl 7, always: lvl 27
-            punisher = MONS_ORC_WARLORD;
+            punisher = MONS_GNOLL;
         else if (points >= 24) // min: lvl 6, always: lvl 21
-            punisher = MONS_ORC_HIGH_PRIEST;
+            punisher = MONS_GNOLL;
         else if (points >= 18) // min: lvl 4, always: lvl 15
-            punisher = MONS_ORC_KNIGHT;
+            punisher = MONS_GNOLL;
         else if (points > 10) // min: lvl 3, always: lvl 8
-            punisher = MONS_ORC_WARRIOR;
+            punisher = MONS_GNOLL;
         else
-            punisher = MONS_ORC;
+            punisher = MONS_GNOLL;
 
         mgen_data temp = mgen_data::hostile_at(punisher,
                                                _god_wrath_name(god),
@@ -1150,10 +1150,10 @@ static void _lugonu_minion_retribution()
         // higher levels
         const monster_type to_summon =
             random_choose_weighted(
-                15 - (you.experience_level/2),  MONS_ABOMINATION_SMALL,
-                you.experience_level/2,         MONS_ABOMINATION_LARGE,
-                6,                              MONS_THRASHING_HORROR,
-                3,                              MONS_ANCIENT_ZYME,
+                15 - (you.experience_level/2),  MONS_GNOLL,
+                you.experience_level/2,         MONS_GNOLL,
+                6,                              MONS_GNOLL,
+                3,                              MONS_GNOLL,
                 0
             );
 
@@ -1169,9 +1169,9 @@ static void _lugonu_minion_retribution()
     if (major)
     {
         // try to summon one nasty monster.
-        const monster_type to_summon = random_choose(MONS_TENTACLED_STARSPAWN,
-                                                     MONS_WRETCHED_STAR,
-                                                     MONS_STARCURSED_MASS);
+        const monster_type to_summon = random_choose(MONS_GNOLL,
+                                                     MONS_GNOLL,
+                                                     MONS_GNOLL);
 
         mgen_data temp = mgen_data::hostile_at(to_summon,
                                                _god_wrath_name(god), true, 0,
@@ -1368,17 +1368,17 @@ static void _jiyva_summon_slimes()
 
     const monster_type slimes[] =
     {
-        MONS_GIANT_EYEBALL,
-        MONS_EYE_OF_DRAINING,
-        MONS_EYE_OF_DEVASTATION,
-        MONS_GREAT_ORB_OF_EYES,
-        MONS_SHINING_EYE,
-        MONS_GIANT_ORANGE_BRAIN,
-        MONS_JELLY,
-        MONS_ACID_BLOB,
-        MONS_AZURE_JELLY,
-        MONS_DEATH_OOZE,
-        MONS_SLIME_CREATURE,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
+        MONS_GNOLL,
     };
 
     const int how_many = 1 + (you.experience_level / 10) + random2(3);
@@ -1486,7 +1486,7 @@ static bool _fedhas_summon_plants()
     {
         int seen_count;
 
-        temp.cls = MONS_PLANT;
+        temp.cls = MONS_GNOLL;
 
         place_ring(radius_points[0],
                    you.pos(),
@@ -1497,7 +1497,7 @@ static bool _fedhas_summon_plants()
         if (seen_count > 0)
             success = true;
 
-        temp.cls = MONS_OKLOB_PLANT;
+        temp.cls = MONS_GNOLL;
 
         place_ring(radius_points[max_idx],
                    you.pos(),
@@ -1522,8 +1522,8 @@ static bool _fedhas_summon_plants()
              i < radius_points[0].size(); ++i)
         {
             temp.pos = radius_points[0].at(i);
-            temp.cls = coinflip() ? MONS_WANDERING_MUSHROOM
-                                  : MONS_OKLOB_PLANT;
+            temp.cls = coinflip() ? MONS_GNOLL
+                                  : MONS_GNOLL;
 
             if (create_monster(temp, false))
                 success = true;
@@ -1607,12 +1607,9 @@ static bool _dithmenos_retribution()
         {
             if (create_monster(
                     mgen_data(
-                        RANDOM_MOBILE_MONSTER, BEH_HOSTILE, 0,
+                        MONS_GNOLL, BEH_HOSTILE, 0,
                         4, MON_SUMM_WRATH, you.pos(), MHITYOU, MG_NONE, god,
-                        MONS_NO_MONSTER, COLOUR_UNDEF, PROX_ANYWHERE,
-                        level_id(BRANCH_DUNGEON,
-                                 min(27, you.experience_level + 5)),
-                        0, 0, MF_NO_FLAGS, "", _god_wrath_name(god))))
+                        MONS_NO_MONSTER, COLOUR_UNDEF, PROX_ANYWHERE)))
             {
                 count++;
             }
@@ -1639,25 +1636,25 @@ static bool _dithmenos_retribution()
 
 static const pop_entry pop_qazlal_wrath[] =
 {
-  {  0, 12, 25, SEMI, MONS_AIR_ELEMENTAL },
-  {  4, 12, 50, FLAT, MONS_WIND_DRAKE },
-  { 10, 22, 50, SEMI, MONS_SPARK_WASP },
-  { 18, 27, 50, RISE, MONS_STORM_DRAGON },
+  {  0, 12, 25, SEMI, MONS_GNOLL },
+  {  4, 12, 50, FLAT, MONS_GNOLL },
+  { 10, 22, 50, SEMI, MONS_GNOLL },
+  { 18, 27, 50, RISE, MONS_GNOLL },
 
-  {  0, 12, 25, SEMI, MONS_FIRE_ELEMENTAL },
-  {  4, 12, 50, FLAT, MONS_FIRE_CRAB },
-  {  8, 16, 30, FLAT, MONS_LINDWURM },
-  { 12, 27, 50, SEMI, MONS_FIRE_DRAGON },
+  {  0, 12, 25, SEMI, MONS_GNOLL },
+  {  4, 12, 50, FLAT, MONS_GNOLL },
+  {  8, 16, 30, FLAT, MONS_GNOLL },
+  { 12, 27, 50, SEMI, MONS_GNOLL },
 
-  {  0, 12, 25, SEMI, MONS_WATER_ELEMENTAL },
-  {  2, 10, 50, FLAT, MONS_RIME_DRAKE },
-  { 12, 27, 50, SEMI, MONS_ICE_DRAGON },
-  { 20, 27, 30, RISE, MONS_SHARD_SHRIKE },
+  {  0, 12, 25, SEMI, MONS_GNOLL },
+  {  2, 10, 50, FLAT, MONS_GNOLL },
+  { 12, 27, 50, SEMI, MONS_GNOLL },
+  { 20, 27, 30, RISE, MONS_GNOLL },
 
-  {  0, 12, 25, SEMI, MONS_EARTH_ELEMENTAL },
-  {  2, 10, 50, FLAT, MONS_BASILISK },
-  {  4, 14, 30, FLAT, MONS_BOULDER_BEETLE },
-  { 18, 27, 50, RISE, MONS_IRON_DRAGON },
+  {  0, 12, 25, SEMI, MONS_GNOLL },
+  {  2, 10, 50, FLAT, MONS_GNOLL },
+  {  4, 14, 30, FLAT, MONS_GNOLL },
+  { 18, 27, 50, RISE, MONS_GNOLL },
 
   { 0,0,0,FLAT,MONS_0 }
 };

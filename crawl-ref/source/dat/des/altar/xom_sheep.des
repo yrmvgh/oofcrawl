@@ -21,7 +21,7 @@ function callback.kb_xom_exploding_sheep(data, triggerable,
   local visarray = {}
   local flee = mons.behaviour("flee")
   for p in iter.slave_iterator("sheep_place", 1) do
-    local sheep = dgn.create_monster(p.x, p.y, 'generate_awake sheep')
+    local sheep = dgn.create_monster(p.x, p.y, 'generate_awake gnoll')
     if sheep then
       nsheep = nsheep + 1
       sheeparray[nsheep] = sheep

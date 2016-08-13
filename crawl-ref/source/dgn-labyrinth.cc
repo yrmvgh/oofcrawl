@@ -121,7 +121,7 @@ static void _labyrinth_place_items(const coord_def &end)
 static void _labyrinth_place_exit(const coord_def &end)
 {
     _labyrinth_place_items(end);
-    mons_place(mgen_data::sleeper_at(MONS_MINOTAUR, end, MG_PATROLLING));
+    mons_place(mgen_data::sleeper_at(MONS_GNOLL_SERGEANT, end, MG_PATROLLING));
     grd(end) = DNGN_EXIT_LABYRINTH;
 }
 

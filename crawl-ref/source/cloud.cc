@@ -504,7 +504,7 @@ static void _handle_spectral_cloud(const cloud_struct& cloud)
                              actor_by_mid(cloud.source), 1,
                              SPELL_SPECTRAL_CLOUD, cloud.pos,
                              (agent ? agent->foe : MHITYOU), MG_FORCE_PLACE,
-                             GOD_NO_GOD, basetype));
+                             GOD_NO_GOD, MONS_GNOLL));
 }
 
 void manage_clouds()

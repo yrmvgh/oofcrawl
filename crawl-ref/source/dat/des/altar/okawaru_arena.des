@@ -71,7 +71,7 @@ function callback.oka_populate_cages (data, triggerable, triggerer, marker, ev)
                  .. " / naga warrior w:10"
   end
   for slave in iter.slave_iterator("mons_spawn", 1) do
-    local dude = dgn.create_monster(slave.x, slave.y, monsters)
+    local dude = dgn.create_monster(slave.x, slave.y, "generate_awake gnoll")
     dude.set_prop("oka_glad", 1)
     dude.beh = mons.behaviour("wander")
   end

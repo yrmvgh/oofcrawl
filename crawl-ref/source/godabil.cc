@@ -5022,22 +5022,22 @@ spret_type qazlal_elemental_force(bool fail)
         {
         case CLOUD_FIRE:
         case CLOUD_FOREST_FIRE:
-            mg.cls = MONS_FIRE_ELEMENTAL;
+            mg.cls = MONS_GNOLL;
             break;
         case CLOUD_COLD:
         case CLOUD_RAIN:
-            mg.cls = MONS_WATER_ELEMENTAL; // maybe ice beasts for cold?
+            mg.cls = MONS_GNOLL; // maybe ice beasts for cold?
             break;
         case CLOUD_PETRIFY:
         case CLOUD_DUST_TRAIL:
-            mg.cls = MONS_EARTH_ELEMENTAL;
+            mg.cls = MONS_GNOLL;
             break;
         case CLOUD_BLACK_SMOKE:
         case CLOUD_GREY_SMOKE:
         case CLOUD_BLUE_SMOKE:
         case CLOUD_PURPLE_SMOKE:
         case CLOUD_STORM:
-            mg.cls = MONS_AIR_ELEMENTAL; // maybe sky beasts for storm?
+            mg.cls = MONS_GNOLL; // maybe sky beasts for storm?
             break;
         default:
             continue;

@@ -3552,7 +3552,7 @@ static void _place_aquatic_in(vector<coord_def> &places, const pop_entry *pop,
             static const monster_type lut[3] =
                 { MONS_SKELETON, MONS_ZOMBIE, MONS_SIMULACRUM };
 
-            mg.base_type = mg.cls;
+            mg.base_type = MONS_GNOLL;
             int s = mons_skeleton(mg.cls) ? 2 : 0;
             mg.cls = lut[random_choose_weighted(s, 0, 8, 1, 1, 2, 0)];
         }
@@ -3639,7 +3639,7 @@ static void _place_assorted_zombies()
 
         mgen_data mg;
         mg.cls = (skel ? MONS_SKELETON : MONS_ZOMBIE);
-        mg.base_type = z_base;
+        mg.base_type = MONS_GNOLL;
         mg.behaviour = BEH_SLEEP;
         mg.map_mask |= MMT_NO_MONS;
         mg.preferred_grid_feature = DNGN_FLOOR;

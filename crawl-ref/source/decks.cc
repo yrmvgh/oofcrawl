@@ -1498,7 +1498,7 @@ static void _stairs_card(int /*power*/, deck_rarity_type /*rarity*/)
 
 static monster* _friendly(monster_type mt, int dur)
 {
-    return create_monster(mgen_data(mt,
+    return create_monster(mgen_data(MONS_GNOLL,
                              BEH_FRIENDLY, &you, dur, 0, you.pos(), MHITYOU,
                              MG_AUTOFOE));
 }
@@ -1558,7 +1558,7 @@ static void _damaging_card(card_type card, int power, deck_rarity_type rarity,
 
             mpr(prompt);
 
-            if (monster *ghost = _friendly(MONS_FLAYED_GHOST, 3))
+            if (monster *ghost = _friendly(MONS_GNOLL, 3))
             {
                 bool msg = true;
                 bolt beem;
@@ -1716,25 +1716,25 @@ static void _summon_demon_card(int power, deck_rarity_type rarity)
     monster_type dct, dct2;
     if (power_level >= 2)
     {
-        dct = random_choose(MONS_BALRUG, MONS_BLIZZARD_DEMON,
-              MONS_GREEN_DEATH, MONS_SHADOW_DEMON, MONS_CACODEMON,
-              MONS_HELL_BEAST, MONS_REAPER, MONS_LOROCYPROCA,
-              MONS_HELLION, MONS_TORMENTOR);
-        dct2 = MONS_PANDEMONIUM_LORD;
+        dct = random_choose(MONS_GNOLL, MONS_GNOLL,
+              MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+              MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+              MONS_GNOLL, MONS_GNOLL);
+        dct2 = MONS_GNOLL;
     }
     else if (power_level == 1)
     {
-        dct = random_choose(MONS_SUN_DEMON, MONS_SOUL_EATER,
-              MONS_CHAOS_SPAWN, MONS_SMOKE_DEMON, MONS_YNOXINUL,
-              MONS_NEQOXEC);
-        dct2 = MONS_RAKSHASA;
+        dct = random_choose(MONS_GNOLL, MONS_GNOLL,
+              MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+              MONS_GNOLL);
+        dct2 = MONS_GNOLL;
     }
     else
     {
-        dct = random_choose(MONS_RED_DEVIL, MONS_ICE_DEVIL,
-              MONS_RUST_DEVIL, MONS_HELLWING, MONS_ORANGE_DEMON,
-              MONS_SIXFIRHY);
-        dct2 = MONS_HELL_HOUND;
+        dct = random_choose(MONS_GNOLL, MONS_GNOLL,
+              MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+              MONS_GNOLL);
+        dct2 = MONS_GNOLL;
     }
 
     if (is_good_god(you.religion))
@@ -1752,7 +1752,7 @@ static void _summon_demon_card(int power, deck_rarity_type rarity)
 
     const bool friendly = !one_chance_in(power_level + 4);
 
-    if (!create_monster(mgen_data(dct, friendly ? BEH_FRIENDLY : BEH_HOSTILE,
+    if (!create_monster(mgen_data(MONS_GNOLL, friendly ? BEH_FRIENDLY : BEH_HOSTILE,
                                   &you, 5 - power_level, 0, you.pos(), MHITYOU,
                                   MG_AUTOFOE)))
     {
@@ -1774,10 +1774,10 @@ static void _elements_card(int power, deck_rarity_type rarity)
     const int power_level = _get_power_level(power, rarity);
     const monster_type element_list[][3] =
     {
-        {MONS_RAIJU, MONS_WIND_DRAKE, MONS_SHOCK_SERPENT},
-        {MONS_BASILISK, MONS_BOULDER_BEETLE, MONS_IRON_GOLEM},
-        {MONS_MOTTLED_DRAGON, MONS_MOLTEN_GARGOYLE, MONS_FIRE_DRAGON},
-        {MONS_ICE_BEAST, MONS_POLAR_BEAR, MONS_ICE_DRAGON}
+        {MONS_GNOLL, MONS_GNOLL, MONS_GNOLL},
+        {MONS_GNOLL, MONS_GNOLL, MONS_GNOLL},
+        {MONS_GNOLL, MONS_GNOLL, MONS_GNOLL},
+        {MONS_GNOLL, MONS_GNOLL, MONS_GNOLL}
     };
 
     int start = random2(ARRAYSZ(element_list));
@@ -1809,7 +1809,7 @@ static void _summon_dancing_weapon(int power, deck_rarity_type rarity)
 
     monster *mon =
         create_monster(
-            mgen_data(MONS_DANCING_WEAPON, BEH_FRIENDLY, &you,
+            mgen_data(MONS_GNOLL, BEH_FRIENDLY, &you,
                       power_level + 2, 0, you.pos(), MHITYOU, MG_AUTOFOE),
             false);
 
@@ -1881,8 +1881,8 @@ static void _summon_flying(int power, deck_rarity_type rarity)
 
     const monster_type flytypes[] =
     {
-        MONS_INSUBSTANTIAL_WISP, MONS_WYVERN, MONS_KILLER_BEE,
-        MONS_VAMPIRE_MOSQUITO, MONS_WASP, MONS_HORNET
+        MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+        MONS_GNOLL, MONS_GNOLL, MONS_GNOLL
     };
     const int num_flytypes = ARRAYSZ(flytypes);
 
@@ -1902,7 +1902,7 @@ static void _summon_flying(int power, deck_rarity_type rarity)
         const bool friendly = !one_chance_in(power_level + 4);
 
         create_monster(
-            mgen_data(result,
+            mgen_data(MONS_GNOLL,
                       friendly ? BEH_FRIENDLY : BEH_HOSTILE, &you,
                       3, 0, you.pos(), MHITYOU, MG_AUTOFOE));
 
@@ -1917,13 +1917,13 @@ static void _summon_flying(int power, deck_rarity_type rarity)
 static void _summon_rangers(int power, deck_rarity_type rarity)
 {
     const int power_level = _get_power_level(power, rarity);
-    const monster_type dctr  = random_choose(MONS_CENTAUR, MONS_YAKTAUR),
-                       dctr2 = random_choose(MONS_CENTAUR_WARRIOR, MONS_FAUN),
-                       dctr3 = random_choose(MONS_YAKTAUR_CAPTAIN,
-                                             MONS_NAGA_SHARPSHOOTER),
-                       dctr4 = random_choose(MONS_SATYR,
-                                             MONS_MERFOLK_JAVELINEER,
-                                             MONS_DEEP_ELF_MASTER_ARCHER);
+    const monster_type dctr  = random_choose(MONS_GNOLL, MONS_GNOLL),
+                       dctr2 = random_choose(MONS_GNOLL, MONS_GNOLL),
+                       dctr3 = random_choose(MONS_GNOLL,
+                                             MONS_GNOLL),
+                       dctr4 = random_choose(MONS_GNOLL,
+                                             MONS_GNOLL,
+                                             MONS_GNOLL);
 
     const monster_type base_choice = power_level == 2 ? dctr2 :
                                                         dctr;
@@ -2033,7 +2033,7 @@ static void _storm_card(int power, deck_rarity_type rarity)
 {
     const int power_level = _get_power_level(power, rarity);
 
-    _friendly(MONS_AIR_ELEMENTAL, 3);
+    _friendly(MONS_GNOLL, 3);
 
     wind_blast(&you, (power_level == 0) ? 100 : 200, coord_def(), true);
 
@@ -2066,7 +2066,7 @@ static void _illusion_card(int power, deck_rarity_type rarity)
     if (!mon || monster_at(you.pos()))
         return;
 
-    mon->type = MONS_PLAYER;
+    mon->type = MONS_GNOLL;
     mon->behaviour = BEH_SEEK;
     mon->attitude = ATT_FRIENDLY;
     mon->set_position(you.pos());

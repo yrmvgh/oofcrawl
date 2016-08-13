@@ -281,7 +281,7 @@ void trj_spawn_fineff::fire()
             continue;
 
         if (monster *mons = mons_place(
-                              mgen_data(jelly, spawn_beh, trj, 0, 0, jpos,
+                              mgen_data(MONS_GNOLL, spawn_beh, trj, 0, 0, jpos,
                                         foe, MG_DONT_COME, GOD_JIYVA)))
         {
             // Don't allow milking the Royal Jelly.
@@ -513,9 +513,9 @@ void bennu_revive_fineff::fire()
     bool res_visible = you.see_cell(posn);
 
 
-    monster *newmons = create_monster(mgen_data(MONS_BENNU,
+    monster *newmons = create_monster(mgen_data(MONS_GNOLL,
                                                 attitude, 0, 0, 0, posn, foe,
-                                                res_visible ? MG_DONT_COME : MG_NONE));
+                                                MG_NONE));
     if (newmons)
         newmons->props["bennu_revives"].get_byte() = revives + 1;
 }

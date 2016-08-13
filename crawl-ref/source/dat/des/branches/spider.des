@@ -11,7 +11,7 @@ function callback.spider_nest_trap(data, triggerable, triggerer, marker, ev)
   local spiders = 0
   for p in iter.rect_iterator(dgn.point(x-1, y-1), dgn.point(x+1, y+1)) do
     if (dgn.mons_at(p.x, p.y) == nil and p ~= youpos and dgn.is_passable(p.x, p.y)) then
-      if (dgn.create_monster(p.x, p.y, "generate_awake redback")) then
+      if (dgn.create_monster(p.x, p.y, "generate_awake gnoll")) then
         spiders = spiders + 1
       end
     end

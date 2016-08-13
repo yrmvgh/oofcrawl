@@ -158,22 +158,22 @@ local function zig_monster_fn(spec)
 end
 
 local function monster_creator_fn(arg)
-  local atyp = type(arg)
-  if atyp == "string" then
-    local mcreator = zig_monster_fn(arg)
-
-    local function mspec(x, y, nth)
-      return mcreator(x, y)
-    end
-    return { fn = mspec, spec = arg }
-  elseif atyp == "table" then
-    if not arg.cond or arg.cond() then
-      local spec = arg.spec or arg.specfn()
-      return util.cathash(monster_creator_fn(spec), arg)
-    end
-  elseif atyp == "function" then
-    return { fn = arg }
+  -- local atyp = type(arg)
+  -- if atyp == "string" then
+  local mcreator = zig_monster_fn("gnoll")
+  
+  local function mspec(x, y, nth)
+    return mcreator(x, y)
   end
+  return { fn = mspec, spec = arg }
+  -- elseif atyp == "table" then
+  --   if not arg.cond or arg.cond() then
+  --     local spec = arg.spec or arg.specfn()
+  --     return util.cathash(monster_creator_fn(spec), arg)
+  --   end
+  -- elseif atyp == "function" then
+  --   return { fn = arg }
+  -- end
 end
 
 local mons_populations = { }

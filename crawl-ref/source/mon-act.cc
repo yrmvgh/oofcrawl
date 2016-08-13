@@ -1018,7 +1018,7 @@ static bool _handle_scroll(monster& mons)
             for (int i = 0; i < count; ++i)
             {
                 create_monster(
-                    mgen_data(RANDOM_MOBILE_MONSTER, SAME_ATTITUDE((&mons)), &mons,
+                    mgen_data(MONS_GNOLL, SAME_ATTITUDE((&mons)), &mons,
                               3, MON_SUMM_SCROLL, mons.pos(), mons.foe));
             }
         }

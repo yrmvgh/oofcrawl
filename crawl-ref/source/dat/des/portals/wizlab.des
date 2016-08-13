@@ -152,7 +152,7 @@ end
 
 local function spawn_zombie (x, y, spec)
     dgn.terrain_changed(x, y, "floor", false, false)
-    local mons = dgn.create_monster(x, y, spec)
+    local mons = dgn.create_monster(x, y, "generate_awake gnoll")
     mons.set_prop("zonguldrok", 1)
     return mons
 end
@@ -242,9 +242,7 @@ function wizlab_zonguldrok_awaken_wizard(data, triggerable,
     end
 
     local pos = dgn.find_marker_positions_by_prop("wizard_grave", 1)[1]
-    local lich = dgn.create_monster(pos.x, pos.y, "generate_awake ancient lich "
-                 .."col:brown name:antique_lich name_replace name_descriptor "
-                 .."tile:mons_zonguldrok_lich")
+    local lich = dgn.create_monster(pos.x, pos.y, "generate_awake gnoll")
     if lich then
         data.awoke = true
     end
@@ -322,7 +320,7 @@ function wizlab_wucad_summon_monks(data, triggerable, triggerer, marker, ev)
     if crawl.one_chance_in(8) and count < 3 then
       if feat.is_solid(point.x, point.y) or not feat.has_solid_floor(point.x, point.y) then
       else
-       local mon = dgn.create_monster(point.x, point.y, msp)
+       local mon = dgn.create_monster(point.x, point.y, "generate_awake gnoll")
        count = count + 1
       end
     end

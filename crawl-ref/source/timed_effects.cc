@@ -186,7 +186,7 @@ static void _minor_hell_summons()
             monster_type *type
                 = random_choose_weighted(spec->minor_summons);
             ASSERT(type);
-            mg.cls = *type;
+            mg.cls = MONS_GNOLL;
             create_monster(mg);
         }
     }

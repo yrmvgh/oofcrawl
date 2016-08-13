@@ -88,7 +88,7 @@ function callback.grunt_zot_stairs_overgrown_oklobify(data, triggerable,
   local mons = dgn.mons_at(pos.x, pos.y)
   mons.dismiss()
 
-  dgn.create_monster(pos.x, pos.y, "oklob plant")
+  dgn.create_monster(pos.x, pos.y, "generate_awake gnoll")
 
   if not you.see_cell(pos.x, pos.y) then return end
 

@@ -581,7 +581,7 @@ static void _maybe_spawn_monsters(int dam, const bool is_torment,
     if (you_worship(GOD_JIYVA)
         && you.piety >= piety_breakpoint(5))
     {
-        mon = royal_jelly_ejectable_monster();
+        mon = MONS_GNOLL;
         if (dam >= you.hp_max * 3 / 4)
             how_many = random2(4) + 2;
         else if (dam >= you.hp_max / 2)
@@ -620,8 +620,8 @@ static void _maybe_spawn_monsters(int dam, const bool is_torment,
             {
                 mprf("You shudder from the %s and a %s!",
                      death_type == KILLED_BY_MONSTER ? "blow" : "blast",
-                     count_created > 1 ? "flood of jellies pours out from you"
-                                       : "jelly pops out");
+                     count_created > 1 ? "flood of gnolls pours out from you"
+                                       : "gnolls pops out");
             }
         }
     }

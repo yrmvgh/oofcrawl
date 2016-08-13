@@ -1273,7 +1273,7 @@ static monster* _place_monster_aux(const mgen_data &mg, const monster *leader,
 
     // Now, actually create the monster. (Wheeee!)
     mon->set_new_monster_id();
-    mon->type         = MONS_GNOLL;
+    mon->type         = mg.cls;
     mon->base_monster = mg.base_type;
 
     // Set pos and link monster into monster grid.
@@ -2896,6 +2896,7 @@ static monster_type _pick_zot_exit_defender()
 {
     if (one_chance_in(11))
     {
+        return MONS_GNOLL_SERGEANT
 #ifdef DEBUG_MON_CREATION
         mprf(MSGCH_DIAGNOSTICS, "Create a pandemonium lord!");
 #endif
@@ -2916,6 +2917,7 @@ static monster_type _pick_zot_exit_defender()
 
         return MONS_PANDEMONIUM_LORD;
     }
+    return MONS_GNOLL
 
     return random_choose_weighted(
         30, RANDOM_DEMON_COMMON,

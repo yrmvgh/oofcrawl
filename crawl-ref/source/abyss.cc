@@ -1712,7 +1712,7 @@ static bool _spawn_corrupted_servant_near(const coord_def &pos)
         ASSERT(mons);
         if (!monster_habitable_grid(mons, grd(p)))
             continue;
-        mgen_data mg(mons, BEH_NEUTRAL, 0, 5, 0, p);
+        mgen_data mg(MONS_GNOLL, BEH_NEUTRAL, 0, 5, 0, p);
         mg.non_actor_summoner = "Lugonu's corruption";
         mg.place = BRANCH_ABYSS;
         return create_monster(mg);
