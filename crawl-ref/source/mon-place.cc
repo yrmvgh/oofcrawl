@@ -1925,7 +1925,7 @@ monster_type pick_local_zombifiable_monster(level_id place,
     if (!mt)
         mt = pick_monster_all_branches(place.absdepth(), picker);
 
-    ASSERT(mons_class_can_be_zombified(mons_species(mt)));
+    //ASSERT(mons_class_can_be_zombified(mons_species(mt)));
     return mt;
 }
 

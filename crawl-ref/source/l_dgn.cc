@@ -418,6 +418,7 @@ static int dgn_mons(lua_State *ls)
 
     if (lua_isstring(ls, 2))
     {
+        mpr(luaL_checkstring(ls, 2));
         string err = map->mons.add_mons(luaL_checkstring(ls, 2));
         if (!err.empty())
             luaL_error(ls, err.c_str());
@@ -510,7 +511,9 @@ static int dgn_kfeat(lua_State *ls)
 static int dgn_kmons(lua_State *ls)
 {
     MAP(ls, 1, map);
+    mpr(luaL_checkstring(ls, 2));
     string err = map->map.add_key_mons(luaL_checkstring(ls, 2));
+    string err = map->map.add_key_mons();
     if (!err.empty())
         luaL_error(ls, err.c_str());
     return 0;
