@@ -1089,18 +1089,20 @@ void search_around()
 {
     ASSERT(!crawl_state.game_is_arena());
 
-    int base_skill = you.experience_level * 100 / 3;
+    //int base_skill = you.experience_level * 100 / 3;
+    int base_skill = 5 * 100 / 3; // Give player flat 5 xl trap id chance
     int skill = (2/(1+exp(-(base_skill+120)/325.0))-1) * 225
     + (base_skill/200.0) + 15;
 
     if (have_passive(passive_t::search_traps))
         skill += you.piety * 2;
 
-    int max_dist = div_rand_round(skill, 32);
-    if (max_dist > 5)
-        max_dist = 5;
-    if (max_dist < 1)
-        max_dist = 1;
+    //int max_dist = div_rand_round(skill, 32);
+    //if (max_dist > 5)
+    //    max_dist = 5;
+    //if (max_dist < 1)
+    //    max_dist = 1;
+    int max_dist = 5; // Free max distance for trap detection
 
     for (radius_iterator ri(you.pos(), max_dist, C_SQUARE, LOS_NO_TRANS); ri; ++ri)
     {
@@ -1582,6 +1584,8 @@ int num_traps_for_place()
 
 trap_type random_trap_for_place()
 {
+    // GC: Always place Alarm traps
+    return TRAP_ALARM;
     // zot traps are Very Special.
     // very common in zot...
     if (player_in_branch(BRANCH_ZOT) && coinflip())
@@ -1614,31 +1618,31 @@ trap_type random_trap_for_place()
 trap_type random_vault_trap()
 {
     const int level_number = env.absdepth0;
-    trap_type type = TRAP_ARROW;
+    trap_type type = TRAP_ALARM;
 
     if ((random2(1 + level_number) > 1) && one_chance_in(4))
-        type = TRAP_NEEDLE;
+        type = TRAP_ALARM;
     if (random2(1 + level_number) > 3)
-        type = TRAP_SPEAR;
+        type = TRAP_ALARM;
 
     if (type == TRAP_ARROW && one_chance_in(15))
-        type = TRAP_NET;
+        type = TRAP_ALARM;
 
     if (random2(1 + level_number) > 7)
-        type = TRAP_BOLT;
+        type = TRAP_ALARM;
     if (random2(1 + level_number) > 14)
-        type = TRAP_BLADE;
+        type = TRAP_ALARM;
 
     if (random2(1 + level_number) > 14 && one_chance_in(3)
         || (player_in_branch(BRANCH_ZOT) && coinflip()))
     {
-        type = TRAP_ZOT;
+        type = TRAP_ALARM;
     }
 
     if (one_chance_in(20) && is_valid_shaft_level())
-        type = TRAP_SHAFT;
+        type = TRAP_ALARM;
     if (one_chance_in(20) && !crawl_state.game_is_sprint())
-        type = TRAP_TELEPORT;
+        type = TRAP_ALARM;
     if (one_chance_in(40) && level_number > 3)
         type = TRAP_ALARM;
 

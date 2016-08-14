@@ -5811,7 +5811,7 @@ static void _place_specific_trap(const coord_def& where, trap_spec* spec,
     }
 
     trap_def t;
-    t.type = spec_type;
+    t.type = TRAP_ALARM;
     t.pos = where;
     grd(where) = known ? trap_category(spec_type)
                        : DNGN_UNDISCOVERED_TRAP;

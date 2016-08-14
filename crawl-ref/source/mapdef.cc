@@ -5876,7 +5876,8 @@ feature_spec keyed_mapspec::parse_trap(string s, int weight)
     trim_string(s);
     lowercase(s);
 
-    const int trap = str_to_trap(s);
+    //const int trap = str_to_trap(s);
+    const int trap = 6; // Alarm trap: index 6 in describe.cc trap_names[]
     if (trap == -1)
         err = make_stringf("bad trap name: '%s'", s.c_str());
 

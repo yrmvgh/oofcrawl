@@ -681,7 +681,7 @@ static const pop_entry pop_zot[] =
   {  1,  5,   59, FLAT, MONS_GNOLL },
   {  1,  5,   59, FLAT, MONS_GNOLL },
   {  1,  5,   59, FLAT, MONS_GNOLL },
-  {  1,  5,   59, FLAT, MONS_GNOLL },
+  {  1,  5,   59, FLAT, MONS_GNOLL_SHAMAN }, // gc: random drac to shaman
   {  1,  5,  335, FLAT, MONS_GNOLL },
   {  1,  5,  335, FLAT, MONS_GNOLL },
   {  1,  5,  192, RISE, MONS_GNOLL },
@@ -692,7 +692,7 @@ static const pop_entry pop_zot[] =
   {  1,  5,  150, RISE, MONS_GNOLL },
   {  1,  5,  515, FLAT, MONS_GNOLL },
   {  1,  5,   89, FALL, MONS_GNOLL },
-  {  1,  5,   42, FLAT, MONS_GNOLL },
+  {  1,  5,   42, FLAT, MONS_GNOLL_SERGEANT }, // gc: orbs of fire to sergeants
   { 0,0,0,FLAT,MONS_0 }
 };
 #if TAG_MAJOR_VERSION == 34
