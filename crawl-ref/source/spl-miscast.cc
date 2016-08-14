@@ -1456,7 +1456,7 @@ void MiscastEffect::_summoning(int severity)
             break;
         case 4:
         case 5:
-            if (_create_monster(summon_any_demon(RANDOM_DEMON_LESSER), 5, true))
+            if (_create_monster(MONS_GNOLL, 5, true))
                 all_msg = "Something appears in a flash of light!";
             do_msg();
             break;
@@ -1480,7 +1480,7 @@ void MiscastEffect::_summoning(int severity)
 
         case 1:
         case 2:
-            if (_create_monster(summon_any_demon(RANDOM_DEMON_COMMON), 5, true))
+            if (_create_monster(MONS_GNOLL, 5, true))
                 all_msg = "Something forms from out of thin air!";
             do_msg();
             break;
@@ -1491,7 +1491,7 @@ void MiscastEffect::_summoning(int severity)
         {
             bool success = false;
             for (int i = 2 + random2(2); i > 0; --i)
-                success |= _create_monster(MONS_ABOMINATION_SMALL, 5, true);
+                success |= _create_monster(MONS_GNOLL, 5, true);
 
             if (success && neither_end_silenced())
             {
@@ -1517,7 +1517,7 @@ void MiscastEffect::_summoning(int severity)
             {
                 bool success = false;
                 for (int i = 1 + random2(3); i > 0; --i)
-                    success |= _create_monster(MONS_WORLDBINDER, 5, true);
+                    success |= _create_monster(MONS_GNOLL, 5, true);
 
                 if (success)
                     all_msg = "Desperate hands claw out from thin air!";
@@ -1526,7 +1526,7 @@ void MiscastEffect::_summoning(int severity)
                 break;
             }
             case 1:
-                if (_create_monster(summon_any_demon(RANDOM_DEMON_GREATER), 0, true))
+                if (_create_monster(MONS_GNOLL, 0, true))
                     all_msg = "You sense a hostile presence.";
                 do_msg();
                 reroll = false;
@@ -1536,7 +1536,7 @@ void MiscastEffect::_summoning(int severity)
             {
                 bool success = false;
                 for (int i = 1 + random2(2); i > 0; --i)
-                    success |= _create_monster(summon_any_demon(RANDOM_DEMON_COMMON), 3, true);
+                    success |= _create_monster(MONS_GNOLL, 3, true);
 
                 if (success)
                 {
@@ -1877,7 +1877,7 @@ void MiscastEffect::_necromancy(int severity)
         {
             bool success = false;
             for (int i = 0; i < 2; ++i)
-                success |= _create_monster(MONS_SHADOW, 2, true);
+                success |= _create_monster(MONS_GNOLL, 2, true);
 
             if (success)
             {
@@ -1945,7 +1945,7 @@ void MiscastEffect::_necromancy(int severity)
             break;
 
         case 2:
-            if (_create_monster(MONS_SOUL_EATER, 4, true))
+            if (_create_monster(MONS_GNOLL, 4, true))
             {
                 you_msg        = "Something reaches out for you...";
                 mon_msg_seen   = "Something reaches out for @the_monster@...";
@@ -1955,7 +1955,7 @@ void MiscastEffect::_necromancy(int severity)
             break;
 
         case 3:
-            if (_create_monster(MONS_REAPER, 4, true))
+            if (_create_monster(MONS_GNOLL, 4, true))
             {
                 you_msg        = "Death has come for you...";
                 mon_msg_seen   = "Death has come for @the_monster@...";
@@ -3140,7 +3140,7 @@ void MiscastEffect::_zot()
         switch (random2(9))
         {
         case 0:
-            if (_create_monster(MONS_SOUL_EATER, 4, true))
+            if (_create_monster(MONS_GNOLL, 4, true))
             {
                 you_msg        = "Something reaches out for you...";
                 mon_msg_seen   = "Something reaches out for @the_monster@...";
@@ -3149,7 +3149,7 @@ void MiscastEffect::_zot()
             do_msg();
             break;
         case 1:
-            if (_create_monster(MONS_REAPER, 4, true))
+            if (_create_monster(MONS_GNOLL_SERGEANT, 4, true))
             {
                 you_msg        = "Death has come for you...";
                 mon_msg_seen   = "Death has come for @the_monster@...";
@@ -3158,14 +3158,14 @@ void MiscastEffect::_zot()
             do_msg();
             break;
         case 2:
-            if (_create_monster(summon_any_demon(RANDOM_DEMON_GREATER), 0, true))
+            if (_create_monster(MONS_GNOLL, 0, true))
                 all_msg = "You sense a hostile presence.";
             do_msg();
             break;
         case 3:
         case 4:
             for (int i = 1 + random2(2); i > 0; --i)
-                success |= _create_monster(summon_any_demon(RANDOM_DEMON_COMMON), 0, true);
+                success |= _create_monster(MONS_GNOLL, 0, true);
 
             if (success)
             {
@@ -3177,7 +3177,7 @@ void MiscastEffect::_zot()
             break;
         case 5:
             for (int i = 2 + random2(2); i > 0; --i)
-                success |= _create_monster(MONS_ABOMINATION_SMALL, 5, true);
+                success |= _create_monster(MONS_GNOLL, 5, true);
 
             if (success && neither_end_silenced())
             {
@@ -3191,7 +3191,7 @@ void MiscastEffect::_zot()
         case 6:
         case 7:
             for (int i = 2 + random2(4); i > 0; --i)
-                success |= _create_monster(RANDOM_MOBILE_MONSTER, 4, true);
+                success |= _create_monster(MONS_GNOLL, 4, true);
 
             if (success)
             {
