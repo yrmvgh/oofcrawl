@@ -3,7 +3,6 @@
 #include "l_libs.h"
 
 #include <cmath>
-#include <iostream>
 
 #include "branch.h"
 #include "cloud.h"
