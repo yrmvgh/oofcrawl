@@ -45,24 +45,10 @@ function pan_lord_setup(_G, name)
     _G.tags("unrand")
 
     local monsters = {
-        Mnoleg = "large abomination w:200 / " ..
-                 "neqoxec w:200 / chaos spawn w:200 / " ..
-                 "cacodemon w:300 / tormentor / " ..
-                 "tentacled monstrosity w:5 / " ..
-                 "giant eyeball / golden eye band / eye of devastation / " ..
-                 "eye of draining / shining eye / very ugly thing band / "..
-                 "monstrous corrupter",
-        ['Lom Lobon'] = "hellwing w:300 / sixfirhy w:100 / " ..
-                 "smoke demon w:300 / blizzard demon w:100 / " ..
-                 "green death w:200 / giant orange brain / rakshasa / " ..
-                 "wizard / draconian annihilator / deep elf annihilator / " ..
-                 "titan w:5 / lich w:5 / gelid blood saint",
-        Cerebov = "efreet / orange demon / sun demon / ynoxinul / balrug / " ..
-                  "brimstone fiend w:1 / infernal warmonger w:1",
-        ['Gloorx Vloq'] = "skeleton w:400 / soul eater w:200 / " ..
-                 "lorocyproca w:100 / executioner w:300 / " ..
-                 "demonic crawler / shadow wraith / " ..
-                 "unseen horror / torturous black sun"
+        Mnoleg = "gnoll",
+        ['Lom Lobon'] = "gnoll",
+        Cerebov = "gnoll",
+        ['Gloorx Vloq'] = "gnoll"
     }
 
     _G.set_random_mon_list(monsters[name])

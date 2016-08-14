@@ -104,28 +104,28 @@ struct hell_effect_spec
 /// Hell effects for each branch of hell
 static map<branch_type, hell_effect_spec> hell_effects_by_branch =
 {
-    { BRANCH_DIS, { {RANDOM_DEMON_GREATER}, SPTYP_EARTH, {
-        { RANDOM_MONSTER, 100 }, // TODO
+    { BRANCH_DIS, { {MONS_GNOLL}, SPTYP_EARTH, {
+        { MONS_GNOLL, 100 }, // TODO
     }}},
-    { BRANCH_GEHENNA, { {MONS_BRIMSTONE_FIEND}, SPTYP_FIRE, {
-        { RANDOM_MONSTER, 100 }, // TODO
+    { BRANCH_GEHENNA, { {MONS_GNOLL}, SPTYP_FIRE, {
+        { MONS_GNOLL, 100 }, // TODO
     }}},
-    { BRANCH_COCYTUS, { {MONS_ICE_FIEND, MONS_SHARD_SHRIKE}, SPTYP_ICE, {
+    { BRANCH_COCYTUS, { {MONS_GNOLL}, SPTYP_ICE, {
         // total weight 100
-        { MONS_ZOMBIE, 15 },
-        { MONS_SKELETON, 10 },
-        { MONS_SIMULACRUM, 10 },
-        { MONS_FREEZING_WRAITH, 10 },
-        { MONS_FLYING_SKULL, 10 },
-        { MONS_TORMENTOR, 10 },
-        { MONS_REAPER, 10 },
-        { MONS_BONE_DRAGON, 5 },
-        { MONS_ICE_DRAGON, 5 },
-        { MONS_BLIZZARD_DEMON, 5 },
-        { MONS_ICE_DEVIL, 5 },
+        { MONS_GNOLL, 20 },
+        { MONS_GNOLL, 10 },
+        { MONS_GNOLL, 10 },
+        { MONS_GNOLL, 10 },
+        { MONS_GNOLL, 10 },
+        { MONS_GNOLL, 10 },
+        { MONS_GNOLL, 10 },
+        { MONS_GNOLL, 5 },
+        { MONS_GNOLL, 5 },
+        { MONS_GNOLL, 5 },
+        { MONS_GNOLL, 5 },
     }}},
-    { BRANCH_TARTARUS, { {MONS_TZITZIMITL}, SPTYP_NECROMANCY, {
-        { RANDOM_MONSTER, 100 }, // TODO
+    { BRANCH_TARTARUS, { {MONS_GNOLL}, SPTYP_NECROMANCY, {
+        { MONS_GNOLL, 100 }, // TODO
     }}},
 };
 

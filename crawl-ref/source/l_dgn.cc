@@ -512,7 +512,15 @@ static int dgn_kmons(lua_State *ls)
 {
     MAP(ls, 1, map);
     string kmons_input = luaL_checkstring(ls, 2);
-    string err = map->map.add_key_mons(string(kmons_input.begin(), kmons_input.begin() + 4) + "gnoll");
+    int i;
+    string s;
+    for (i = 2; i <= 10; ++i) {
+		s = string(kmons_input.begin(), kmons_input.begin() + i);
+		if (string(s.end()-1, s.end()) == "="){
+			break;
+		}
+    }    
+    string err = map->map.add_key_mons(s + " gnoll");
     if (!err.empty())
         luaL_error(ls, err.c_str());
     return 0;
