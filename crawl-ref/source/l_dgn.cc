@@ -431,7 +431,12 @@ static int dgn_mons(lua_State *ls)
             s = "nothing";
         }
         else {
-            s = "gnoll";
+            if ((player_in_branch(BRANCH_CRYPT) || player_in_branch(BRANCH_TOMB) || player_in_branch(BRANCH_OSSUARY))) {
+                s = "random";
+            }
+            else{
+                s = "gnoll";
+            }
         }
         string err = map->mons.add_mons(s);
         if (!err.empty())
@@ -547,7 +552,12 @@ static int dgn_kmons(lua_State *ls)
             s = s + " nothing";
         }
         else {
-        s = s + " gnoll";
+            if ((player_in_branch(BRANCH_CRYPT) || player_in_branch(BRANCH_TOMB) || player_in_branch(BRANCH_OSSUARY))) {
+                s = s + " random";
+            }
+            else{
+                s = s + " gnoll";
+            }
         }
     }
     
