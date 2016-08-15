@@ -437,6 +437,7 @@ static int dgn_mons(lua_State *ls)
     }
 
     const int index = luaL_checkint(ls, 2);
+    mpr(luaL_checkstring(ls, 3));
     string err = map->mons.set_mons(index, luaL_checkstring(ls, 3));
     if (!err.empty())
         luaL_error(ls, err.c_str());
