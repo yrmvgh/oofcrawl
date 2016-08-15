@@ -4,8 +4,6 @@
 
 {{
 function fixup_slime_vaults(data, triggerable, triggerer, marker, ev)
-  triggerable:remove(marker)
-  return
   if not dgn.persist.fix_slime_vaults then
     return
   end
