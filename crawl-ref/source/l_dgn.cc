@@ -425,7 +425,7 @@ static int dgn_mons(lua_State *ls)
             s = string(kmons_input.begin() + 9, kmons_input.end());
         }
         else {
-            s = "gnoll"
+            s = "gnoll";
         }
         string err = map->mons.add_mons(gnoll);
         if (!err.empty())
