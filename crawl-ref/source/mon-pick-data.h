@@ -467,7 +467,7 @@ static const pop_entry pop_crypt[] =
   {  2,  5,  145, SEMI, MONS_SKELETON },
   {  2,  5,   95, SEMI, MONS_ZOMBIE },
   {  2,  7,   40, SEMI, MONS_SKELETON },
-  {  2,  7,   55, PEAK, MONS_SKELETON },
+  {  2,  7,   55, PEAK, MONS_SIMULACRUM },
   {  3,  7,   15, PEAK, MONS_ZOMBIE },
   { 0,0,0,FLAT,MONS_0 }
 };
@@ -479,11 +479,11 @@ static const pop_entry pop_tomb[] =
   {  1,  5,   50, SEMI, MONS_SKELETON },
   {  1,  5, 1000, FLAT, MONS_SKELETON },
   {  1,  5,  230, FLAT, MONS_ZOMBIE },
-  {  1,  5,  500, FLAT, MONS_SKELETON },
+  {  1,  5,  500, FLAT, MONS_SIMULACRUM },
   { -1,  9,  335, SEMI, MONS_SKELETON },
   {  4,  5,    3, RISE, MONS_ZOMBIE },
-  {  3,  5,    6, FLAT, MONS_ZOMBIE },
-  {  3,  5,    3, SEMI, MONS_SKELETON },
+  {  3,  5,    6, FLAT, MONS_SIMULACRUM },
+  {  3,  5,    3, SEMI, MONS_SIMULACRUM },
   {  1,  5,  200, FLAT, MONS_ZOMBIE },
   {  1,  5,  200, FLAT, MONS_SKELETON },
   {  1,  5,  100, FLAT, MONS_ZOMBIE },
