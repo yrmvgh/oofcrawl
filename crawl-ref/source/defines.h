@@ -124,7 +124,7 @@ const int LABYRINTH_BORDER = 4;
 #define AUTOMATIC_HIT           1500
 
 const int MAX_SKILL_LEVEL = 27;
-const int MAX_EXP_TOTAL = 1;
+const int MAX_EXP_TOTAL = 8999999;
 const int HIGH_EXP_POOL = 20000;
 const int EXERCISE_QUEUE_SIZE = 100;
 

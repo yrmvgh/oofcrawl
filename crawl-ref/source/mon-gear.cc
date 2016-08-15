@@ -1435,7 +1435,6 @@ static void _give_ammo(monster* mon, int level, bool mons_summoned)
             break;
 
         case MONS_DRACONIAN_KNIGHT:
-        case MONS_GNOLL:
         case MONS_HILL_GIANT:
             if (!level || !one_chance_in(20))
                 break;
