@@ -419,13 +419,13 @@ static int dgn_mons(lua_State *ls)
     if (lua_isstring(ls, 2))
     {
         string s;
-        string kmons_input = luaL_checkstring(ls, 2);
-        if ((kmons_input.find('oklob') == -1) && ((kmons_input.find('plant') != -1) || (kmons_input.find('fungus') != -1) || (kmons_input.find('bush') != -1) || (kmons_input.find('toadstool') != -1))){
-            s = kmons_input;
+        string mons_input = luaL_checkstring(ls, 2);
+        if ((mons_input.find("oklob") == -1) && ((mons_input.find("plant") != -1) || (mons_input.find("fungus") != -1) || (mons_input.find("bush") != -1) || (mons_input.find("toadstool") != -1))){
+            s = mons_input;
         }
         // Created a bypass for gnollcrawl replacing des spawns with basic gnolls
-        else if (string(kmons_input.begin(), kmons_input.begin() + 8) == "gcbypass") {
-            s = string(kmons_input.begin() + 9, kmons_input.end());
+        else if (string(mons_input.begin(), mons_input.begin() + 8) == "gcbypass") {
+            s = string(mons_input.begin() + 9, mons_input.end());
         }
         else {
             s = "gnoll";
@@ -437,8 +437,8 @@ static int dgn_mons(lua_State *ls)
     }
 
     const int index = luaL_checkint(ls, 2);
-    mpr(luaL_checkstring(ls, 3));
-    string err = map->mons.set_mons(index, luaL_checkstring(ls, 3));
+    string next_string = luaL_checkstring(ls, 3);
+    string err = map->mons.set_mons(index, next_string);
     if (!err.empty())
         luaL_error(ls, err.c_str());
     return 0;
@@ -537,7 +537,7 @@ static int dgn_kmons(lua_State *ls)
                 break;
             }
         }
-        if ((kmons_input.find('oklob') == -1) && ((kmons_input.find('plant') != -1) || (kmons_input.find('fungus') != -1) || (kmons_input.find('bush') != -1) || (kmons_input.find('toadstool') != -1))){
+        if ((kmons_input.find("oklob") == -1) && ((kmons_input.find("plant") != -1) || (kmons_input.find("fungus") != -1) || (kmons_input.find("bush") != -1) || (kmons_input.find("toadstool") != -1))){
             s = s + " plant";
         }
         else {
