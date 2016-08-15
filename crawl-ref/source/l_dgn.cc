@@ -533,7 +533,7 @@ static int dgn_kmons(lua_State *ls)
                 break;
             }
         }
-        s = s + " gnoll"
+        s = s + " gnoll";
     }
     
     string err = map->map.add_key_mons(s);
