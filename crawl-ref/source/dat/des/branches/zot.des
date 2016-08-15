@@ -2518,7 +2518,9 @@ SUBST:    a = ., b = 6G
 
 ## monsters
 ### GC: Changing monster spawns for vault
-MONS:     gcbypass gnoll, gnoll sergeant, gnoll shaman
+MONS:     gcbypass gnoll
+MONS:     gcbypass gnoll sergeant
+MONS:     gcbypass gnoll shaman
 #MONS:     patrolling orb guardian, killer klown, electric golem, orb of fire
 #MONS:     ancient lich, orange crystal statue / w:20 obsidian statue
 #SHUFFLE:  234

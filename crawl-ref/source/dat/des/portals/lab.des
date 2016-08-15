@@ -159,7 +159,8 @@ ENDMAP
 NAME:   labyrinth_hidden_loot
 TAGS:   generate_loot
 ORIENT: float
-MONS:   gcbypass patrolling gnoll sergeant, gnoll sergeant zombie
+MONS:   gcbypass patrolling gnoll sergeant
+MONS:   gcbypass gnoll sergeant zombie
 SUBST:  d = 2%*
 SUBST:  b : bvv
 MAP
