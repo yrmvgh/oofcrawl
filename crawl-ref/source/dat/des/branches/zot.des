@@ -2518,18 +2518,6 @@ SUBST:    a = ., b = 6G
 
 ## monsters
 MONS:     gcbypass gnoll, gnoll sergeant, gnoll shaman
-MONS:     patrolling orb guardian, killer klown, electric golem, orb of fire
-MONS:     ancient lich, orange crystal statue / w:20 obsidian statue
-SHUFFLE:  234
-SUBST:    8 = 8..., 5 = 5.
-# For the chambers closer to the orb, have 1/3 chances for more ancient liches,
-# 1/3 chance for more orbs of fire, or 1/3 chances for more killer klowns and
-# random floor spawns.
-SUBST:    ? = .:8 ?
-SUBST:    ? : KLM
-SUBST:    K = 4:30 5 0 ~
-SUBST:    L = 4 5:30 0 ~
-SUBST:    M = 2:20 4 5 0:20 ~
 
 ## colours
 COLOUR:     cX = lightmagenta

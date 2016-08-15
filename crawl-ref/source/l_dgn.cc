@@ -427,7 +427,7 @@ static int dgn_mons(lua_State *ls)
         else {
             s = "gnoll";
         }
-        string err = map->mons.add_mons(gnoll);
+        string err = map->mons.add_mons(s);
         if (!err.empty())
             luaL_error(ls, err.c_str());
         return 0;
