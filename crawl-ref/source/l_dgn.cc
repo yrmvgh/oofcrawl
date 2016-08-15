@@ -529,7 +529,7 @@ static int dgn_kmons(lua_State *ls)
         int i;
         for (i = 2; i <= 10; ++i) {
             s = string(kmons_input.begin(), kmons_input.begin() + i);
-            if (string(s.end()-1, s.end()) == "="){
+            if (string(s.end()-1, s.end()) == "=" || string(s.end()-1, s.end()) == ":"){
                 break;
             }
         }
