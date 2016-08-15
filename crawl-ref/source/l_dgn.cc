@@ -420,7 +420,7 @@ static int dgn_mons(lua_State *ls)
     {
         string s;
         string mons_input = luaL_checkstring(ls, 2);
-        if (player_in_branch(BRANCH_WIZLAB)) {
+        if ((player_in_branch(BRANCH_WIZLAB)) || (player_in_branch(BRANCH_SEWER)) || (player_in_branch(BRANCH_BAILEY)) || (player_in_branch(BRANCH_ICE_CAVE)) || (player_in_branch(BRANCH_VOLCANO))) {
             s = "gnoll";
         }
         else if ((mons_input.find("oklob") == -1) && ((mons_input.find("plant") != -1) || (mons_input.find("fungus") != -1) || (mons_input.find("bush") != -1) || (mons_input.find("toadstool") != -1))){
@@ -548,7 +548,7 @@ static int dgn_kmons(lua_State *ls)
                 break;
             }
         }
-        if (player_in_branch(BRANCH_WIZLAB)) {
+        if ((player_in_branch(BRANCH_WIZLAB)) || (player_in_branch(BRANCH_SEWER)) || (player_in_branch(BRANCH_BAILEY)) || (player_in_branch(BRANCH_ICE_CAVE)) || (player_in_branch(BRANCH_VOLCANO))) {
             s = s + " gnoll";
         }
         else if ((kmons_input.find("oklob") == -1) && ((kmons_input.find("plant") != -1) || (kmons_input.find("fungus") != -1) || (kmons_input.find("bush") != -1) || (kmons_input.find("toadstool") != -1))){

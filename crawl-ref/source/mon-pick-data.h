@@ -1002,6 +1002,7 @@ static const pop_entry pop_volcano[] =
 
 static const pop_entry pop_wizlab[] =
 { // Wizlab
+  {  1,  1,  515, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
