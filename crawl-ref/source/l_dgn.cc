@@ -435,7 +435,7 @@ static int dgn_mons(lua_State *ls)
                 s = "random";
             }
             else{
-                s = "gnoll";
+                s = "nothing"; // Let's just get rid of most gnoll vault placements
             }
         }
         string err = map->mons.add_mons(s);
@@ -556,7 +556,7 @@ static int dgn_kmons(lua_State *ls)
                 s = s + " random";
             }
             else{
-                s = s + " gnoll";
+                s = s + " nothing"; // let's get rid of most gnoll des replacement
             }
         }
     }
