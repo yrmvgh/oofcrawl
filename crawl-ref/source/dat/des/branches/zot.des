@@ -2517,7 +2517,20 @@ SUBST:    A = ^..., B = ^.
 SUBST:    a = ., b = 6G
 
 ## monsters
+### GC: Changing monster spawns for vault
 MONS:     gcbypass gnoll, gnoll sergeant, gnoll shaman
+#MONS:     patrolling orb guardian, killer klown, electric golem, orb of fire
+#MONS:     ancient lich, orange crystal statue / w:20 obsidian statue
+#SHUFFLE:  234
+#SUBST:    8 = 8..., 5 = 5.
+## For the chambers closer to the orb, have 1/3 chances for more ancient liches,
+## 1/3 chance for more orbs of fire, or 1/3 chances for more killer klowns and
+## random floor spawns.
+#SUBST:    ? = .:8 ?
+#SUBST:    ? : KLM
+#SUBST:    K = 4:30 5 0 ~
+#SUBST:    L = 4 5:30 0 ~
+#SUBST:    M = 2:20 4 5 0:20 ~
 
 ## colours
 COLOUR:     cX = lightmagenta
@@ -2545,9 +2558,9 @@ XXXXXXXXXX..~.....................XXXXXXXXXXXXX.....................~..XXXXXXXXX
 XXXXXXXXXX.......?..?.....~.~.....XXX...1...XXX.....~.~.....?..?.......XXXXXXXXX
 XXXXXXXXXXX.~...........?.........XX..1...1..XX.........?...........~.XXXXXXXXXX
 XXXXXXXXXXXX......................X1...!!!...1X......................XXXXXXXXXXX
-XXXXXXXXXXXXX.....4....2....~.~......1.!Z!.1......~.~....2....4.....XXXXXXXXXXXX
+XXXXXXXXXXXXX.....2....1....~.~......1.!Z!.1......~.~....2....1.....XXXXXXXXXXXX
 XXXXXXXXXXXX....?...?.....?...?...X1...!!!...1X...?...?.....?....?...XXXXXXXXXXX
-XXXXXXXXXXX.......?....?..........XX..1...1..XX..........?....2.......XXXXXXXXXX
+XXXXXXXXXXX.......?....?..........XX..1...1..XX..........?....1.......XXXXXXXXXX
 XXXXXXXXXX.....~..........~.~.....XXX...1...XXX.....~.~..........~.....XXXXXXXXX
 XXXXXXXXXX...~....................cXXXXXXXXXXXc....................~...XXXXXXXXX
 XXXXXXXXXXX.....~.~.~..~.........ccccccccccccccc........~...~.~.~.....XXXXXXXXXX
@@ -2558,12 +2571,12 @@ XXXXXXXXXXXcc...............AA1.ccccccccccccccccc.1BB...............ccXXXXXXXXXX
 XXXXXXXXXXcc...~.~..~.~.....cc1...ccccccccccccc...1cc.......~..~.~.~.ccXXXXXXXXX
 XXXXXXXXXcc.~...~......~.~...ccc...ccccccccccc...ccc...~.~.~..~.......ccXXXXXXXX
 XXXXXXXXXc.~..~....~.~........ccc...............ccc.....~....~..~.~....cXXXXXXXX
-XXXXXXXXXc..~..~.~....~.~.~.5.cXcc.............ccXc.5.~.~.~....~.~...~.cXXXXXXXX
+XXXXXXXXXc..~..~.~....~.~.~.2.cXcc.............ccXc.2.~.~.~....~.~...~.cXXXXXXXX
 XXXXXXXXXc..~.....~.~.......~.cXXc.............cXXc~........~.....~.~..cXXXXXXXX
 XXXXXXXXXc.~...~......~.~.....cXXcc.1...1...1.ccXXc......~.......~.....cXXXXXXXX
 XXXXXXXXXc~..~...~.~.~.~...~.~cXXXc...........cXXXc~.~..~..~.~.~...~.~.cXXXXXXXX
 XXXXXXXXXc.....~.........~....cXXcc...........ccXXc....~.~.............cXXXXXXXX
-XXXXXXXXXcc...5..~..~.~....~.ccXXc.............cXXcc~.....~....~..5.~.ccXXXXXXXX
+XXXXXXXXXcc...3..~..~.~....~.ccXXc.............cXXcc~.....~....~..3.~.ccXXXXXXXX
 XXXXXXXXXXcc~......~....~.~.ccXXcc.............ccXXcc.~.~....~....~..ccXXXXXXXXX
 XXXXXXXXXXXcc..............ccXXXc...............cXXXcc..............ccXXXXXXXXXX
 XXXXXXXXXXXXccccccccccccccccXXXXcccccccc@ccccccccXXXXccccccccccccccccXXXXXXXXXXX

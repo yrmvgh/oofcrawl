@@ -2894,9 +2894,9 @@ void debug_bands()
 
 static monster_type _pick_zot_exit_defender()
 {
-    if (one_chance_in(11))
+    if (one_chance_in(8))
     {
-        return MONS_GNOLL_SERGEANT;
+        return random_choose(MONS_GNOLL_SERGEANT, MONS_GNOLL_SHAMAN);
 #ifdef DEBUG_MON_CREATION
         mprf(MSGCH_DIAGNOSTICS, "Create a pandemonium lord!");
 #endif
