@@ -41,7 +41,7 @@ function sewer_portal(e)
         floor = "expired_portal",
         feat_tile = "dngn_portal_sewer_rusted",
         msg = messager })
-  e.tags("uniq_sewer no_monster_gen chance_sewer")
+  e.tags("uniq_sewer chance_sewer")
   e.chance(800)
   e.kfeat("O = enter_sewer")
   e.kfeat("1 = W")
@@ -276,7 +276,7 @@ default-depth: Sewer
 # Easier than sewer_minmay_treatment, so more common.
 #
 NAME:     sewer_kobolds
-TAGS:     no_item_gen no_monster_gen no_pool_fixup
+TAGS:     no_item_gen no_pool_fixup
 WEIGHT:   25
 ORIENT:   encompass
 SUBST:    ' = .W
@@ -334,7 +334,7 @@ ENDMAP
 # Water treatment center, staffed by kobolds
 #
 NAME:   sewer_minmay_treatment
-TAGS:   no_item_gen no_monster_gen no_pool_fixup
+TAGS:   no_item_gen no_pool_fixup
 WEIGHT: 15
 ORIENT: encompass
 MONS:   rat / river rat w:3
@@ -388,7 +388,7 @@ vvvvxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxvvvv
 ENDMAP
 
 NAME:    kennysheep_pipe_town
-TAGS:    no_item_gen no_monster_gen no_pool_fixup
+TAGS:    no_item_gen no_pool_fixup
 ORIENT:  encompass
 MONS:    kobold / big kobold w:2
 MONS:    bat / rat / ooze w:5 / ball python / giant newt w:5 / \
@@ -447,7 +447,7 @@ ENDMAP
 # Loot are good items, and often a scroll of blinking.
 #
 NAME:     sewer_frog_island_01
-TAGS:     no_item_gen no_monster_gen no_pool_fixup
+TAGS:     no_item_gen no_pool_fixup
 ORIENT:   encompass
 SUBST:    - = WWW.
 SHUFFLE:  |d
@@ -496,7 +496,7 @@ cc........................----WwW-c
 ENDMAP
 
 NAME:     sewer_frog_island_02
-TAGS:     no_item_gen no_monster_gen no_pool_fixup
+TAGS:     no_item_gen no_pool_fixup
 ORIENT:   encompass
 NSUBST:   ! = 2:! / *:w
 SUBST:    - = WWWW.
@@ -550,7 +550,7 @@ ENDMAP
 # reachable when frogs come to sight, and loot isn't handed out as a way
 # to handle them.
 NAME:    sewer_minmay_w
-TAGS:    no_item_gen no_monster_gen no_pool_fixup
+TAGS:    no_item_gen no_pool_fixup
 ORIENT:  encompass
 SHUFFLE: de
 MONS:    rat / river rat w:2
@@ -606,7 +606,7 @@ ENDMAP
 # Threat is mostly a single larger creature, often Purgy. Combined weight 40.
 
 NAME:     sewer_big_baddie
-TAGS:     no_item_gen no_monster_gen no_pool_fixup
+TAGS:     no_item_gen no_pool_fixup
 ORIENT:   encompass
 : sewer_setup(_G)
 SUBST:    2 = 23
@@ -645,7 +645,7 @@ ENDMAP
 # Another one with a big bad monster.
 #
 NAME:   sewer_the_crocodile
-TAGS:   no_item_gen no_monster_gen no_pool_fixup
+TAGS:   no_item_gen no_pool_fixup
 ORIENT: encompass
 SUBST:  - = WW...
 MONS:   kobold, jackal
@@ -702,7 +702,7 @@ ENDMAP
 # can be seen from the island.
 #
 NAME:    sewer_co_purgy_island
-TAGS:    no_item_gen no_monster_gen no_pool_fixup
+TAGS:    no_item_gen no_pool_fixup
 ORIENT:  encompass
 #      Placing Purgy, he appears in one of three places. The crocodile serves
 #      as the back-up, in case Purgy was already placed in the Dungeon.
@@ -775,7 +775,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ENDMAP
 
 NAME:   kennysheep_door_sewer
-TAGS:   no_item_gen no_monster_gen no_pool_fixup
+TAGS:   no_item_gen no_pool_fixup
 ORIENT: encompass
 MONS:   kobold w:40 / bat / giant newt / giant cockroach / \
         adder w:5 / big kobold w:1
@@ -817,7 +817,7 @@ ENDMAP
 # monsters, two will yield you treasure.
 #
 NAME:     sewer_fruit_machine
-TAGS:     no_item_gen no_monster_gen no_pool_fixup
+TAGS:     no_item_gen no_pool_fixup
 ORIENT:   encompass
 SHUFFLE:  QEDS
 SUBST:    Q = 4, E = 5, D : fgh, S = $
@@ -896,7 +896,7 @@ ENDMAP
 # A sewer opening to sea by st_.
 #
 NAME:   sewer_sea
-TAGS:   no_item_gen no_monster_gen no_rotate no_pool_fixup
+TAGS:   no_item_gen no_rotate no_pool_fixup
 ORIENT: encompass
 WEIGHT: 5
 MONS:   rat w:4 / nothing w:1, rat / river rat w:5
@@ -960,7 +960,7 @@ ENDMAP
 # is surrounded by deep water.
 #
 NAME:    sewer_co_15_rooms
-TAGS:    no_item_gen no_monster_gen no_pool_fixup
+TAGS:    no_item_gen no_pool_fixup
 ORIENT:  encompass
 MONS:    kobold / w:7 big kobold
 MONS:    kobold / adder / ball python / w:7 worm / w:7 ooze / \
@@ -1040,7 +1040,7 @@ ENDMAP
 # At least you won't go in circles...
 #
 NAME:   sewer_co_tree
-TAGS:   no_item_gen no_monster_gen no_pool_fixup
+TAGS:   no_item_gen no_pool_fixup
 ORIENT: encompass
 MONS:   kobold / big kobold
 MONS:   adder / ball python / worm
@@ -1115,7 +1115,7 @@ ENDMAP
 # each map, but all three pipes will be accessible on all instances.
 #
 NAME:    sewer_co_cracked_pipes
-TAGS:    no_item_gen no_monster_gen no_pool_fixup no_rotate no_vmirror
+TAGS:    no_item_gen no_pool_fixup no_rotate no_vmirror
 ORIENT:  encompass
 #      water creatures
 MONS:    giant newt / ball python w:5 / \
@@ -1189,7 +1189,7 @@ ENDMAP
 # The loot is often at the end of the pipes, with guarding monsters.
 #
 NAME:    sewer_co_scattered_pipes
-TAGS:    no_item_gen no_monster_gen no_pool_fixup
+TAGS:    no_item_gen no_pool_fixup
 ORIENT:  encompass
 KMONS:   P = plant / nothing
 #      pipe monsters.
@@ -1268,7 +1268,7 @@ ENDMAP
 # boss monster.
 # Total loot: 8 ok items (mostly consumables), 4 star items
 NAME:    kennysheep_sewer_church
-TAGS:    no_item_gen no_monster_gen no_pool_fixup
+TAGS:    no_item_gen no_pool_fixup
 ORIENT:  encompass
 WEIGHT:  3
 KFEAT:   B = altar_makhleb
