@@ -2521,6 +2521,7 @@ SUBST:    a = ., b = 6G
 MONS:     gcbypass gnoll
 MONS:     gcbypass gnoll sergeant
 MONS:     gcbypass gnoll shaman
+MONS:     gcbypass grum
 #MONS:     patrolling orb guardian, killer klown, electric golem, orb of fire
 #MONS:     ancient lich, orange crystal statue / w:20 obsidian statue
 #SHUFFLE:  234
@@ -2557,7 +2558,7 @@ XXXXXXXXXXXXXXX.............XXXXXXXXXXXXXXXXXXXXXXXXX.............XXXXXXXXXXXXXX
 XXXXXXXXXXXX...................XXXXXXXXXXXXXXXXXXX...................XXXXXXXXXXX
 XXXXXXXXXXX..........3...........XXXXXXXXXXXXXXX...........3..........XXXXXXXXXX
 XXXXXXXXXX..~.....................XXXXXXXXXXXXX.....................~..XXXXXXXXX
-XXXXXXXXXX.......?..?.....~.~.....XXX...1...XXX.....~.~.....?..?.......XXXXXXXXX
+XXXXXXXXXX.......?..?.....~.~.....XXX...4...XXX.....~.~.....?..?.......XXXXXXXXX
 XXXXXXXXXXX.~...........?.........XX..1...1..XX.........?...........~.XXXXXXXXXX
 XXXXXXXXXXXX......................X1...!!!...1X......................XXXXXXXXXXX
 XXXXXXXXXXXXX.....2....1....~.~......1.!Z!.1......~.~....2....1.....XXXXXXXXXXXX
