@@ -4,6 +4,8 @@
 
 {{
 function fixup_slime_vaults(data, triggerable, triggerer, marker, ev)
+  triggerable:remove(marker)
+  return
   if not dgn.persist.fix_slime_vaults then
     return
   end
@@ -664,7 +666,7 @@ NAME:    slime_pit
 PLACE:   Slime:$
 ORIENT:  encompass
 TAGS:    no_rotate no_dump
-MONS:    the Royal Jelly
+MONS:    gcbypass gnoll sergeant
 MONS:    acid blob
 MONS:    great orb of eyes / nothing
 SUBST:   ' : ' .:1,  ' : ' x:1,  ' = .x
@@ -672,7 +674,7 @@ SUBST:   " : " .:3,  " = .c
 NSUBST:  P = O / *|
 KMASK:   |O* = no_monster_gen
 KPROP:   |O* = no_jiyva
-KPROP:   |O* = no_tele_into
+# KPROP:   |O* = no_tele_into
 KFEAT:   Z = altar_jiyva
 KITEM:   O = slimy rune of Zot
 KITEM:   * = star_item
@@ -740,26 +742,26 @@ xxxxxxxxxxxxxxxxxx'.........................................'xxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxxx''.........................................'xxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxxxxx'...........................................'xxxxxxxxxxxxxxxxxxx
 xxxxxxxxxxxxx''xx'..........................................'xxxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxx'..''................""""."""""...........]....''xxxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxx'x.................."mmmm2mmmmm".................'xxxxxxxxxxxxxxxxx
-xxxxxxxxxxxxx'.'................"mm*mm..mm*mm".................''xxxxxxxxxxxxxxx
-xxxxxxxxxxxxx'................."mm***mm4m***mm".................xxxxxxxxxxxxxxxx
-xxxxxxxxxxxxx'................"mm*|*mm..mm*|*mm"................'xxxxxxxxxxxxxxx
-xxxxxxxxxxxx''..............."mm*|P|*m4mm*|P|*mm"...............'xxxxxxxxxxxxxxx
-xxxxxxxxxxxx'................"mm**|*mm..mm*|**mm"................'''xxxxxxxxxxxx
-xxxxxxxxxxxx'................"mmm**m|mm4m|m**mmm"..................xxxxxxxxxxxxx
-xxxxxxxxxxx'................."mmmmmmmm.3mmmmmmmm"..................'xxxxxxxxxxxx
-xxxxxxxxxxx'................."m.4.m.4.1..4.m.4.m"..................''xxxxxxxxxxx
+xxxxxxxxxxxxx'..''................mmmm.mmmmm...........]....''xxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxx'x..................mmmmm2mmmmmm.................'xxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxx'.'................mmm*mm..mm*mmm.................''xxxxxxxxxxxxxxx
+xxxxxxxxxxxxx'.................mmm***mm4m***mmm.................xxxxxxxxxxxxxxxx
+xxxxxxxxxxxxx'................mmm*|*mm..mm*|*mmm................'xxxxxxxxxxxxxxx
+xxxxxxxxxxxx''...............mmm*|P|*m4mm*|P|*mmm...............'xxxxxxxxxxxxxxx
+xxxxxxxxxxxx'................mmm**|*mm..mm*|**mmm................'''xxxxxxxxxxxx
+xxxxxxxxxxxx'................mmmm**m|mm4m|m**mmmm..................xxxxxxxxxxxxx
+xxxxxxxxxxx'.................mmmmmmmmm.3mmmmmmmmm..................'xxxxxxxxxxxx
+xxxxxxxxxxx'.................mm.4.m.4.1..4.m.4.mm..................''xxxxxxxxxxx
 xxxxxxxxxxx'..................2.m.4.m..Z.m.4.m.2....................'xxxxxxxxxxx
-xxxxxxxxxx'..........)......."mmmmmmmm3.mmmmmmmm"...................'xxxxxxxxxxx
-xxxxxxxxxx'.................."mmm**m|mm4m|m**mmm"...................'xxxxxxxxxxx
-xxxxxxxxxx'.................."mm**|*mm..mm*|**mm"..................'xxxxxxxxxxxx
-xxxxxxxxx'..................."mm*|P|*m4mm*|P|*mm"..................'xxxxxxxxxxxx
-xxxxxxxxx''..................."mm*|*mm..mm*|*mm"..................'xxxxxxxxxxxxx
-xxxxxxxxxxx'..................."mm***mm4m***mm"...................'xxxxxxxxxxxxx
-xxxxxxxxxxxx'..................."mm*mm..mm*mm"....................'xxxxxxxxxxxxx
-xxxxxxxxxxxx'...................."mmmm2mmmmm"....................'xxxxxxxxxxxxxx
-xxxxxxxxxxxxx'...................."""".""""".....................'xxxxxxxxxxxxxx
+xxxxxxxxxx'..........).......mmmmmmmmm3.mmmmmmmmm...................'xxxxxxxxxxx
+xxxxxxxxxx'..................mmmm**m|mm4m|m**mmmm...................'xxxxxxxxxxx
+xxxxxxxxxx'..................mmm**|*mm..mm*|**mmm..................'xxxxxxxxxxxx
+xxxxxxxxx'...................mmm*|P|*m4mm*|P|*mmm..................'xxxxxxxxxxxx
+xxxxxxxxx''...................mmm*|*mm..mm*|*mmm..................'xxxxxxxxxxxxx
+xxxxxxxxxxx'...................mmm***mm4m***mmm...................'xxxxxxxxxxxxx
+xxxxxxxxxxxx'...................mmm*mm..mm*mmm....................'xxxxxxxxxxxxx
+xxxxxxxxxxxx'....................mmmmm2mmmmmm....................'xxxxxxxxxxxxxx
+xxxxxxxxxxxxx'....................mmmm.mmmmm.....................'xxxxxxxxxxxxxx
 xxxxxxxxxxxxx'...........................................[........'xxxxxxxxxxxxx
 xxxxxxxxxxxx''..............................................'''....'xxxxxxxxxxxx
 xxxxxxxxxxxx'.............................................''xxx''.'xxxxxxxxxxxxx
