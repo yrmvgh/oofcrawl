@@ -1,12 +1,14 @@
 This is my attempt to make GnollCrawl. No exp gain. Only gnolls.
 
+Be warned, the changes to the DES spawns means that some portals other than lab will spawn very odd numbers at times.
+
 No hunger.
 
 Removed gnolls picking up items, TRJ vault is always diggable, Gnoll Undead in undead branches, removed bands, max 25 enemies per level, rune requirements.
 
 Gnoll Sergeants and Shamans are rare. Expect some in Zot. Grum is the boss.
 
-TODO: 
+TODO: Shortcuts to get to the orb quicker.
 
 -------------------
 

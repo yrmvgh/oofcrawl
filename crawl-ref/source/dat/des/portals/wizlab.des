@@ -1206,7 +1206,7 @@ TILE:       c = dngn_stone_dark
 LFLOORTILE: floor_pebble_white
 KFEAT:      ' = open_door
 KFEAT:      1234567 = .
-KMONS:      1234567 = nothing
+KMONS:      gcbypass 1234567 = nothing
 LROCKCOL:   darkgrey
 ITEM:       potion of experience q:1, potion of beneficial mutation q:1
 ITEM:       manual of fighting / manual of armour / manual of spellcasting / \

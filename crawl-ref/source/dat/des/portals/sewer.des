@@ -453,10 +453,7 @@ SUBST:    - = WWW.
 SHUFFLE:  |d
 ITEM:     scroll of teleportation w:2 / scroll of blinking / \
           scroll of random uselessness w:1
-MONS:     giant newt / ball python w:5 / giant cockroach / \
-          generate_awake giant newt / generate_awake ball python w:5 / \
-          generate_awake giant cockroach / generate_awake \
-          giant gecko / adder w:8 / nothing w:8
+MONS:     gcbypass random / nothing w:8
 NSUBST:   ! = 2:! / *:w
 KFEAT:    ! = w
 COLOUR:   ! = green
@@ -713,9 +710,7 @@ SUBST:   R = .
 #      lesser monsters.
 KFEAT:   1 = w
 COLOUR:  1 = green
-KMONS:   1 = giant newt / ball python w:5 / \
-         generate_awake giant newt / generate_awake ball python w:5 / \
-         adder w:4 / nothing w:6
+KMONS:   gcbypass 1 = random / nothing w:6
 #      loot
 SUBST:   e = !!!!????%
 KITEM:   ? = potion of flight q:2 w:15 / potion of curing /\
@@ -903,8 +898,7 @@ MONS:   rat w:4 / nothing w:1, rat / river rat w:5
 KMONS:  G = siren hd:3 name:sickly name_adjective name_species
 KMONS:  H = merfolk avatar hd:3 name:malarious name_adjective name_species
 KMONS:  hJ = giant newt / ball python / adder / nothing w:2
-KMONS:  g = giant newt / ball python / giant cockroach / \
-            giant gecko / nothing w:7
+KMONS:  gcbypass g = random / nothing w:7
 KFEAT:  gsh = W
 KFEAT:  O = open_sea
 COLOUR: gh = lightgreen
@@ -1141,7 +1135,7 @@ SUBST:   V = .WWWW
 SUBST:   X = xx"
 #      rat path
 KPROP:   " = no_tele_into
-KMONS:   " = nothing w:50 / rat w:15 / river rat w:7
+KMONS:   gcbypass " = nothing w:50 / random
 KPROP:   w = no_tele_into
 #      loot
 SUBST:   e = !!!!!?????%

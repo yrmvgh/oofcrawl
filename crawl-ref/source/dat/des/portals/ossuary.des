@@ -784,9 +784,8 @@ SUBST:   3 = 2
 NSUBST:  M = 1:1 / *:.
 :end
 MONS:    mummy
-MONS:    generate_awake centaur zombie / generate_awake hobgoblin zombie / \
-         generate_awake big kobold zombie / nothing w:20
-MONS:    centaur zombie / hobgoblin zombie / big kobold zombie / nothing w:20
+MONS:    gcbypass random / nothing w:20
+MONS:    gcbypass random / nothing w:20
 KFEAT:   ~ = net trap / needle trap / alarm trap w:5 / floor w:40
 KFEAT:   T = alarm trap w:20 / net trap / floor w:70
 KFEAT:   ^ = net trap w:15 / needle trap w:4 / spear trap w:1 / floor w:20
@@ -976,12 +975,10 @@ MONS:   mummy
 #
 KFEAT:  F = floor
 COLOUR: F = cyan
-KMONS:  F = rat simulacrum / goblin simulacrum / kobold simulacrum /\
-            bat simulacrum / nothing w:80
+KMONS:  gcbypass F = random / nothing w:80
 KFEAT:  S = floor
 COLOUR: S = green
-KMONS:  S = spectral rat / spectral goblin / spectral kobold /\
-            spectral bat / nothing w:80
+KMONS:  gcbypass S = random / nothing w:80
 # Loot.
 ITEM:   any potion / any scroll / nothing w:1
 #
@@ -1231,9 +1228,7 @@ ORIENT: encompass
 TAGS:   no_item_gen no_monster_gen
 KMONS:  1W = wraith
 KMONS:  2 = mummy
-KMONS:  3 = goblin zombie / hobgoblin zombie / kobold zombie / gnoll zombie w:2 /\
-        big kobold zombie w:1 / human zombie w:1 / elf zombie w:1 / orc zombie w:1 /\
-                nothing w:36
+KMONS:  gcbypass 3 = random / nothing w:36
 KITEM:  12d = any potion / any scroll / any jewellery w:1
 KFEAT:  . = needle trap / arrow trap / spear trap w:5 / floor w:600
 NSUBST: d = 1:1 / 3:2 / 4:. / *:d

@@ -470,7 +470,7 @@ ENDMAP
 NAME: nicolae_trove_entry_path_of_doom
 CHANCE: 5%
 KMONS: O = patrolling guardian mummy
-KMONS: m = patrolling guardian mummy / nothing w:20
+KMONS: gcbypass m = random / nothing w:20
 : trove.portal(_G)
 COLOUR: $m = blue
 FTILE: $m = floor_marble
