@@ -427,6 +427,9 @@ static int dgn_mons(lua_State *ls)
         else if (string(mons_input.begin(), mons_input.begin() + 8) == "gcbypass") {
             s = string(mons_input.begin() + 9, mons_input.end());
         }
+        else if (mons_input.find("nothing") != -1){
+            s = "nothing";
+        }
         else {
             s = "gnoll";
         }
@@ -539,6 +542,9 @@ static int dgn_kmons(lua_State *ls)
         }
         if ((kmons_input.find("oklob") == -1) && ((kmons_input.find("plant") != -1) || (kmons_input.find("fungus") != -1) || (kmons_input.find("bush") != -1) || (kmons_input.find("toadstool") != -1))){
             s = s + " plant";
+        }
+        else if (kmons_input.find("nothing") != -1){
+            s = s + " nothing";
         }
         else {
         s = s + " gnoll";

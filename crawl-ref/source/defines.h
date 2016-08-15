@@ -36,7 +36,7 @@ const int MAX_GHOSTS = 10;
 
 enum extra_monster_index_type
 {
-    MAX_MONSTERS = 700,                  // max size of monster array {dlb}
+    MAX_MONSTERS = 25,                  // max size of monster array {dlb}
     ANON_FRIENDLY_MONSTER = MAX_MONSTERS,// unknown/dead ally, for actor blaming
     YOU_FAULTLESS,                       // full xp but no penalty (reflection)
     NON_MONSTER  = 27000,                // no monster
