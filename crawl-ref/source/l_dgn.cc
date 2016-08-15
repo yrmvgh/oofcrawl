@@ -423,7 +423,7 @@ static int dgn_mons(lua_State *ls)
         // Created a bypass for gnollcrawl replacing des spawns with basic gnolls
         if (string(kmons_input.begin(), kmons_input.begin() + 8) == "gcbypass") {
             s = string(kmons_input.begin() + 9, kmons_input.end());
-            mpr("Bypassing: " + s)
+            mpr("Bypassing: " + s);
         }
         else {
             s = "gnoll";
