@@ -2867,7 +2867,7 @@ void recalc_and_scale_hp()
  */
 void level_change(bool skip_attribute_increase)
 {
-    return 0;
+    return;
     // necessary for the time being, as level_change() is called
     // directly sometimes {dlb}
     you.redraw_experience = true;
