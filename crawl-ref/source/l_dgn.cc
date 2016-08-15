@@ -420,7 +420,7 @@ static int dgn_mons(lua_State *ls)
     {
         string s;
         string kmons_input = luaL_checkstring(ls, 2);
-        if (!kmons_input.find('oklob') && (kmons_input.find('plant') || kmons_input.find('fungus') || kmons_input.find('bush') || kmons_input.find('toadstool'))){
+        if ((kmons_input.find('oklob') == -1) && ((kmons_input.find('plant') != -1) || (kmons_input.find('fungus') != -1) || (kmons_input.find('bush') != -1) || (kmons_input.find('toadstool') != -1))){
             s = kmons_input;
         }
         // Created a bypass for gnollcrawl replacing des spawns with basic gnolls
@@ -536,7 +536,7 @@ static int dgn_kmons(lua_State *ls)
                 break;
             }
         }
-        if (!kmons_input.find('oklob') && (kmons_input.find('plant') || kmons_input.find('fungus') || kmons_input.find('bush') || kmons_input.find('toadstool'))){
+        if ((kmons_input.find('oklob') == -1) && ((kmons_input.find('plant') != -1) || (kmons_input.find('fungus') != -1) || (kmons_input.find('bush') != -1) || (kmons_input.find('toadstool') != -1))){
             s = s + " plant";
         }
         else {
