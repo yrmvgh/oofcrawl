@@ -104,7 +104,7 @@ ENDMAP
 NAME:    labyrinth_watery
 TAGS:    generate_loot no_pool_fixup
 ORIENT:  float
-MONS:    patrolling generate_awake minotaur
+MONS:    gcbypass patrolling generate_awake gnoll sergeant
 SUBST:   b:vvb
 MAP
 .........
@@ -123,7 +123,7 @@ ENDMAP
 NAME:   labyrinth_green
 TAGS:   generate_loot
 ORIENT: float
-MONS:   patrolling generate_awake minotaur
+MONS:   gcbypass patrolling generate_awake gnoll sergeant
 WEIGHT: 2
 MAP
 ........
@@ -138,7 +138,7 @@ ENDMAP
 NAME:   labyrinth_spiral
 TAGS:   generate_loot
 ORIENT: float
-MONS:   patrolling generate_awake minotaur
+MONS:   gcbypass patrolling generate_awake gnoll sergeant
 SUBST:  b : bvz, z = vb
 MAP
 ............
@@ -159,7 +159,7 @@ ENDMAP
 NAME:   labyrinth_hidden_loot
 TAGS:   generate_loot
 ORIENT: float
-MONS:   patrolling minotaur, minotaur zombie
+MONS:   gcbypass patrolling gnoll sergeant, gnoll sergeant zombie
 SUBST:  d = 2%*
 SUBST:  b : bvv
 MAP
@@ -186,7 +186,7 @@ SHUFFLE: def, ghi, klm
 SUBST:   d : b, e : ., f : b
 SUBST:   g : b, h : ., i : b
 SUBST:   k = {, l = ., m = .
-KMONS:   { = patrolling generate_awake minotaur
+KMONS:   gcbypass { = patrolling generate_awake gnoll sergeant
 KFEAT:   { : exit_labyrinth
 SUBST:   b : vvb
 # should not be necessary
@@ -219,7 +219,7 @@ ENDMAP
 
 NAME: nicolae_lab_dead_adventurers
 ORIENT: float
-KMONS: m = patrolling generate_awake minotaur
+KMONS: gcbypass m = patrolling generate_awake gnoll sergeant
 KPROP: ABCD'm = bloody
 KFEAT: ' = floor
 SHUFFLE: bxvc, ABCDEFHIJKLM

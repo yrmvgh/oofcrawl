@@ -418,7 +418,16 @@ static int dgn_mons(lua_State *ls)
 
     if (lua_isstring(ls, 2))
     {
-        string err = map->mons.add_mons("gnoll");
+        string s;
+        string kmons_input = luaL_checkstring(ls, 2);
+        // Created a bypass for gnollcrawl replacing des spawns with basic gnolls
+        if (string(kmons_input.begin(), kmons_input.begin() + 8) == "gcbypass") {
+            s = string(kmons_input.begin() + 9, kmons_input.end());
+        }
+        else {
+            s = "gnoll"
+        }
+        string err = map->mons.add_mons(gnoll);
         if (!err.empty())
             luaL_error(ls, err.c_str());
         return 0;
@@ -510,16 +519,24 @@ static int dgn_kfeat(lua_State *ls)
 static int dgn_kmons(lua_State *ls)
 {
     MAP(ls, 1, map);
-    string kmons_input = luaL_checkstring(ls, 2);
-    int i;
     string s;
-    for (i = 2; i <= 10; ++i) {
-		s = string(kmons_input.begin(), kmons_input.begin() + i);
-		if (string(s.end()-1, s.end()) == "="){
-			break;
-		}
-    }    
-    string err = map->map.add_key_mons(s + " gnoll");
+    string kmons_input = luaL_checkstring(ls, 2);
+    // Created a bypass for gnollcrawl replacing des spawns with basic gnolls
+    if (string(kmons_input.begin(), kmons_input.begin() + 8) == "gcbypass") {
+        s = string(kmons_input.begin() + 9, kmons_input.end());
+    }
+    else {
+        int i;
+        for (i = 2; i <= 10; ++i) {
+            s = string(kmons_input.begin(), kmons_input.begin() + i);
+            if (string(s.end()-1, s.end()) == "="){
+                break;
+            }
+        }
+        s = s + " gnoll"
+    }
+    
+    string err = map->map.add_key_mons(s);
     if (!err.empty())
         luaL_error(ls, err.c_str());
     return 0;

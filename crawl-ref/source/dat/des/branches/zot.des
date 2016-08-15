@@ -2517,6 +2517,7 @@ SUBST:    A = ^..., B = ^.
 SUBST:    a = ., b = 6G
 
 ## monsters
+MONS:     gcbypass gnoll, gnoll sergeant, gnoll shaman
 MONS:     patrolling orb guardian, killer klown, electric golem, orb of fire
 MONS:     ancient lich, orange crystal statue / w:20 obsidian statue
 SHUFFLE:  234
