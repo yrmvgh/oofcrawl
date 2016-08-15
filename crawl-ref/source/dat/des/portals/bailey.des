@@ -387,7 +387,7 @@ ENDMAP
 # Loot consists of approximately six good items.
 NAME:   bailey_axe_1
 ORIENT: encompass
-TAGS:   bailey_axe no_rotate no_item_gen no_pool_fixup
+TAGS:   bailey_axe no_rotate no_item_gen no_monster_gen no_pool_fixup
 #
 ITEM:   any good_item w:10 / nothing w:5
 #
@@ -499,7 +499,7 @@ ENDMAP
 # Another actual bailey. Six good items.
 NAME:   bailey_axe_3
 ORIENT: encompass
-TAGS:   bailey_axe no_rotate no_item_gen no_pool_fixup
+TAGS:   bailey_axe no_rotate no_item_gen no_monster_gen no_pool_fixup
 SUBST:  v : ccv
 ITEM:   any good_item
 KFEAT:  _ = altar_trog / altar_okawaru / altar_makhleb
@@ -558,7 +558,7 @@ ENDMAP
 #
 NAME:    bailey_axe_4
 ORIENT:  encompass
-TAGS:    bailey_axe no_rotate no_item_gen no_pool_fixup
+TAGS:    bailey_axe no_rotate no_item_gen no_monster_gen no_pool_fixup
 #
 ITEM:    any good_item
 ITEM:    potion of flight ident:type
@@ -626,7 +626,7 @@ ENDMAP
 
 NAME:   bailey_axe_minmay_hex_keep
 ORIENT: encompass
-TAGS:   bailey_axe no_item_gen
+TAGS:   bailey_axe no_item_gen no_monster_gen
 # Loot consists of 8 good potions and scrolls in the last outer room, with a
 # lot of gold and especially good items in the (very dangerous) center room.
 #
@@ -711,7 +711,7 @@ ENDMAP
 #
 NAME:   bailey_polearm_1
 ORIENT: encompass
-TAGS:   bailey_polearm no_rotate no_pool_fixup
+TAGS:   bailey_polearm no_rotate no_pool_fixup no_monster_gen
 NSUBST: D = 1:+ / *:c
 NSUBST: E = 1:+ / *:c
 : orc_with_polearm(_G)
@@ -763,7 +763,7 @@ ENDMAP
 #
 NAME:   bailey_polearm_2
 ORIENT: encompass
-TAGS:   bailey_polearm no_rotate no_pool_fixup
+TAGS:   bailey_polearm no_rotate no_pool_fixup no_monster_gen
 MONS:   orc warrior w:5 ; arbalest . bolt . ring mail | scale mail / \
         orc ; arbalest . bolt . ring mail | scale mail
 : orc_with_polearm(_G)
@@ -879,7 +879,7 @@ ENDMAP
 #
 NAME:   bailey_polearm_4
 ORIENT: encompass
-TAGS:   bailey_polearm no_rotate no_item_gen no_pool_fixup
+TAGS:   bailey_polearm no_rotate no_item_gen no_monster_gen no_pool_fixup
 ITEM:   any good_item
 MONS:   orc warrior ; arbalest . bolt . ring mail | scale mail | chain mail / \
         orc warrior ; halberd . ring mail | scale mail | chain mail
@@ -915,7 +915,7 @@ ENDMAP
 #
 NAME:   bailey_polearm_5
 ORIENT: encompass
-TAGS:   bailey_polearm no_item_gen
+TAGS:   bailey_polearm no_item_gen no_monster_gen
 ITEM:   potion of beneficial mutation q:1 / potion of experience q:1
 ITEM:   potion of curing / potion of heal wounds / potion of might w:5 /\
         potion of berserk rage w:3 / potion of haste w:2 /\
@@ -953,7 +953,7 @@ ENDMAP
 # the player starts right in the middle of a fight
 NAME:   bailey_polearm_flooded_kennysheep
 ORIENT: encompass
-TAGS:   bailey_polearm no_item_gen no_pool_fixup patrolling
+TAGS:   bailey_polearm no_item_gen no_monster_gen no_pool_fixup patrolling
 : orc_with_polearm(_G)
 : orc_warrior_with_polearm(_G)
 MONS:   centaur ; javelin ego:returning ident:type q:2 | \
@@ -1002,7 +1002,7 @@ ENDMAP
 #6 good items and two gold piles for murdering a bunch of gnolls
 NAME:   bailey_polearm_gnolls_kennysheep
 ORIENT: encompass
-TAGS:   bailey_polearm no_item_gen no_pool_fixup
+TAGS:   bailey_polearm no_item_gen no_monster_gen no_pool_fixup
 MONS:   gnoll ; spear | trident | halberd . \
             ring mail | scale mail | chain mail . \
             throwing net | nothing
@@ -1058,7 +1058,7 @@ ENDMAP
 # along with 1 guaranteed acquirement scroll and 3 gold piles in the bastions
 NAME:   bailey_axe_of_yendor_kennysheep
 ORIENT: encompass
-TAGS:   bailey_axe no_item_gen no_pool_fixup
+TAGS:   bailey_axe no_item_gen no_monster_gen no_pool_fixup
 : easy_axe_fighter(_G)
 : hard_axe_fighter(_G)
 KMONS:  3 = orc sorcerer ; war axe | broad axe w:2 | battleaxe w:1 . \
@@ -1149,7 +1149,7 @@ ENDMAP
 # the warlord fight is a little easier, and the outer fights are harder
 NAME:   bailey_axe_bossmonster_kennysheep
 ORIENT: encompass
-TAGS:   bailey_axe no_item_gen no_pool_fixup
+TAGS:   bailey_axe no_item_gen no_monster_gen no_pool_fixup
 ITEM:   potion of curing / potion of heal wounds / potion of resistance w:5 / \
             potion of might w:5 / potion of brilliance w:5 / potion of agility w:5 / \
             potion of magic w:5 / potion of haste w:5 / \
