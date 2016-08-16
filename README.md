@@ -4,7 +4,7 @@ Be warned, the changes to the DES spawns means that some portals other than lab 
 
 No hunger.
 
-Removed gnolls picking up items, TRJ vault is always diggable, Gnoll Undead in undead branches, removed bands, max 25 enemies per level, rune requirements.
+Removed most gnolls picking up items, TRJ vault is always diggable, Gnoll Undead in undead branches, removed bands (not brands), removed rune requirements.
 
 Gnoll Sergeants and Shamans are rare. Expect some in Zot. Grum is the boss.
 
