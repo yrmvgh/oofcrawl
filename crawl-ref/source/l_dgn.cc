@@ -427,11 +427,11 @@ static int dgn_mons(lua_State *ls)
         else if ((mons_input.find("oklob") == -1) && ((mons_input.find("plant") != -1) || (mons_input.find("fungus") != -1) || (mons_input.find("bush") != -1) || (mons_input.find("toadstool") != -1))){
             s = mons_input;
         }
-        else if ((player_in_branch(BRANCH_WIZLAB)) || (player_in_branch(BRANCH_SEWER)) || (player_in_branch(BRANCH_BAILEY)) || (player_in_branch(BRANCH_ICE_CAVE)) || (player_in_branch(BRANCH_VOLCANO))) {
-            s = "gnoll";
-        }
         else if (mons_input.find("nothing") != -1){
             s = "nothing";
+        }
+        else if ((player_in_branch(BRANCH_WIZLAB)) || (player_in_branch(BRANCH_SEWER)) || (player_in_branch(BRANCH_BAILEY)) || (player_in_branch(BRANCH_ICE_CAVE)) || (player_in_branch(BRANCH_VOLCANO))) {
+            s = "gnoll";
         }
         else {
             if ((player_in_branch(BRANCH_CRYPT) || player_in_branch(BRANCH_TOMB) || player_in_branch(BRANCH_OSSUARY))) {
@@ -551,11 +551,11 @@ static int dgn_kmons(lua_State *ls)
         if ((kmons_input.find("oklob") == -1) && ((kmons_input.find("plant") != -1) || (kmons_input.find("fungus") != -1) || (kmons_input.find("bush") != -1) || (kmons_input.find("toadstool") != -1))){
             s = s + " plant";
         }
-        else if ((player_in_branch(BRANCH_WIZLAB)) || (player_in_branch(BRANCH_SEWER)) || (player_in_branch(BRANCH_BAILEY)) || (player_in_branch(BRANCH_ICE_CAVE)) || (player_in_branch(BRANCH_VOLCANO))) {
-            s = s + " gnoll";
-        }
         else if (kmons_input.find("nothing") != -1){
             s = s + " nothing";
+        }
+        else if ((player_in_branch(BRANCH_WIZLAB)) || (player_in_branch(BRANCH_SEWER)) || (player_in_branch(BRANCH_BAILEY)) || (player_in_branch(BRANCH_ICE_CAVE)) || (player_in_branch(BRANCH_VOLCANO))) {
+            s = s + " gnoll";
         }
         else {
             if ((player_in_branch(BRANCH_CRYPT) || player_in_branch(BRANCH_TOMB) || player_in_branch(BRANCH_OSSUARY))) {
