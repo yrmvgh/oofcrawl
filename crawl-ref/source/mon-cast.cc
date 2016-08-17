@@ -102,7 +102,7 @@ static bool _mons_can_bind_soul(monster* binder, monster* bound);
 void init_mons_spells()
 {
     monster fake_mon;
-    fake_mon.type       = MONS_BLACK_DRACONIAN;
+    fake_mon.type       = MONS_GNOLL;
     fake_mon.hit_points = 1;
 
     bolt pbolt;
@@ -3663,7 +3663,7 @@ bool handle_mon_spell(monster* mons, bolt &beem)
             if (mons->alive())
             {
                 create_monster(
-                    mgen_data(MONS_WATER_ELEMENTAL, SAME_ATTITUDE(mons), mons,
+                    mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons), mons,
                     3, spell_cast, mons->pos(), mons->foe));
             }
         }
@@ -3778,18 +3778,18 @@ static void _haunt_fixup(monster* summon, coord_def pos)
 
 static monster_type _pick_horrible_thing()
 {
-    return one_chance_in(4) ? MONS_TENTACLED_MONSTROSITY
-                            : MONS_ABOMINATION_LARGE;
+    return one_chance_in(4) ? MONS_GNOLL
+                            : MONS_GNOLL;
 }
 
 static monster_type _pick_undead_summon()
 {
     static monster_type undead[] =
     {
-        MONS_NECROPHAGE, MONS_JIANGSHI, MONS_HUNGRY_GHOST, MONS_FLAYED_GHOST,
-        MONS_ZOMBIE, MONS_SKELETON, MONS_SIMULACRUM, MONS_SPECTRAL_THING,
-        MONS_FLYING_SKULL, MONS_MUMMY, MONS_VAMPIRE, MONS_WIGHT, MONS_WRAITH,
-        MONS_SHADOW_WRAITH, MONS_FREEZING_WRAITH, MONS_PHANTASMAL_WARRIOR, MONS_SHADOW
+        MONS_GNOLL, MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+        MONS_GNOLL, MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+        MONS_GNOLL, MONS_GNOLL, MONS_GNOLL, MONS_GNOLL, MONS_GNOLL,
+        MONS_GNOLL, MONS_GNOLL, MONS_GNOLL, MONS_GNOLL
     };
 
     return RANDOM_ELEMENT(undead);
@@ -3797,22 +3797,22 @@ static monster_type _pick_undead_summon()
 
 static monster_type _pick_vermin()
 {
-    return random_choose_weighted(8, MONS_HELL_RAT,
-                                  5, MONS_REDBACK,
-                                  2, MONS_TARANTELLA,
-                                  2, MONS_JUMPING_SPIDER,
-                                  3, MONS_DEMONIC_CRAWLER,
+    return random_choose_weighted(8, MONS_GNOLL,
+                                  5, MONS_GNOLL,
+                                  2, MONS_GNOLL,
+                                  2, MONS_GNOLL,
+                                  3, MONS_GNOLL,
                                   0);
 }
 
 static monster_type _pick_drake()
 {
-    return random_choose_weighted(5, MONS_SWAMP_DRAKE,
-                                  5, MONS_KOMODO_DRAGON,
-                                  5, MONS_WIND_DRAKE,
-                                  6, MONS_RIME_DRAKE,
-                                  6, MONS_DEATH_DRAKE,
-                                  3, MONS_LINDWURM,
+    return random_choose_weighted(5, MONS_GNOLL,
+                                  5, MONS_GNOLL,
+                                  5, MONS_GNOLL,
+                                  6, MONS_GNOLL,
+                                  6, MONS_GNOLL,
+                                  3, MONS_GNOLL,
                                   0);
 }
 
@@ -3890,13 +3890,13 @@ static void _mons_cast_spectral_orcs(monster* mons)
 
     for (int i = random2(3) + 1; i > 0; --i)
     {
-        monster_type mon = MONS_ORC;
+        monster_type mon = MONS_GNOLL;
         if (coinflip())
-            mon = MONS_ORC_WARRIOR;
+            mon = MONS_GNOLL;
         else if (one_chance_in(3))
-            mon = MONS_ORC_KNIGHT;
+            mon = MONS_GNOLL;
         else if (one_chance_in(10))
-            mon = MONS_ORC_WARLORD;
+            mon = MONS_GNOLL;
 
         // Use the original monster type as the zombified type here, to
         // get the proper stats from it.
@@ -4485,81 +4485,81 @@ struct branch_summon_pair
 
 static const pop_entry _invitation_lair[] =
 { // Lair enemies
-  {  1,   1,   80, FLAT, MONS_YAK },
-  {  1,   1,   60, FLAT, MONS_BLINK_FROG },
-  {  1,   1,   40, FLAT, MONS_ELEPHANT },
-  {  1,   1,   20, FLAT, MONS_SPINY_FROG },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   40, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_snake[] =
 { // Snake enemies
-  {  1,   1,   90, FLAT, MONS_NAGA },
-  {  1,   1,   70, FLAT, MONS_WATER_MOCCASIN },
-  {  1,   1,   30, FLAT, MONS_BLACK_MAMBA },
-  {  1,   1,   10, FLAT, MONS_GUARDIAN_SERPENT },
+  {  1,   1,   90, FLAT, MONS_GNOLL },
+  {  1,   1,   70, FLAT, MONS_GNOLL },
+  {  1,   1,   30, FLAT, MONS_GNOLL },
+  {  1,   1,   10, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_spider[] =
 { // Spider enemies
-  {  1,   1,   60, FLAT, MONS_TARANTELLA },
-  {  1,   1,   80, FLAT, MONS_JUMPING_SPIDER },
-  {  1,   1,   20, FLAT, MONS_REDBACK },
-  {  1,   1,   20, FLAT, MONS_ORB_SPIDER },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_swamp[] =
 { // Swamp enemies
-  {  1,   1,   80, FLAT, MONS_VAMPIRE_MOSQUITO },
-  {  1,   1,   60, FLAT, MONS_INSUBSTANTIAL_WISP },
-  {  1,   1,   60, FLAT, MONS_SWAMP_DRAKE },
-  {  1,   1,   10, FLAT, MONS_ALLIGATOR },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   10, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_shoals[] =
 { // Swamp enemies
-  {  1,   1,   80, FLAT, MONS_MERFOLK },
-  {  1,   1,   60, FLAT, MONS_SIREN },
-  {  1,   1,   40, FLAT, MONS_MANTICORE },
-  {  1,   1,   20, FLAT, MONS_SNAPPING_TURTLE },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   40, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_orc[] =
 { // Orc enemies
-  {  1,   1,   90, FLAT, MONS_ORC_PRIEST },
-  {  1,   1,   70, FLAT, MONS_ORC_WARRIOR },
-  {  1,   1,   30, FLAT, MONS_WARG },
-  {  1,   1,   10, FLAT, MONS_TROLL },
+  {  1,   1,   90, FLAT, MONS_GNOLL },
+  {  1,   1,   70, FLAT, MONS_GNOLL },
+  {  1,   1,   30, FLAT, MONS_GNOLL },
+  {  1,   1,   10, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_elf[] =
 { // Elf enemies
-  {  1,   1,  100, FLAT, MONS_DEEP_ELF_MAGE },
-  {  1,   1,   50, FLAT, MONS_DEEP_ELF_KNIGHT },
-  {  1,   1,   50, FLAT, MONS_DEEP_ELF_ARCHER },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   50, FLAT, MONS_GNOLL },
+  {  1,   1,   50, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_vaults[] =
 { // Vaults enemies
-  {  1,   1,   80, FLAT, MONS_HUMAN },
-  {  1,   1,   60, FLAT, MONS_YAKTAUR },
-  {  1,   1,   40, FLAT, MONS_IRONHEART_PRESERVER },
-  {  1,   1,   20, FLAT, MONS_VAULT_SENTINEL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   40, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _invitation_crypt[] =
 { // Crypt enemies
-  {  1,   1,   80, FLAT, MONS_WRAITH },
-  {  1,   1,   60, FLAT, MONS_SHADOW },
-  {  1,   1,   40, FLAT, MONS_VAMPIRE },
-  {  1,   1,   20, FLAT, MONS_SHADOW_WRAITH },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   40, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
@@ -4578,118 +4578,118 @@ static branch_summon_pair _invitation_summons[] =
 
 static const pop_entry _planerend_lair[] =
 { // Lair enemies
-  {  1,   1,  100, FLAT, MONS_CATOBLEPAS },
-  {  1,   1,  100, FLAT, MONS_DIRE_ELEPHANT },
-  {  1,   1,   60, FLAT, MONS_TORPOR_SNAIL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_snake[] =
 { // Snake enemies
-  {  1,   1,   40, FLAT, MONS_ANACONDA },
-  {  1,   1,  100, FLAT, MONS_GUARDIAN_SERPENT },
-  {  1,   1,  100, FLAT, MONS_GREATER_NAGA },
+  {  1,   1,   40, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_spider[] =
 { // Spider enemies
-  {  1,   1,  100, FLAT, MONS_GHOST_MOTH },
-  {  1,   1,  100, FLAT, MONS_EMPEROR_SCORPION },
-  {  1,   1,   20, FLAT, MONS_HORNET },
-  {  1,   1,   60, FLAT, MONS_ORB_SPIDER },
-  {  1,   1,   20, FLAT, MONS_TARANTELLA },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   20, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_swamp[] =
 { // Swamp enemies
-  {  1,   1,   80, FLAT, MONS_SWAMP_DRAGON },
-  {  1,   1,   80, FLAT, MONS_HYDRA },
-  {  1,   1,  100, FLAT, MONS_SHAMBLING_MANGROVE },
-  {  1,   1,   40, FLAT, MONS_THORN_HUNTER },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   40, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_shoals[] =
 { // Shoals enemies
-  {  1,   1,   50, FLAT, MONS_WATER_NYMPH },
-  {  1,   1,  100, FLAT, MONS_MERFOLK_JAVELINEER },
-  {  1,   1,  100, FLAT, MONS_MERFOLK_AQUAMANCER },
-  {  1,   1,   80, FLAT, MONS_ALLIGATOR_SNAPPING_TURTLE },
+  {  1,   1,   50, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_slime[] =
 { // Slime enemies
-  {  1,   1,  100, FLAT, MONS_ACID_BLOB },
-  {  1,   1,  100, FLAT, MONS_AZURE_JELLY },
-  {  1,   1,  100, FLAT, MONS_SLIME_CREATURE }, // changed to titanic below
-  {  1,   1,   80, FLAT, MONS_GIANT_ORANGE_BRAIN },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL }, // changed to titanic below
+  {  1,   1,   80, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_orc[] =
 { // Orc enemies
-  {  1,   1,  100, FLAT, MONS_ORC_WARLORD },
-  {  1,   1,   80, FLAT, MONS_ORC_SORCERER },
-  {  1,   1,   80, FLAT, MONS_ORC_HIGH_PRIEST },
-  {  1,   1,   40, FLAT, MONS_STONE_GIANT },
-  {  1,   1,   60, FLAT, MONS_OGRE_MAGE },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   40, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_elf[] =
 { // Elf enemies
-  {  1,   1,  100, FLAT, MONS_DEEP_ELF_SORCERER },
-  {  1,   1,  100, FLAT, MONS_DEEP_ELF_HIGH_PRIEST },
-  {  1,   1,   60, FLAT, MONS_DEEP_ELF_MASTER_ARCHER },
-  {  1,   1,   60, FLAT, MONS_DEEP_ELF_BLADEMASTER },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_vaults[] =
 { // Vaults enemies
-  {  1,   1,   80, FLAT, MONS_VAULT_SENTINEL },
-  {  1,   1,   80, FLAT, MONS_DANCING_WEAPON },
-  {  1,   1,   60, FLAT, MONS_IRONBRAND_CONVOKER },
-  {  1,   1,  100, FLAT, MONS_WAR_GARGOYLE },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_crypt[] =
 { // Crypt enemies
-  {  1,   1,  100, FLAT, MONS_VAMPIRE_KNIGHT },
-  {  1,   1,  100, FLAT, MONS_FLAYED_GHOST },
-  {  1,   1,   80, FLAT, MONS_REVENANT },
-  {  1,   1,   80, FLAT, MONS_DEEP_ELF_DEATH_MAGE },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_tomb[] =
 { // Tomb enemies
-  {  1,   1,   60, FLAT, MONS_ANCIENT_CHAMPION },
-  {  1,   1,  100, FLAT, MONS_SPHINX },
-  {  1,   1,  100, FLAT, MONS_MUMMY_PRIEST },
+  {  1,   1,   60, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_abyss[] =
 { // Abyss enemies
-  {  1,   1,  100, FLAT, MONS_STARCURSED_MASS },
-  {  1,   1,   80, FLAT, MONS_APOCALYPSE_CRAB },
-  {  1,   1,   50, FLAT, MONS_THRASHING_HORROR },
-  {  1,   1,   50, FLAT, MONS_VERY_UGLY_THING },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   50, FLAT, MONS_GNOLL },
+  {  1,   1,   50, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
 static const pop_entry _planerend_zot[] =
 { // Zot enemies
-  {  1,   1,   80, FLAT, MONS_DRACONIAN_SHIFTER },
-  {  1,   1,   80, FLAT, MONS_DRACONIAN_SCORCHER },
-  {  1,   1,   80, FLAT, MONS_DRACONIAN_ZEALOT },
-  {  1,   1,  100, FLAT, MONS_GOLDEN_DRAGON },
-  {  1,   1,  100, FLAT, MONS_MOTH_OF_WRATH },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,   80, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
+  {  1,   1,  100, FLAT, MONS_GNOLL },
   { 0,0,0,FLAT,MONS_0 }
 };
 
@@ -5215,9 +5215,9 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
         for (sumcount = 0; sumcount < sumcount2; ++sumcount)
         {
-            monster_type rats[] = { MONS_QUOKKA, MONS_RIVER_RAT, MONS_RAT };
+            monster_type rats[] = { MONS_GNOLL, MONS_GNOLL, MONS_GNOLL };
 
-            const monster_type mon = (one_chance_in(3) ? MONS_BAT
+            const monster_type mon = (one_chance_in(3) ? MONS_GNOLL
                                                        : RANDOM_ELEMENT(rats));
             create_monster(
                 mgen_data(mon, SAME_ATTITUDE(mons), mons,
@@ -5235,11 +5235,11 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
             if (random2(mons->spell_hd(spell_cast)) > 27
                 || one_chance_in(5 - min(4, div_rand_round(pow * 2, 25))))
             {
-                sum = x_chance_in_y(pow / 3, 100) ? MONS_WATER_MOCCASIN
-                                                  : MONS_ADDER;
+                sum = x_chance_in_y(pow / 3, 100) ? MONS_GNOLL
+                                                  : MONS_GNOLL;
             }
             else
-                sum = MONS_BALL_PYTHON;
+                sum = MONS_GNOLL;
 
             if (create_monster(
                     mgen_data(sum, SAME_ATTITUDE(mons), mons,
@@ -5274,25 +5274,25 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
     }
 
     case SPELL_WATER_ELEMENTALS:
-        _mons_summon_elemental(mons, spell_cast, MONS_WATER_ELEMENTAL, god);
+        _mons_summon_elemental(mons, spell_cast, MONS_GNOLL, god);
         return;
 
     case SPELL_EARTH_ELEMENTALS:
-        _mons_summon_elemental(mons, spell_cast, MONS_EARTH_ELEMENTAL, god);
+        _mons_summon_elemental(mons, spell_cast, MONS_GNOLL, god);
         return;
 
 #if TAG_MAJOR_VERSION == 34
     case SPELL_IRON_ELEMENTALS:
-        _mons_summon_elemental(mons, spell_cast, MONS_IRON_ELEMENTAL, god);
+        _mons_summon_elemental(mons, spell_cast, MONS_GNOLL, god);
         return;
 #endif
 
     case SPELL_AIR_ELEMENTALS:
-        _mons_summon_elemental(mons, spell_cast, MONS_AIR_ELEMENTAL, god);
+        _mons_summon_elemental(mons, spell_cast, MONS_GNOLL, god);
         return;
 
     case SPELL_FIRE_ELEMENTALS:
-        _mons_summon_elemental(mons, spell_cast, MONS_FIRE_ELEMENTAL, god);
+        _mons_summon_elemental(mons, spell_cast, MONS_GNOLL, god);
         return;
 
     case SPELL_SUMMON_ILLUSION:
@@ -5362,10 +5362,10 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         duration  = min(2 + mons->spell_hd(spell_cast) / 5, 6);
         create_monster(
             mgen_data(random_choose_weighted(
-                        1, MONS_IRON_IMP,
-                        2, MONS_SHADOW_IMP,
-                        2, MONS_WHITE_IMP,
-                        4, MONS_CRIMSON_IMP,
+                        1, MONS_GNOLL,
+                        2, MONS_GNOLL,
+                        2, MONS_GNOLL,
+                        4, MONS_GNOLL,
                         0),
                       SAME_ATTITUDE(mons), mons,
                       duration, spell_cast, mons->pos(), mons->foe, MG_NONE,
@@ -5394,7 +5394,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         for (sumcount = 0; sumcount < sumcount2; ++sumcount)
         {
             create_monster(
-                mgen_data(MONS_UFETUBUS, SAME_ATTITUDE(mons), mons,
+                mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons), mons,
                           duration, spell_cast, mons->pos(), mons->foe, MG_NONE,
                           god));
         }
@@ -5402,13 +5402,13 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
     case SPELL_SUMMON_HELL_BEAST:  // Geryon
         create_monster(
-            mgen_data(MONS_HELL_BEAST, SAME_ATTITUDE(mons), mons,
+            mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons), mons,
                       4, spell_cast, mons->pos(), mons->foe, MG_NONE, god));
         return;
 
     case SPELL_SUMMON_ICE_BEAST:
         create_monster(
-            mgen_data(MONS_ICE_BEAST, SAME_ATTITUDE(mons), mons,
+            mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons), mons,
                       5, spell_cast, mons->pos(), mons->foe, MG_NONE, god));
         return;
 
@@ -5853,12 +5853,12 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         for (sumcount = 0; sumcount < sumcount2; sumcount++)
         {
             const monster_type mon = random_choose_weighted(
-                                       100, MONS_GIANT_EYEBALL,
-                                        80, MONS_EYE_OF_DRAINING,
-                                        60, MONS_GOLDEN_EYE,
-                                        40, MONS_SHINING_EYE,
-                                        20, MONS_GREAT_ORB_OF_EYES,
-                                        10, MONS_EYE_OF_DEVASTATION,
+                                       100, MONS_GNOLL,
+                                        80, MONS_GNOLL,
+                                        60, MONS_GNOLL,
+                                        40, MONS_GNOLL,
+                                        20, MONS_GNOLL,
+                                        10, MONS_GNOLL,
                                          0);
 
             create_monster(
@@ -5923,11 +5923,11 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         for (sumcount = 0; sumcount < sumcount2; sumcount++)
         {
             const monster_type mon = random_choose_weighted(
-                                       3, MONS_EFREET,
-                                       3, MONS_SUN_DEMON,
-                                       3, MONS_BALRUG,
-                                       2, MONS_HELLION,
-                                       1, MONS_BRIMSTONE_FIEND,
+                                       3, MONS_GNOLL,
+                                       3, MONS_GNOLL,
+                                       3, MONS_GNOLL,
+                                       2, MONS_GNOLL,
+                                       1, MONS_GNOLL,
                                        0);
 
             create_monster(
@@ -6213,7 +6213,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
         for (sumcount = 0; sumcount < sumcount2; sumcount++)
         {
-        create_monster(mgen_data(MONS_MANA_VIPER, SAME_ATTITUDE(mons),
+        create_monster(mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons),
                                  mons, 2, spell_cast, mons->pos(),
                                  mons->foe, MG_NONE, god));
         }
@@ -6225,7 +6225,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
         for (sumcount = 0; sumcount < sumcount2; sumcount++)
         {
-            create_monster(mgen_data(MONS_EMPEROR_SCORPION, SAME_ATTITUDE(mons),
+            create_monster(mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons),
                                      mons, 5, spell_cast, mons->pos(),
                                      mons->foe, MG_NONE, god));
         }
@@ -6295,7 +6295,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
 
         for (sumcount = 0; sumcount < sumcount2; sumcount++)
         {
-            create_monster(mgen_data(MONS_DEATH_SCARAB, SAME_ATTITUDE(mons),
+            create_monster(mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons),
                                      mons, 2, spell_cast, mons->pos(),
                                      mons->foe, MG_NONE, god));
         }
@@ -6367,7 +6367,7 @@ void mons_cast(monster* mons, bolt pbolt, spell_type spell_cast,
         for (sumcount = 0; sumcount < sumcount2; ++sumcount)
         {
             create_monster(
-                mgen_data(MONS_EXECUTIONER, SAME_ATTITUDE(mons), mons,
+                mgen_data(MONS_GNOLL, SAME_ATTITUDE(mons), mons,
                           duration, spell_cast, mons->pos(), mons->foe, MG_NONE,
                           god));
         }
@@ -7366,7 +7366,7 @@ static void _mons_awaken_earth(monster &mon, const coord_def &target)
             seen = true;
 
         if (create_monster(mgen_data(
-                MONS_EARTH_ELEMENTAL, SAME_ATTITUDE((&mon)), &mon,
+                MONS_GNOLL, SAME_ATTITUDE((&mon)), &mon,
                 2, SPELL_AWAKEN_EARTH, *ai, mon.foe, MG_NONE, mon.god)))
         {
             count++;

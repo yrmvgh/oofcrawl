@@ -546,7 +546,7 @@ static bool _find_mon_place_near_stairs(coord_def& pos,
             break;
         }
     }
-    const monster_type habitat_target = MONS_BAT;
+    const monster_type habitat_target = MONS_GNOLL;
     int distance = 3;
     pos = find_newmons_square_contiguous(habitat_target, pos, distance);
     return in_bounds(pos);
@@ -3406,35 +3406,35 @@ monster_type summon_any_demon(monster_type dct, bool use_local_demons)
     case RANDOM_DEMON_LESSER:
         // tier 5
         return random_choose(
-            MONS_CRIMSON_IMP,
-            MONS_QUASIT,
-            MONS_WHITE_IMP,
-            MONS_UFETUBUS,
-            MONS_IRON_IMP,
-            MONS_SHADOW_IMP);
+            MONS_GNOLL,
+            MONS_GNOLL,
+            MONS_GNOLL,
+            MONS_GNOLL,
+            MONS_GNOLL,
+            MONS_GNOLL);
 
     case RANDOM_DEMON_COMMON:
         if (x_chance_in_y(6, 10))
         {
             // tier 4
             return random_choose(
-                MONS_ICE_DEVIL,
-                MONS_RUST_DEVIL,
-                MONS_ORANGE_DEMON,
-                MONS_RED_DEVIL,
-                MONS_SIXFIRHY,
-                MONS_HELLWING);
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL);
         }
         else
         {
             // tier 3
             return random_choose(
-                MONS_SUN_DEMON,
-                MONS_SOUL_EATER,
-                MONS_SMOKE_DEMON,
-                MONS_NEQOXEC,
-                MONS_YNOXINUL,
-                MONS_CHAOS_SPAWN);
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL);
         }
 
     case RANDOM_DEMON_GREATER:
@@ -3442,26 +3442,26 @@ monster_type summon_any_demon(monster_type dct, bool use_local_demons)
         {
             // tier 2
             return random_choose(
-                MONS_GREEN_DEATH,
-                MONS_BLIZZARD_DEMON,
-                MONS_BALRUG,
-                MONS_CACODEMON,
-                MONS_HELL_BEAST,
-                MONS_HELLION,
-                MONS_REAPER,
-                MONS_LOROCYPROCA,
-                MONS_TORMENTOR,
-                MONS_SHADOW_DEMON);
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL);
         }
         else
         {
             // tier 1
             return random_choose(
-                MONS_BRIMSTONE_FIEND,
-                MONS_ICE_FIEND,
-                MONS_TZITZIMITL,
-                MONS_HELL_SENTINEL,
-                MONS_EXECUTIONER);
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL,
+                MONS_GNOLL);
         }
 
     default:

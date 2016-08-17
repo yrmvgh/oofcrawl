@@ -425,7 +425,7 @@ static int dgn_mons(lua_State *ls)
             s = string(mons_input.begin() + 9, mons_input.end());
         }
         else if ((mons_input.find("oklob") == -1) && ((mons_input.find("plant") != -1) || (mons_input.find("fungus") != -1) || (mons_input.find("bush") != -1) || (mons_input.find("toadstool") != -1))){
-            s = mons_input;
+            s = "plant";
         }
         else if (mons_input.find("nothing") != -1){
             s = "nothing";
