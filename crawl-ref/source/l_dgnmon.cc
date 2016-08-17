@@ -97,7 +97,7 @@ static int dgn_set_random_mon_list(lua_State *ls)
     {
         mons_spec mon = mlist.get_monster(0, i);
         
-        mons.type = MONS_GNOLL;
+        mon.type = MONS_GNOLL;
 
         // Pandemonium lords are pseudo-unique, so don't randomly generate
         // them.
