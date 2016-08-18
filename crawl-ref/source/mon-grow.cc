@@ -33,6 +33,7 @@ static const monster_level_up mon_grow[] =
     monster_level_up(MONS_ORC_KNIGHT, MONS_ORC_WARLORD),
     monster_level_up(MONS_ORC_PRIEST, MONS_ORC_HIGH_PRIEST),
     monster_level_up(MONS_ORC_WIZARD, MONS_ORC_SORCERER),
+    monster_level_up(MONS_GNOLL, random_choose(MONS_GNOLL_SERGEANT, MONS_GNOLL_SHAMAN)),
 };
 
 mons_experience_levels::mons_experience_levels()
