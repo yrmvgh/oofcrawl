@@ -1614,7 +1614,7 @@ void read_init_file(bool runscript)
     Options.filename     = init_file_name;
     Options.basefilename = get_base_filename(init_file_name);
     Options.line_num     = -1;
-    // Options.fake_langs.push_back({FLANG_GNOLL, 1});
+    Options.fake_langs.push_back({FLANG_GNOLL, 1});
 }
 
 newgame_def read_startup_prefs()
