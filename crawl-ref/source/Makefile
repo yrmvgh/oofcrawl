@@ -1769,9 +1769,12 @@ ifneq ($(GAME),crawl.exe)
 	@echo "This is only for Windows; please specify CROSSHOST.";false
 endif
 	+$(MAKE) clean
-	+$(MAKE) TILES=y DESTDIR=build-win SAVEDIR='~/crawl' install
+	# Compiling on Windows with mingw was injecting msys path without the extra slash
+	# +$(MAKE) TILES=y DESTDIR=build-win SAVEDIR='~/crawl' install
+	+$(MAKE) TILES=y DESTDIR=build-win SAVEDIR='~//crawl' install
 	mv build-win/crawl.exe build-win/crawl-tiles.exe
-	+$(MAKE) TILES=  DESTDIR=build-win SAVEDIR='~/crawl' install
+	# +$(MAKE) TILES=  DESTDIR=build-win SAVEDIR='~/crawl' install
+	+$(MAKE) TILES=  DESTDIR=build-win SAVEDIR='~//crawl' install
 	mv build-win/crawl.exe build-win/crawl-console.exe
 	mv build-win/docs/CREDITS.txt build-win/
 	echo $(SRC_VERSION) >build-win/version.txt
