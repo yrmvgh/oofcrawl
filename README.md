@@ -1,6 +1,6 @@
 This is my attempt to make GnollCrawl. No exp gain. Only gnolls.
 
-Be warned, the changes to the DES spawns means that some portals other than lab will spawn very odd numbers at times.
+Be warned, the changes to the DES spawns means that some vaults/portals will spawn very odd numbers at times.
 
 No hunger.
 
@@ -8,7 +8,7 @@ Removed most gnolls picking up items, TRJ vault is always diggable, Gnoll Undead
 
 Gnoll Sergeants and Shamans are rare. Expect some in Zot. Grum is the boss.
 
-TODO: Shortcuts to get to the orb quicker.
+TODO: Remove direct damage hell effects and maybe wrath. Add more challenge to extended branches. Limit spawn count on really early D levels.
 
 -------------------
 
