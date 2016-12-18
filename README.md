@@ -8,8 +8,6 @@ Removed most gnolls picking up items, TRJ vault is always diggable, Gnoll Undead
 
 Gnoll Sergeants and Shamans are rare. Expect some in Zot. Grum is the boss.
 
-TODO: Remove direct damage hell effects and maybe wrath. Add more challenge to extended branches. Limit spawn count on really early D levels.
-
 -------------------
 
 Original DCSS Readme below.
