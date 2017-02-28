@@ -437,22 +437,23 @@ static void _construct_game_modes_menu(MenuScroller* menu)
     tmp->set_visible(true);
 
 #ifdef USE_TILE_LOCAL
-    tmp = new TextTileItem();
-    tmp->add_tile(tile_def(tileidx_gametype(GAME_TYPE_SPRINT), TEX_GUI));
+    // Sprint doesn't work in Gnollcrawl, disabling from menu.
+    //tmp = new TextTileItem();
+    //tmp->add_tile(tile_def(tileidx_gametype(GAME_TYPE_SPRINT), TEX_GUI));
 #else
-    tmp = new TextItem();
+    //tmp = new TextItem();
 #endif
-    text = "Dungeon Sprint";
-    tmp->set_text(text);
-    tmp->set_fg_colour(WHITE);
-    tmp->set_highlight_colour(WHITE);
-    tmp->set_id(GAME_TYPE_SPRINT);
+    //text = "Dungeon Sprint";
+    //tmp->set_text(text);
+    //tmp->set_fg_colour(WHITE);
+    //tmp->set_highlight_colour(WHITE);
+    //tmp->set_id(GAME_TYPE_SPRINT);
     // Scroller does not care about x-coordinates and only cares about
     // item height obtained from max.y - min.y
-    tmp->set_bounds(coord_def(1, 1), coord_def(1, 2));
-    tmp->set_description_text("Hard, fixed single level game mode.");
-    menu->attach_item(tmp);
-    tmp->set_visible(true);
+    //tmp->set_bounds(coord_def(1, 1), coord_def(1, 2));
+    //tmp->set_description_text("Hard, fixed single level game mode.");
+    //menu->attach_item(tmp);
+    //tmp->set_visible(true);
 
 #ifdef USE_TILE_LOCAL
     tmp = new TextTileItem();
