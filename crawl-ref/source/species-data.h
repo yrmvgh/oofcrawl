@@ -386,6 +386,26 @@ static const map<species_type, species_def> species_data =
     { SK_UNARMED_COMBAT, SK_BOWS, SK_CROSSBOWS, SK_SLINGS },
 } },
 
+{ SP_GNOLL, {
+    "Gn",
+    "Gnoll", "Gnolly", nullptr,
+    SPF_NONE,
+    1, -1, 0,
+    15, 3,
+    MONS_GNOLL,
+    HT_LAND, US_ALIVE, SIZE_MEDIUM,
+    10, 8, 7, // 25
+    { STAT_STR, STAT_INT, STAT_DEX }, 5,
+    { { MUT_CARNIVOROUS, 3, 1 }, { MUT_SHAGGY_FUR, 1, 1 }, 
+    { MUT_SHAGGY_FUR, 1, 14 }, { MUT_SHAGGY_FUR, 1, 27 }, },
+    {},
+    {},
+    { JOB_HUNTER, JOB_GLADIATOR, JOB_BERSERKER, JOB_ABYSSAL_KNIGHT,
+      JOB_SKALD, JOB_NECROMANCER, JOB_SUMMONER, JOB_ARTIFICER },
+    { SK_POLEARMS, SK_STAVES, SK_MACES_FLAILS, SK_SLINGS },
+} },
+
+
 { SP_GARGOYLE, {
     "Gr",
     "Gargoyle", nullptr, nullptr,

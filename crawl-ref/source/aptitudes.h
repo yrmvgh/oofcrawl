@@ -1484,6 +1484,45 @@ static const species_skill_aptitude species_skill_aptitudes[] =
     APT(SP_VINE_STALKER,    SK_POISON_MAGIC,    0),
     APT(SP_VINE_STALKER,    SK_INVOCATIONS,     0),
     APT(SP_VINE_STALKER,    SK_EVOCATIONS,     -1),
+
+    // SP_GNOLL
+    APT(SP_GNOLL,           SK_FIGHTING,        2),
+    APT(SP_GNOLL,           SK_SHORT_BLADES,    0),
+    APT(SP_GNOLL,           SK_LONG_BLADES,     0),
+    APT(SP_GNOLL,           SK_AXES,            1),
+    APT(SP_GNOLL,           SK_MACES_FLAILS,    1),
+    APT(SP_GNOLL,           SK_POLEARMS,        1),
+    APT(SP_GNOLL,           SK_STAVES,          1),
+    APT(SP_GNOLL,           SK_SLINGS,          1),
+    APT(SP_GNOLL,           SK_BOWS,           -1),
+    APT(SP_GNOLL,           SK_CROSSBOWS,      -2),
+    APT(SP_GNOLL,           SK_THROWING,        0),
+    APT(SP_GNOLL,           SK_ARMOUR,          1),
+    APT(SP_GNOLL,           SK_DODGING,         0),
+    APT(SP_GNOLL,           SK_STEALTH,         0),
+#if TAG_MAJOR_VERSION == 34
+    APT(SP_GNOLL,           SK_STABBING,      UNUSABLE_SKILL),
+#endif
+    APT(SP_GNOLL,           SK_SHIELDS,        -1),
+#if TAG_MAJOR_VERSION == 34
+    APT(SP_GNOLL,           SK_TRAPS,         UNUSABLE_SKILL),
+#endif
+    APT(SP_GNOLL,           SK_UNARMED_COMBAT,  0),
+    APT(SP_GNOLL,           SK_SPELLCASTING,    0),
+    APT(SP_GNOLL,           SK_CONJURATIONS,   -2),
+    APT(SP_GNOLL,           SK_HEXES,           0),
+    APT(SP_GNOLL,           SK_CHARMS,          4),
+    APT(SP_GNOLL,           SK_SUMMONINGS,      2),
+    APT(SP_GNOLL,           SK_NECROMANCY,      2),
+    APT(SP_GNOLL,           SK_TRANSLOCATIONS,  0),
+    APT(SP_GNOLL,           SK_TRANSMUTATIONS,  0),
+    APT(SP_GNOLL,           SK_FIRE_MAGIC,      0),
+    APT(SP_GNOLL,           SK_ICE_MAGIC,       0),
+    APT(SP_GNOLL,           SK_AIR_MAGIC,       0),
+    APT(SP_GNOLL,           SK_EARTH_MAGIC,     0),
+    APT(SP_GNOLL,           SK_POISON_MAGIC,    0),
+    APT(SP_GNOLL,           SK_INVOCATIONS,     0),
+    APT(SP_GNOLL,           SK_EVOCATIONS,      2),
 };
 
 #endif
