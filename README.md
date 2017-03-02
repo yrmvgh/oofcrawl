@@ -8,6 +8,8 @@ Removed most gnolls picking up items, TRJ vault is always diggable, Gnoll Undead
 
 Gnoll Sergeants and Shamans are rare. Expect some in Zot. Grum is the boss.
 
+[Check out the first winners!](https://github.com/Dracunos/gnollcrawl/wiki/First-Winners)
+
 -------------------
 
 Original DCSS Readme below.
