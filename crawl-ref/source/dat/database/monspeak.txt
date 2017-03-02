@@ -1578,6 +1578,17 @@ VISUAL:@The_monster@ ripples.
 
 @The_monster@ @_wails_@, "You must not succeed where I failed!"
 
+# Gnollcrawl
+@The_monster@ @_wails_@, "I know for whom the bell gnolls! It gnolls for thee!"
+
+@The_monster@ @_wails_@, "You cannot escape me! Not even diagnolly!"
+
+@The_monster@ points at @foe@, "There @foe_possessive@ is! On the grassy gnoll!"
+
+@The_monster@ whispers, "I will gnollify all your attacks!"
+
+@The_monster@ cries, "Yes I know I'm not a gnoll!"
+
 # Sid Vicious II
 @The_monster@ whispers @to_foe@, "There is no future for you."
 %%%%
@@ -7355,4 +7366,16 @@ Gozag bribe
 Gozag permabribe
 
 @The_monster@ grins @at_foe@ greedily, jangling a coin purse.
+%%%%
+
+# Gnollcrawl speech
+gnoll
+w:1
+@The_monster@ says, "{{
+    if you.race() == "Gnoll" then
+        return "Is that you, @player_name@?"
+    else
+        return "Boy yer ugly."
+    end
+}}"
 %%%%
