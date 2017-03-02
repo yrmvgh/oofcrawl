@@ -299,7 +299,7 @@ static const ability_def Ability_List[] =
       0, 0, 125, 0, {FAIL_XL, 30, 1}, abflag::BREATH },
     { ABIL_BREATHE_STEAM, "Breathe Steam",
         0, 0, 75, 0, {FAIL_XL, 20, 1}, abflag::BREATH },
-    { ABIL_TRAN_BAT, "Bat Form", 2, 0, 0, 0, {FAIL_XL, 45, 2}, abflag::NONE },
+    { ABIL_TRAN_BAT, "Bat Form", 1, 0, 0, 0, {FAIL_XL, 45, 2}, abflag::NONE },
 
     { ABIL_SPIT_ACID, "Spit Acid",
         0, 0, 125, 0, {FAIL_XL, 30, 1}, abflag::BREATH },
@@ -1135,7 +1135,7 @@ void no_ability_msg()
     // Give messages if the character cannot use innate talents right now.
     // * Vampires can't turn into bats when full of blood.
     // * Tengu can't start to fly if already flying.
-    if (you.species == SP_VAMPIRE && you.experience_level >= 3)
+    if (you.species == SP_VAMPIRE)
     {
         if (you.transform_uncancellable)
             mpr("You can't untransform!");
