@@ -3356,8 +3356,7 @@ vector<talent> your_talents(bool check_confused, bool include_unusable)
         _add_talent(talents, draconian_breath(you.species), check_confused);
     }
 
-    if (you.species == SP_VAMPIRE && you.experience_level >= 3
-        && you.hunger_state <= HS_SATIATED
+    if (you.species == SP_VAMPIRE && you.hunger_state <= HS_SATIATED
         && you.form != TRAN_BAT)
     {
         _add_talent(talents, ABIL_TRAN_BAT, check_confused);
