@@ -1,14 +1,8 @@
-This is my attempt to make GnollCrawl. No exp gain. Only gnolls.
+## Orb of Fire Crawl!
 
-Be warned, the changes to the DES spawns means that some vaults/portals will spawn very odd numbers at times.
+Basically taking [gnollcrawl](https://github.com/Dracunos/gnollcrawl) and replacing all the gnolls with orbs of fire.
 
-No hunger.
-
-Removed most gnolls picking up items, TRJ vault is always diggable, Gnoll Undead in undead branches, removed bands (not brands), removed rune requirements.
-
-Gnoll Sergeants and Shamans are rare. Expect some in Zot. Grum is the boss.
-
-[Check out the first winners!](https://github.com/Dracunos/gnollcrawl/wiki/First-Winners)
+Will prevent spawns on the first level, and give the player some goodies to get started, but I doubt anyone will make it very far.
 
 -------------------
 
