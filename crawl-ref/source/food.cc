@@ -51,8 +51,7 @@ static void _heal_from_food(int hp_amt);
 void make_hungry(int hunger_amount, bool suppress_msg,
                  bool magic)
 {
-    if (you.species != SP_VAMPIRE)
-        return;
+    return;
     if (crawl_state.disables[DIS_HUNGER])
         return;
 
