@@ -215,7 +215,6 @@ enum flang_t
     FLANG_WIDE,
     FLANG_GRUNT,
     FLANG_BUTT,
-    FLANG_GNOLL,
 };
 
 enum ability_type

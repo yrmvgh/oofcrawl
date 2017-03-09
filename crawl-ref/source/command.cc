@@ -552,17 +552,6 @@ static int _keyhelp_keyfilter(int ch)
     case 'V':
         _print_version();
         return -1;
-    case 'o':
-    case 'O':
-        //Options.fake_langs.push_back({FLANG_GNOLL, 0});
-        for (int i = 0;i < Options.fake_langs.size();i++) {
-            if (Options.fake_langs[i].lang_id == FLANG_GNOLL) {
-                Options.fake_langs.erase(Options.fake_langs.begin()+i);
-                i--;
-                mpr("Gnollish deactivated.");
-            }
-        }
-        return -1;
     }
     return ch;
 }
@@ -645,8 +634,7 @@ static int _show_keyhelp_menu(const vector<formatted_string> &lines,
             "<w>T</w>: Tiles key help\n"
 #endif
             "<w>V</w>: Version information\n"
-            "<w>Home</w>: This screen\n"
-            "<w>O</w>: Disable Gnollish\n");
+            "<w>Home</w>: This screen\n");
 
         cols.add_formatted(
             1,

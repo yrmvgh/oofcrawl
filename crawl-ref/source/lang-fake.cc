@@ -477,9 +477,9 @@ static bool _too_boring_to_butt(const string &token)
  * @param token     The token to be replaced.
  * @return          Presumably, some variant on 'butt'.
  */
-static string _replacement_butt(const string &token, string baseword)
+static string _replacement_butt(const string &token)
 {
-    string butt = baseword;
+    string butt = "butt";
     char plural = 's';
     const char *ly = "-ly";
     if (isupper(token[0]))
@@ -522,7 +522,7 @@ static string _replacement_butt(const string &token, string baseword)
  *                      Will be bounded between 0-100 (inclusive) if specified;
  *                      -1 indicates that the default odds (5%) should be used.
  */
-static void _butt(string &str, int odds, string baseword)
+static void _butt(string &str, int odds)
 {
     // iter along the string, tokenizing & potentially replacing as we go.
     for (size_t start = 0; start < str.size(); ++start)
@@ -544,7 +544,7 @@ static void _butt(string &str, int odds, string baseword)
         }
 
         // here's where the magic happens!!!
-        const string butt = _replacement_butt(token, baseword);
+        const string butt = _replacement_butt(token);
         str.erase(start, end - start);
         str.insert(start, butt);
         start += butt.size(); // will incr again, past the token-ending char
@@ -578,10 +578,8 @@ void filter_lang(string &str)
                 _grunt(str); repl = grunt;
                 break;
             case FLANG_BUTT:
-                _butt(str, fake_lang.value, "butt");
+                _butt(str, fake_lang.value);
                 continue;
-            case FLANG_GNOLL:
-                _butt(str, fake_lang.value, "gnoll");
             default:
                 continue;
         }

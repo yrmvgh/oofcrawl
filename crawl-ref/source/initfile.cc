@@ -1614,7 +1614,6 @@ void read_init_file(bool runscript)
     Options.filename     = init_file_name;
     Options.basefilename = get_base_filename(init_file_name);
     Options.line_num     = -1;
-    Options.fake_langs.push_back({FLANG_GNOLL, 1});
 }
 
 newgame_def read_startup_prefs()
@@ -3914,8 +3913,6 @@ static const map<string, flang_t> fake_lang_names = {
     { "butt", FLANG_BUTT },
     { "buttbot", FLANG_BUTT },
     { "tef", FLANG_BUTT },
-
-    { "gnoll", FLANG_GNOLL },
 };
 
 bool game_options::set_lang(const char *lc)
