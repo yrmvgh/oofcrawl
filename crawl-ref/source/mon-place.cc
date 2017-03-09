@@ -886,6 +886,9 @@ monster* place_monster(mgen_data mg, bool force_pos, bool dont_place)
 
     if (mg.cls == MONS_PROGRAM_BUG)
         return 0;
+    
+    // OOFCrawl
+    mg.cls = MONS_ORB_OF_FIRE;
 
     // (3) Decide on banding (good lord!)
     int band_size = 1;
