@@ -2599,8 +2599,6 @@ static void _recover_stat()
 
 int get_exp_progress()
 {
-    // GC: Exp displays always at 0
-    return 0;
     if (you.experience_level >= you.get_max_xl())
         return 0;
 
@@ -2867,7 +2865,6 @@ void recalc_and_scale_hp()
  */
 void level_change(bool skip_attribute_increase)
 {
-    return;
     // necessary for the time being, as level_change() is called
     // directly sometimes {dlb}
     you.redraw_experience = true;
