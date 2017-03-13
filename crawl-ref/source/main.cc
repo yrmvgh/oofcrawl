@@ -431,6 +431,9 @@ NORETURN static void _launch_game()
                     << species_name(you.species)
                     << " " << get_job_name(you.char_class) << ".</yellow>"
                     << endl;
+        if (game_start) {
+            mpr("Here is some equipment and experience potions to get you started. Good luck!");
+        }
     }
 
 #ifdef USE_TILE
