@@ -2,7 +2,7 @@
 
 Basically taking [gnollcrawl](https://github.com/Dracunos/gnollcrawl) and replacing all the gnolls with orbs of fire.
 
-Will prevent spawns on the first level, and give the player some goodies to get started, but I doubt anyone will make it very far.
+Will give the player some goodies to get started, but I doubt anyone will make it very far.
 
 -------------------
 
