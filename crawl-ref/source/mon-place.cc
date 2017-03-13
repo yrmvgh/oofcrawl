@@ -888,7 +888,8 @@ monster* place_monster(mgen_data mg, bool force_pos, bool dont_place)
         return 0;
     
     // OOFCrawl
-    if (mg.cls != MONS_PLANT)
+    if (mg.cls != MONS_PLANT && mg.cls != MONS_TOADSTOOL
+        && mg.cls != MONS_FUNGUS && mg.cls != MONS_BUSH)
         mg.cls = MONS_ORB_OF_FIRE;
 
     // (3) Decide on banding (good lord!)
