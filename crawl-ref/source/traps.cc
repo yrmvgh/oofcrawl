@@ -1584,8 +1584,6 @@ int num_traps_for_place()
 
 trap_type random_trap_for_place()
 {
-    // GC: Always place alarm  or tele traps
-    return random_choose(TRAP_ALARM, TRAP_TELEPORT);
     // zot traps are Very Special.
     // very common in zot...
     if (player_in_branch(BRANCH_ZOT) && coinflip())
