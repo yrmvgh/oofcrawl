@@ -1,6 +1,6 @@
-## Orb of Fire Crawl!
+## Lich Crawl!
 
-Basically taking [gnollcrawl](https://github.com/Dracunos/gnollcrawl) and replacing all the gnolls with orbs of fire.
+Basically taking [gnollcrawl](https://github.com/Dracunos/gnollcrawl) and replacing all the gnolls with Ancient Liches.
 
 Will give the player some goodies to get started, but I doubt anyone will make it very far.
 
