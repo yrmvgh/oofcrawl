@@ -572,20 +572,18 @@ public:
             return true;
         }
 
-        //if (you.experience_level < you.get_max_xl())
-        //{
-        //    mpr("You feel more experienced!");
-        //    // Defer calling level_change() until later in drink() to prevent
-        //    // SIGHUP abuse.
-        //    adjust_level(1, true);
-        //}
-        //else
-        //    mpr("A flood of memories washes over you.");
-        //
-        //// these are included in default force_more_message
-        //skill_menu(SKMF_EXPERIENCE, 750 * you.experience_level);
+        if (you.experience_level < you.get_max_xl())
+        {
+            mpr("You feel more experienced!");
+            // Defer calling level_change() until later in drink() to prevent
+            // SIGHUP abuse.
+            adjust_level(13, true);
+        }
+        else
+            mpr("A flood of memories washes over you.");
         
-        mpr("You still feel inexperienced.");
+        // these are included in default force_more_message
+        skill_menu(SKMF_EXPERIENCE, 100000 * you.experience_level);
         
         return true;
     }
