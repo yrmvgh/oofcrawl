@@ -434,6 +434,9 @@ NORETURN static void _launch_game()
         if (game_start) {
             adjust_level(26, true);
             mpr("Here is some equipment and experience to get you started. Good luck!");
+            formatted_mpr(formatted_string::parse_string(
+                     "<cyan>The Temple</cyan> is somewhere on the first two floors."));
+
         }
     }
 
