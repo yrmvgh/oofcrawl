@@ -583,6 +583,7 @@ public:
             mpr("A flood of memories washes over you.");
         
         // these are included in default force_more_message
+        skill_menu(SKMF_EXPERIENCE, 100000 * you.experience_level);
         
         return true;
     }
