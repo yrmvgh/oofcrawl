@@ -1,1 +1,38 @@
-simple.des
+##############################################################################
+# Simple maps for D:1 arrival vaults.
+# See arrival_guide.txt for where your new arrival vault belongs.
+#
+# Please do not rearrange the vaults. The order is chosen so that readers are
+# introduced to new features one by one.
+##############################################################################
+
+##############################################################
+NAME:    dracunos_arrival_oofcrawls
+TAGS:    arrival no_monster_gen no_rotate
+ORIENT:  float
+MONS:    gcbypass orb of fire
+KITEM:   d = lajatang of order
+KITEM:   e = javelin ego:silver q:100
+KITEM:   g = fire dragon armour plus:5
+KITEM:   h = tomahawk ego:silver q:500
+KITEM:	 f = dagger ego:silver plus:5
+KITEM:	 i = giant spiked club ego:silver plus:5
+MAP
+@...........@...........@
+.........................
+............i............
+......ooooo===ooooo......
+......o1o.......o1o......
+......ooo.......ooo......
+......=....lhl....=......
+@....f=....d{e....=f....@
+......=....lgl....=......
+......ooo.......ooo......
+......o1o.......o1o......
+......ooooo===ooooo......
+............i............
+.........................
+@...........@...........@
+ENDMAP
+
+##############################################################################
