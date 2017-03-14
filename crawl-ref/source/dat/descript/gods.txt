@@ -44,12 +44,7 @@ followers can convert to the Shining One or Zin while keeping some piety.
 %%%%
 Fedhas
 
-The god of plant and fungal life, Fedhas Madash demands that followers
-encourage the decomposition of corpses. Fedhas also forbids followers from
-harming any species under Fedhas' protection, and from using any necromantic
-effects that interfere with corpses. In return Fedhas grants a number of
-abilities that promote the growth of plants and fungi. These abilities may
-incidentally prove useful to adventurers.
+DO NOT WORSHIP
 %%%%
 Gozag
 
@@ -70,12 +65,7 @@ bringing them into the ranks of the mythical heroes.
 %%%%
 Jiyva
 
-Jiyva is the ancient deity of the slimes. Followers are expected to
-support the spread and satiation of their fellow slimes by allowing them to
-consume items, and are forbidden from harming any slimes. Jiyva will even
-occasionally consume items left elsewhere in the dungeon by followers.
-Especially favoured followers will become as shapeless as their god, as their
-attributes and mutations shift around under Jiyva's influence.
+DO NOT WORSHIP
 %%%%
 Kikubaaqudgha
 
@@ -403,11 +393,7 @@ intervene to save a follower's life.
 %%%%
 Trog powers
 
-Trog offers various powers to help followers in battle. Followers will gain the
-ability to go berserk at will, and to rapidly heal their wounds while
-increasing resistance to hostile enchantments. Later, followers may call in
-powerful raging allies. Eventually, Trog will gift followers with weapons
-focused on damage.
+DO NOT WORSHIP
 %%%%
 %%%%
 Uskayaw powers
@@ -442,13 +428,7 @@ much the better; if not, well, there'll be other playthings...
 %%%%
 Yredelemnul powers
 
-Yredelemnul gives followers the power to raise skeletons and corpses, to recall
-undead followers to their vicinity, and to heal by draining the life force of
-living creatures. With sufficient piety, Yredelemnul can be called upon to
-mirror a follower's injuries onto attackers. Eventually, followers will gain
-the power to bind a monster's soul, and make it fight for them instead.
-Yredelemnul will sporadically gift followers increasingly powerful undead
-servants.
+DO NOT WORSHIP
 %%%%
 Zin powers
 
