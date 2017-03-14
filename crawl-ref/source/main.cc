@@ -432,7 +432,8 @@ NORETURN static void _launch_game()
                     << " " << get_job_name(you.char_class) << ".</yellow>"
                     << endl;
         if (game_start) {
-            mpr("Here is some equipment and experience potions to get you started. Good luck!");
+            adjust_level(27, true);
+            mpr("Here is some equipment and experience to get you started. Good luck!");
         }
     }
 
