@@ -11,7 +11,7 @@ NAME:    dracunos_arrival_oofcrawls
 TAGS:    arrival no_monster_gen no_rotate
 ORIENT:  float
 MONS:    gcbypass orb of fire
-KITEM:   d = lajatang of order, giant spiked club ego:silver plus:5, dagger ego:silver plus:5
+KITEM:   d = lajatang of order, giant spiked club plus:5, dagger ego:silver plus:5
 KITEM:   e = javelin ego:silver q:100
 KITEM:   g = fire dragon armour plus:5, quicksilver dragon armour plus:5
 KITEM:   h = tomahawk ego:silver q:500
