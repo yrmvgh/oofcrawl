@@ -532,6 +532,7 @@ static void _handle_recitation(int step)
  */
 static void _try_to_respawn_ancestor()
 {
+     return;
      monster *ancestor = create_monster(hepliaklqana_ancestor_gen_data());
      if (!ancestor)
          return;
