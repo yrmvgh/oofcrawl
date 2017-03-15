@@ -1071,7 +1071,7 @@ void scorefile_entry::set_base_xlog_fields() const
 #ifdef EXPERIMENTAL_BRANCH
     fields->add_field("explbr", EXPERIMENTAL_BRANCH);
 #endif
-    fields->add_field("game", "GnollCrawl");
+    fields->add_field("game", "OOFCrawl");
     if (tiles)
         fields->add_field("tiles", "%d", tiles);
     fields->add_field("name", "%s", name.c_str());
